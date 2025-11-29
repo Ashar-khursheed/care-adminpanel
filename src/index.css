@@ -95,6 +95,8 @@
 @layer base {
   * {
     @apply border-border;
+      font-family: 'Montserrat', sans-serif;
+
   }
 
   body {

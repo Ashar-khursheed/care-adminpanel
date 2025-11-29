@@ -52,3 +52,15 @@ export const notify = ({ message, type = 'success' }: NotifyOptions): void => {
 //   const formattedDate = `${dd}/${mm}/${yyyy}`;
 //   return formattedDate 
 // };
+
+ export const formatDate = (date: string | null) => {
+    if (!date) return "Never";
+    return new Date(date).toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+  
