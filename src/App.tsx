@@ -12,11 +12,12 @@ import Authlogin from "./pages/auth";
 import { AuthProvider } from "./context/auth";
 import toast, { Toaster } from 'react-hot-toast';
 import ProtectedRoute from "./routes/protected-route";
-
+import { Analytics } from "@vercel/analytics/next"
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <Analytics />
     <AuthProvider>
       <TooltipProvider>
         <Toaster
