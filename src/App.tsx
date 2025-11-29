@@ -12,7 +12,6 @@ import Authlogin from "./pages/auth";
 import { AuthProvider } from "./context/auth";
 import toast, { Toaster } from 'react-hot-toast';
 import ProtectedRoute from "./routes/protected-route";
-
 const queryClient = new QueryClient();
 
 const App = () => (
