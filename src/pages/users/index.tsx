@@ -1,0 +1,1362 @@
+// // // import { useEffect, useState } from "react";
+// // // import { User, ChevronDown, Pencil, Eye, Trash2 } from "lucide-react";
+// // // import {
+// // //   Card,
+// // //   CardContent,
+// // //   CardDescription,
+// // //   CardHeader,
+// // //   CardTitle,
+// // // } from "@/components/ui/card";
+// // // import { Button } from "@/components/ui/button";
+// // // import { Input } from "@/components/ui/input";
+// // // import { Badge } from "@/components/ui/badge";
+// // // import {
+// // //   Table,
+// // //   TableBody,
+// // //   TableCell,
+// // //   TableHead,
+// // //   TableHeader,
+// // //   TableRow,
+// // // } from "@/components/ui/table";
+// // // import {
+// // //   DropdownMenu,
+// // //   DropdownMenuContent,
+// // //   DropdownMenuItem,
+// // //   DropdownMenuTrigger,
+// // // } from "@/components/ui/dropdown-menu";
+// // // import makeApiRequest from "@/services/axios";
+// // // import { apiUrl } from "@/services/api-end-point";
+// // // import ToggleSwitch from "@/components/ui/toggle-switch";
+
+// // // export default function Users() {
+// // //   const [searchTerm, setSearchTerm] = useState("");
+// // //   const [filterRole, setFilterRole] = useState("All");
+// // //   const [filterStatus, setFilterStatus] = useState("All");
+// // //   const [isActive, setIsActive] = useState(false);
+
+// // //   const [apiData, setApiData] = useState({
+// // //     users: [],
+// // //   });
+
+// // //   const fetchUsers = async () => {
+// // //     try {
+// // //       const response = await makeApiRequest(apiUrl.users, { method: "GET" });
+
+// // //       setApiData((prev) => ({
+// // //         ...prev,
+// // //         users: response.data.users || [],
+// // //       }));
+// // //     } catch (error) {
+// // //       console.error("Error fetching users:", error);
+// // //     }
+// // //   };
+// // //   useEffect(() => {
+// // //     fetchUsers();
+// // //   }, []);
+
+// // //   const getStatusBadge = (status: string) => {
+// // //     const variants: Record<string, "default" | "secondary" | "destructive"> = {
+// // //       Active: "default",
+// // //       Inactive: "secondary",
+// // //       Pending: "secondary",
+// // //     };
+
+// // //     return (
+// // //       <Badge
+// // //         variant={variants[status] || "default"}
+// // //         className={
+// // //           status === "active"
+// // //             ? "bg-green-100 text-green-800 hover:bg-green-100"
+// // //             : status === "pending_verification"
+// // //             ? "bg-red-100 text-red-800 hover:bg-red-100"
+// // //             : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+// // //         }
+// // //       >
+// // //         {status}
+// // //       </Badge>
+// // //     );
+// // //   };
+
+// // //   return (
+// // //     <div className="space-y-6">
+// // //       <div className="flex items-center justify-between">
+// // //         <div>
+// // //           <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+// // //           <p className="text-muted-foreground">
+// // //             Manage your users and their permissions
+// // //           </p>
+// // //         </div>
+// // //         <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+// // //           <User className="mr-2 h-4 w-4" />
+// // //           Add User
+// // //         </Button>
+// // //       </div>
+
+// // //       <Card>
+// // //         <CardHeader>
+// // //           <CardTitle>User Management</CardTitle>
+// // //           <CardDescription>
+// // //             View and manage all users in your system
+// // //           </CardDescription>
+
+// // //           {/* Filters */}
+// // //           <div className="flex gap-4 pt-4">
+// // //             <Input
+// // //               placeholder="Search users..."
+// // //               value={searchTerm}
+// // //               onChange={(e) => setSearchTerm(e.target.value)}
+// // //               className="max-w-sm"
+// // //             />
+
+// // //             <DropdownMenu>
+// // //               <DropdownMenuTrigger asChild>
+// // //                 <Button variant="outline">
+// // //                   Role: {filterRole}
+// // //                   <ChevronDown className="ml-2 h-4 w-4" />
+// // //                 </Button>
+// // //               </DropdownMenuTrigger>
+// // //               <DropdownMenuContent>
+// // //                 <DropdownMenuItem onClick={() => setFilterRole("All")}>
+// // //                   All
+// // //                 </DropdownMenuItem>
+// // //                 <DropdownMenuItem onClick={() => setFilterRole("Admin")}>
+// // //                   Admin
+// // //                 </DropdownMenuItem>
+// // //                 <DropdownMenuItem onClick={() => setFilterRole("Editor")}>
+// // //                   Editor
+// // //                 </DropdownMenuItem>
+// // //                 <DropdownMenuItem onClick={() => setFilterRole("User")}>
+// // //                   User
+// // //                 </DropdownMenuItem>
+// // //               </DropdownMenuContent>
+// // //             </DropdownMenu>
+
+// // //             <DropdownMenu>
+// // //               <DropdownMenuTrigger asChild>
+// // //                 <Button variant="outline">
+// // //                   Status: {filterStatus}
+// // //                   <ChevronDown className="ml-2 h-4 w-4" />
+// // //                 </Button>
+// // //               </DropdownMenuTrigger>
+// // //               <DropdownMenuContent>
+// // //                 <DropdownMenuItem onClick={() => setFilterStatus("All")}>
+// // //                   All
+// // //                 </DropdownMenuItem>
+// // //                 <DropdownMenuItem onClick={() => setFilterStatus("Active")}>
+// // //                   Active
+// // //                 </DropdownMenuItem>
+// // //                 <DropdownMenuItem onClick={() => setFilterStatus("Inactive")}>
+// // //                   Inactive
+// // //                 </DropdownMenuItem>
+// // //                 <DropdownMenuItem onClick={() => setFilterStatus("Pending")}>
+// // //                   Pending
+// // //                 </DropdownMenuItem>
+// // //               </DropdownMenuContent>
+// // //             </DropdownMenu>
+// // //           </div>
+// // //         </CardHeader>
+
+// // //         <CardContent>
+// // //           <Table>
+// // //             <TableHeader>
+// // //               <TableRow>
+// // //                 <TableHead>User</TableHead>
+// // //                 <TableHead>Role</TableHead>
+// // //                 <TableHead>Status</TableHead>
+// // //                 <TableHead>Verified</TableHead>
+// // //                 <TableHead>Join Date</TableHead>
+// // //                 <TableHead className="text-right">Actions</TableHead>
+// // //               </TableRow>
+// // //             </TableHeader>
+// // //             <TableBody>
+// // //               {apiData?.users?.map((user) => (
+// // //                 <TableRow key={user.id} className="hover:bg-muted/50">
+// // //                   <TableCell>
+// // //                     <div className="flex items-center space-x-3">
+// // //                       <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
+// // //                         <span className="text-xs font-medium text-primary-foreground">
+// // //                           {user?.full_name
+// // //                             .split(" ")
+// // //                             .map((n) => n[0])
+// // //                             .join("")}
+// // //                         </span>
+// // //                       </div>
+// // //                       <div>
+// // //                         <div className="font-medium">{user.full_name}</div>
+// // //                         <div className="text-sm text-muted-foreground">
+// // //                           {user.email}
+// // //                         </div>
+// // //                       </div>
+// // //                     </div>
+// // //                   </TableCell>
+// // //                   <TableCell>
+// // //                     <Badge variant="outline">{user.user_type}</Badge>
+// // //                   </TableCell>
+// // //                   <TableCell>{getStatusBadge(user.status)}</TableCell>
+// // //                   <TableCell>
+// // //                     {" "}
+// // //                     <ToggleSwitch
+// // //                       // label="Enable Notifications"
+// // //                       enabled={isActive}
+// // //                       onChange={(value) => {
+// // //                         setIsActive(value);
+// // //                         console.log("Toggle changed:", value);
+// // //                       }}
+// // //                     />
+// // //                   </TableCell>
+// // //                   <TableCell className="text-muted-foreground">
+// // //                     {user.created_at}
+// // //                     {/* {new Date(user.created_at).toLocaleDateString()} */}
+// // //                   </TableCell>
+// // //                   <TableCell className="text-right">
+// // //                     <div className="flex gap-2 justify-end cursor-pointer">
+// // //                       <Pencil size={15} />
+// // //                       <Eye size={15} />
+// // //                       <Trash2 size={15} />
+// // //                     </div>
+// // //                   </TableCell>
+// // //                 </TableRow>
+// // //               ))}
+// // //             </TableBody>
+// // //           </Table>
+// // //         </CardContent>
+// // //       </Card>
+// // //     </div>
+// // //   );
+// // // }
+
+// // import { useEffect, useState } from "react";
+// // import { User, ChevronDown, Pencil, Eye, Trash2 } from "lucide-react";
+// // import {
+// //   Card,
+// //   CardContent,
+// //   CardDescription,
+// //   CardHeader,
+// //   CardTitle,
+// // } from "@/components/ui/card";
+// // import { Button } from "@/components/ui/button";
+// // import { Input } from "@/components/ui/input";
+// // import { Badge } from "@/components/ui/badge";
+// // import {
+// //   Table,
+// //   TableBody,
+// //   TableCell,
+// //   TableHead,
+// //   TableHeader,
+// //   TableRow,
+// // } from "@/components/ui/table";
+// // import {
+// //   DropdownMenu,
+// //   DropdownMenuContent,
+// //   DropdownMenuItem,
+// //   DropdownMenuTrigger,
+// // } from "@/components/ui/dropdown-menu";
+// // import makeApiRequest from "@/services/axios";
+// // import { apiUrl } from "@/services/api-end-point";
+// // import ToggleSwitch from "@/components/ui/toggle-switch";
+// // import { notify } from "@/utils/utils";
+
+// // interface User {
+// //   id: number;
+// //   full_name: string;
+// //   email: string;
+// //   user_type: string;
+// //   status: string;
+// //   is_verified: boolean;
+// //   created_at: string;
+// // }
+
+// // export default function Users() {
+// //   const [searchTerm, setSearchTerm] = useState("");
+// //   const [filterRole, setFilterRole] = useState("All");
+// //   const [filterStatus, setFilterStatus] = useState("All");
+// //   const [apiData, setApiData] = useState<{ users: User[] }>({
+// //     users: [],
+// //   });
+// //   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
+// //     {}
+// //   );
+
+// //   const fetchUsers = async () => {
+// //     try {
+// //       const response = await makeApiRequest(apiUrl.users, { method: "GET" });
+
+// //       setApiData((prev) => ({
+// //         ...prev,
+// //         users: response.data.users || [],
+// //       }));
+// //     } catch (error) {
+// //       console.error("Error fetching users:", error);
+// //       notify({ message: "Failed to fetch users", type: "error" });
+// //     }
+// //   };
+
+// //   // Toggle verify user
+// //   const handleVerifyToggle = async (userId: number, currentStatus: boolean) => {
+// //     try {
+
+// //       setLoadingStates((prev) => ({ ...prev, [userId]: true }));
+
+// //       // Call API
+// //       const response = await makeApiRequest(
+// //         apiUrl.verifyUser(userId.toString()),
+// //         {
+// //           method: "PUT",
+// //           data: {
+// //             is_verified: !currentStatus,
+// //           },
+// //         }
+// //       );
+// //       if (response.success === true) {
+// //         await fetchUsers();
+// //         // Update local state
+// //         setApiData((prev) => ({
+// //           ...prev,
+// //           users: prev.users.map((user) =>
+// //             user.id === userId ? { ...user, is_verified: !currentStatus } : user
+// //           ),
+// //         }));
+// //       }
+
+// //       notify({
+// //         message: `User ${
+// //           !currentStatus ? "verified" : "unverified"
+// //         } successfully`,
+// //         type: "success",
+// //       });
+// //     } catch (error: unknown) {
+// //       const errorMessage =
+// //         error &&
+// //         typeof error === "object" &&
+// //         "response" in error &&
+// //         error.response &&
+// //         typeof error.response === "object" &&
+// //         "data" in error.response &&
+// //         error.response.data &&
+// //         typeof error.response.data === "object" &&
+// //         "message" in error.response.data
+// //           ? String(error.response.data.message)
+// //           : "Failed to update verification";
+// //       notify({
+// //         message: errorMessage,
+// //         type: "error",
+// //       });
+// //     } finally {
+// //       setLoadingStates((prev) => ({ ...prev, [userId]: false }));
+// //     }
+// //   };
+
+//   // const getStatusBadge = (status: string) => {
+//   //   const variants: Record<string, "default" | "secondary" | "destructive"> = {
+//   //     Active: "default",
+//   //     Inactive: "secondary",
+//   //     Pending: "secondary",
+//   //   };
+
+//   //   return (
+//   //     <Badge
+//   //       variant={variants[status] || "default"}
+//   //       className={
+//   //         status === "active"
+//   //           ? "bg-green-100 text-green-800 hover:bg-green-100"
+//   //           : status === "pending_verification"
+//   //           ? "bg-red-100 text-red-800 hover:bg-red-100"
+//   //           : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+//   //       }
+//   //     >
+//   //       {status}
+//   //     </Badge>
+//   //   );
+//   // };
+
+// //     useEffect(() => {
+// //     fetchUsers();
+// //   }, []);
+// //   return (
+// //     <div className="space-y-6">
+// //       <div className="flex items-center justify-between">
+// //         <div>
+// //           <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+// //           <p className="text-muted-foreground">
+// //             Manage your users and their permissions
+// //           </p>
+// //         </div>
+// //         <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+// //           <User className="mr-2 h-4 w-4" />
+// //           Add User
+// //         </Button>
+// //       </div>
+
+// //       <Card>
+// //         <CardHeader>
+// //           <CardTitle>User Management</CardTitle>
+// //           <CardDescription>
+// //             View and manage all users in your system
+// //           </CardDescription>
+
+// //           {/* Filters */}
+// //           <div className="flex gap-4 pt-4">
+// //             <Input
+// //               placeholder="Search users..."
+// //               value={searchTerm}
+// //               onChange={(e) => setSearchTerm(e.target.value)}
+// //               className="max-w-sm"
+// //             />
+
+// //             <DropdownMenu>
+// //               <DropdownMenuTrigger asChild>
+// //                 <Button variant="outline">
+// //                   Role: {filterRole}
+// //                   <ChevronDown className="ml-2 h-4 w-4" />
+// //                 </Button>
+// //               </DropdownMenuTrigger>
+// //               <DropdownMenuContent>
+// //                 <DropdownMenuItem onClick={() => setFilterRole("All")}>
+// //                   All
+// //                 </DropdownMenuItem>
+// //                 <DropdownMenuItem onClick={() => setFilterRole("Admin")}>
+// //                   Admin
+// //                 </DropdownMenuItem>
+// //                 <DropdownMenuItem onClick={() => setFilterRole("Editor")}>
+// //                   Editor
+// //                 </DropdownMenuItem>
+// //                 <DropdownMenuItem onClick={() => setFilterRole("User")}>
+// //                   User
+// //                 </DropdownMenuItem>
+// //               </DropdownMenuContent>
+// //             </DropdownMenu>
+
+// //             <DropdownMenu>
+// //               <DropdownMenuTrigger asChild>
+// //                 <Button variant="outline">
+// //                   Status: {filterStatus}
+// //                   <ChevronDown className="ml-2 h-4 w-4" />
+// //                 </Button>
+// //               </DropdownMenuTrigger>
+// //               <DropdownMenuContent>
+// //                 <DropdownMenuItem onClick={() => setFilterStatus("All")}>
+// //                   All
+// //                 </DropdownMenuItem>
+// //                 <DropdownMenuItem onClick={() => setFilterStatus("Active")}>
+// //                   Active
+// //                 </DropdownMenuItem>
+// //                 <DropdownMenuItem onClick={() => setFilterStatus("Inactive")}>
+// //                   Inactive
+// //                 </DropdownMenuItem>
+// //                 <DropdownMenuItem onClick={() => setFilterStatus("Pending")}>
+// //                   Pending
+// //                 </DropdownMenuItem>
+// //               </DropdownMenuContent>
+// //             </DropdownMenu>
+// //           </div>
+// //         </CardHeader>
+
+// //         <CardContent>
+// //           <Table>
+// //             <TableHeader>
+// //               <TableRow>
+// //                 <TableHead>User</TableHead>
+// //                 <TableHead>Role</TableHead>
+// //                 <TableHead>Status</TableHead>
+// //                 <TableHead>Verified</TableHead>
+// //                 <TableHead>Join Date</TableHead>
+// //                 <TableHead className="text-right">Actions</TableHead>
+// //               </TableRow>
+// //             </TableHeader>
+// //             <TableBody>
+// //               {apiData?.users?.map((user) => (
+// //                 <TableRow key={user.id} className="hover:bg-muted/50">
+// //                   <TableCell>
+// //                     <div className="flex items-center space-x-3">
+// //                       <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
+// //                         <span className="text-xs font-medium text-primary-foreground">
+// //                           {user?.full_name
+// //                             ?.split(" ")
+// //                             .map((n) => n[0])
+// //                             .join("") || "U"}
+// //                         </span>
+// //                       </div>
+// //                       <div>
+// //                         <div className="font-medium">{user.full_name}</div>
+// //                         <div className="text-sm text-muted-foreground">
+// //                           {user.email}
+// //                         </div>
+// //                       </div>
+// //                     </div>
+// //                   </TableCell>
+// //                   <TableCell>
+// //                     <Badge variant="outline">{user.user_type}</Badge>
+// //                   </TableCell>
+// //                   <TableCell>{getStatusBadge(user.status)}</TableCell>
+// //                   <TableCell>
+// //                     <ToggleSwitch
+// //                       enabled={user.is_verified || false}
+// //                       onChange={(value) =>
+// //                         handleVerifyToggle(user.id, user.is_verified)
+// //                       }
+// //                       disabled={loadingStates[user.id]}
+// //                     />
+// //                   </TableCell>
+// //                   <TableCell className="text-muted-foreground">
+// //                     {user.created_at}
+// //                   </TableCell>
+// //                   <TableCell className="text-right">
+// //                     <div className="flex gap-2 justify-end cursor-pointer">
+// //                       <Pencil size={15} className="hover:text-blue-600" />
+// //                       <Eye size={15} className="hover:text-green-600" />
+// //                       <Trash2 size={15} className="hover:text-red-600" />
+// //                     </div>
+// //                   </TableCell>
+// //                 </TableRow>
+// //               ))}
+// //             </TableBody>
+// //           </Table>
+// //         </CardContent>
+// //       </Card>
+// //     </div>
+// //   );
+// // }
+
+// import { useEffect, useState } from "react";
+// import { User, ChevronDown, Pencil, Eye, Trash2 } from "lucide-react";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Badge } from "@/components/ui/badge";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import {
+//   Pagination,
+//   PaginationContent,
+//   PaginationEllipsis,
+//   PaginationItem,
+//   PaginationLink,
+//   PaginationNext,
+//   PaginationPrevious,
+// } from "@/components/ui/pagination";
+// import makeApiRequest from "@/services/axios";
+// import { apiUrl } from "@/services/api-end-point";
+// import ToggleSwitch from "@/components/ui/toggle-switch";
+// import { notify } from "@/utils/utils";
+// import { CustomPagination } from "@/components/custom-pagination";
+
+// interface User {
+//   id: number;
+//   full_name: string;
+//   email: string;
+//   user_type: string;
+//   status: string;
+//   is_verified: boolean;
+//   created_at: string;
+// }
+
+// interface PaginationData {
+//   total: number;
+//   per_page: number;
+//   current_page: number;
+//   last_page: number;
+//   from: number;
+//   to: number;
+// }
+
+// export default function Users() {
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filterRole, setFilterRole] = useState("All");
+//   const [filterStatus, setFilterStatus] = useState("All");
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [apiData, setApiData] = useState<{
+//     users: User[];
+//     pagination: PaginationData | null;
+//   }>({
+//     users: [],
+//     pagination: null,
+//   });
+//   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>({});
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const fetchUsers = async (page: number = 1) => {
+//     try {
+//       setIsLoading(true);
+//       const response = await makeApiRequest(`${apiUrl.users}?page=${page}`, {
+//         method: "GET",
+//       });
+
+//       setApiData({
+//         users: response.data.users || [],
+//         pagination: response.data.pagination || null,
+//       });
+//       setCurrentPage(page);
+//     } catch (error) {
+//       console.error("Error fetching users:", error);
+//       notify({ message: "Failed to fetch users", type: "error" });
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchUsers(1);
+//   }, []);
+
+//   // Toggle verify user
+//   const handleVerifyToggle = async (userId: number, currentStatus: boolean) => {
+//     try {
+//       setLoadingStates((prev) => ({ ...prev, [userId]: true }));
+
+//       const response = await makeApiRequest(`/admin/users/${userId}/verify`, {
+//         method: "PUT",
+//         data: {
+//           is_verified: !currentStatus,
+//         },
+//       });
+
+//       setApiData((prev) => ({
+//         ...prev,
+//         users: prev.users.map((user) =>
+//           user.id === userId ? { ...user, is_verified: !currentStatus } : user
+//         ),
+//       }));
+
+//       notify({
+//         message: `User ${!currentStatus ? "verified" : "unverified"} successfully`,
+//         type: "success",
+//       });
+//     } catch (error: unknown) {
+//       console.error("Error updating verification:", error);
+//       const errorMessage =
+//         error &&
+//         typeof error === "object" &&
+//         "response" in error &&
+//         error.response &&
+//         typeof error.response === "object" &&
+//         "data" in error.response &&
+//         error.response.data &&
+//         typeof error.response.data === "object" &&
+//         "message" in error.response.data
+//           ? String(error.response.data.message)
+//           : "Failed to update verification";
+//       notify({
+//         message: errorMessage,
+//         type: "error",
+//       });
+//     } finally {
+//       setLoadingStates((prev) => ({ ...prev, [userId]: false }));
+//     }
+//   };
+
+//   const getStatusBadge = (status: string) => {
+//     const variants: Record<string, "default" | "secondary" | "destructive"> = {
+//       Active: "default",
+//       Inactive: "secondary",
+//       Pending: "secondary",
+//     };
+
+//     return (
+//       <Badge
+//         variant={variants[status] || "default"}
+//         className={
+//           status === "active"
+//             ? "bg-green-100 text-green-800 hover:bg-green-100"
+//             : status === "pending_verification"
+//             ? "bg-red-100 text-red-800 hover:bg-red-100"
+//             : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+//         }
+//       >
+//         {status}
+//       </Badge>
+//     );
+//   };
+
+//   const handlePageChange = (page: number) => {
+//     if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
+//       return;
+//     fetchUsers(page);
+//     window.scrollTo({ top: 0, behavior: "smooth" });
+//   };
+
+//   return (
+//     <div className="space-y-6">
+//       <div className="flex items-center justify-between">
+//         <div>
+//           <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+//           <p className="text-muted-foreground">
+//             Manage your users and their permissions
+//           </p>
+//         </div>
+//         <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+//           <User className="mr-2 h-4 w-4" />
+//           Add User
+//         </Button>
+//       </div>
+
+//       <Card>
+//         <CardHeader>
+//           <CardTitle>User Management</CardTitle>
+//           <CardDescription>
+//             {apiData.pagination && (
+//               <span>
+//                 Showing {apiData.pagination.from} to {apiData.pagination.to} of{" "}
+//                 {apiData.pagination.total} users
+//               </span>
+//             )}
+//           </CardDescription>
+
+//           {/* Filters */}
+//           <div className="flex gap-4 pt-4">
+//             <Input
+//               placeholder="Search users..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               className="max-w-sm"
+//             />
+
+//             <DropdownMenu>
+//               <DropdownMenuTrigger asChild>
+//                 <Button variant="outline">
+//                   Role: {filterRole}
+//                   <ChevronDown className="ml-2 h-4 w-4" />
+//                 </Button>
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent>
+//                 <DropdownMenuItem onClick={() => setFilterRole("All")}>
+//                   All
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem onClick={() => setFilterRole("Admin")}>
+//                   Admin
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem onClick={() => setFilterRole("Provider")}>
+//                   Provider
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem onClick={() => setFilterRole("Client")}>
+//                   Client
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+
+//             <DropdownMenu>
+//               <DropdownMenuTrigger asChild>
+//                 <Button variant="outline">
+//                   Status: {filterStatus}
+//                   <ChevronDown className="ml-2 h-4 w-4" />
+//                 </Button>
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent>
+//                 <DropdownMenuItem onClick={() => setFilterStatus("All")}>
+//                   All
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem onClick={() => setFilterStatus("Active")}>
+//                   Active
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem onClick={() => setFilterStatus("Pending")}>
+//                   Pending
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+//           </div>
+//         </CardHeader>
+
+//         <CardContent>
+//           {isLoading ? (
+//             <div className="flex items-center justify-center py-12">
+//               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+//             </div>
+//           ) : (
+//             <>
+//               <Table>
+//                 <TableHeader>
+//                   <TableRow>
+//                     <TableHead>User</TableHead>
+//                     <TableHead>Role</TableHead>
+//                     <TableHead>Status</TableHead>
+//                     <TableHead>Verified</TableHead>
+//                     <TableHead>Join Date</TableHead>
+//                     <TableHead className="text-right">Actions</TableHead>
+//                   </TableRow>
+//                 </TableHeader>
+//                 <TableBody>
+//                   {apiData?.users?.length > 0 ? (
+//                     apiData.users.map((user) => (
+//                       <TableRow key={user.id} className="hover:bg-muted/50">
+//                         <TableCell>
+//                           <div className="flex items-center space-x-3">
+//                             <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
+//                               <span className="text-xs font-medium text-primary-foreground">
+//                                 {user?.full_name
+//                                   ?.split(" ")
+//                                   .map((n) => n[0])
+//                                   .join("") || "U"}
+//                               </span>
+//                             </div>
+//                             <div>
+//                               <div className="font-medium">{user.full_name}</div>
+//                               <div className="text-sm text-muted-foreground">
+//                                 {user.email}
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </TableCell>
+//                         <TableCell>
+//                           <Badge variant="outline">{user.user_type}</Badge>
+//                         </TableCell>
+//                         <TableCell>{getStatusBadge(user.status)}</TableCell>
+//                         <TableCell>
+//                           <ToggleSwitch
+//                             enabled={user.is_verified || false}
+//                             onChange={() =>
+//                               handleVerifyToggle(user.id, user.is_verified)
+//                             }
+//                             disabled={loadingStates[user.id]}
+//                           />
+//                         </TableCell>
+//                         <TableCell className="text-muted-foreground">
+//                           {user.created_at}
+//                         </TableCell>
+//                         <TableCell className="text-right">
+//                           <div className="flex gap-2 justify-end cursor-pointer">
+//                             <Pencil
+//                               size={15}
+//                               className="hover:text-blue-600 transition-colors"
+//                             />
+//                             <Eye
+//                               size={15}
+//                               className="hover:text-green-600 transition-colors"
+//                             />
+//                             <Trash2
+//                               size={15}
+//                               className="hover:text-red-600 transition-colors"
+//                             />
+//                           </div>
+//                         </TableCell>
+//                       </TableRow>
+//                     ))
+//                   ) : (
+//                     <TableRow>
+//                       <TableCell colSpan={6} className="text-center py-12">
+//                         <p className="text-muted-foreground">No users found</p>
+//                       </TableCell>
+//                     </TableRow>
+//                   )}
+//                 </TableBody>
+//               </Table>
+// <CustomPagination
+//   currentPage={apiData?.pagination?.current_page}
+//   lastPage={apiData?.pagination?.last_page}
+//   onPageChange={handlePageChange}
+//   total={apiData?.pagination?.total}
+//   from={apiData?.pagination?.from}
+//   to={apiData?.pagination?.to}
+// />
+//               {/* Pagination */}
+//               {/* Commented out - using CustomPagination instead
+//               {apiData.pagination && apiData.pagination.last_page > 1 && (
+//                 <div className="mt-6">
+//                   <Pagination>
+//                     <PaginationContent>
+//                       <PaginationItem>
+//                         <PaginationPrevious
+//                           onClick={() =>
+//                             handlePageChange(apiData.pagination!.current_page - 1)
+//                           }
+//                           className={
+//                             apiData.pagination.current_page === 1
+//                               ? "pointer-events-none opacity-50"
+//                               : "cursor-pointer"
+//                           }
+//                         />
+//                       </PaginationItem>
+
+//                       {generatePageNumbers().map((page, index) => (
+//                         <PaginationItem key={index}>
+//                           {page === "ellipsis-start" || page === "ellipsis-end" ? (
+//                             <PaginationEllipsis />
+//                           ) : (
+//                             <PaginationLink
+//                               onClick={() => handlePageChange(page as number)}
+//                               isActive={
+//                                 page === apiData.pagination!.current_page
+//                               }
+//                               className="cursor-pointer"
+//                             >
+//                               {page}
+//                             </PaginationLink>
+//                           )}
+//                         </PaginationItem>
+//                       ))}
+
+//                       <PaginationItem>
+//                         <PaginationNext
+//                           onClick={() =>
+//                             handlePageChange(apiData.pagination!.current_page + 1)
+//                           }
+//                           className={
+//                             apiData.pagination.current_page ===
+//                             apiData.pagination.last_page
+//                               ? "pointer-events-none opacity-50"
+//                               : "cursor-pointer"
+//                           }
+//                         />
+//                       </PaginationItem>
+//                     </PaginationContent>
+//                   </Pagination>
+
+//                   <div className="text-center text-sm text-muted-foreground mt-4">
+//                     Page {apiData.pagination.current_page} of{" "}
+//                     {apiData.pagination.last_page}
+//                   </div>
+//                 </div>
+//               )}
+//               */}
+//             </>
+//           )}
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+// }
+
+import { useEffect, useState } from "react";
+import { User, ChevronDown, Pencil, Eye, Trash2 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import makeApiRequest from "@/services/axios";
+import { apiUrl } from "@/services/api-end-point";
+import ToggleSwitch from "@/components/ui/toggle-switch";
+import { notify } from "@/utils/utils";
+import { CustomPagination } from "@/components/custom-pagination";
+import { Skeleton } from "@/components/ui/skeleton";
+interface User {
+  id: number;
+  full_name: string;
+  email: string;
+  user_type: string;
+  status: string;
+  is_verified: boolean;
+  created_at: string;
+}
+
+interface PaginationData {
+  total: number;
+  per_page: number;
+  current_page: number;
+  last_page: number;
+  from: number;
+  to: number;
+}
+
+export default function Users() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterRole, setFilterRole] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All");
+  const [perPage, setPerPage] = useState(20); // Default 20 items per page
+  const [apiData, setApiData] = useState<{
+    users: User[];
+    pagination: PaginationData | null;
+  }>({
+    users: [],
+    pagination: null,
+  });
+  const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
+    {}
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch users with page and perPage parameters
+  const fetchUsers = async (page: number = 1, itemsPerPage: number = 20) => {
+    try {
+      setIsLoading(true);
+
+      // Correct API call with both page and per_page
+      const url = `${apiUrl.users}?page=${page}&per_page=${itemsPerPage}`;
+      console.log("🔍 Fetching:", url);
+
+      const response = await makeApiRequest(url, {
+        method: "GET",
+      });
+
+      console.log("📥 Response:", response);
+
+      setApiData({
+        users: response.data.users || [],
+        pagination: response.data.pagination || null,
+      });
+    } catch (error) {
+      console.error("❌ Error fetching users:", error);
+      notify({ message: "Failed to fetch users", type: "error" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    fetchUsers(1, perPage);
+  }, []);
+
+  // Toggle verify user
+  const handleVerifyToggle = async (userId: number, currentStatus: boolean) => {
+    try {
+      setLoadingStates((prev) => ({ ...prev, [userId]: true }));
+
+      await makeApiRequest(`/admin/users/${userId}/verify`, {
+        method: "PUT",
+        data: {
+          is_verified: !currentStatus,
+        },
+      });
+
+      setApiData((prev) => ({
+        ...prev,
+        users: prev.users.map((user) =>
+          user.id === userId ? { ...user, is_verified: !currentStatus } : user
+        ),
+      }));
+
+      notify({
+        message: `User ${
+          !currentStatus ? "verified" : "unverified"
+        } successfully`,
+        type: "success",
+      });
+    } catch (error: unknown) {
+      console.error("❌ Error updating verification:", error);
+      const errorMessage =
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        error.response &&
+        typeof error.response === "object" &&
+        "data" in error.response &&
+        error.response.data &&
+        typeof error.response.data === "object" &&
+        "message" in error.response.data
+          ? String(error.response.data.message)
+          : "Failed to update verification";
+      notify({
+        message: errorMessage,
+        type: "error",
+      });
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [userId]: false }));
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    return (
+      <Badge
+        className={
+          status === "active"
+            ? "bg-green-100 text-green-800 hover:bg-green-100"
+            : status === "pending_verification"
+            ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+            : "bg-red-100 text-red-800 hover:bg-red-100"
+        }
+      >
+        {status}
+      </Badge>
+    );
+  };
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
+      return;
+    fetchUsers(page, perPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handlePerPageChange = (value: number) => {
+    setPerPage(value);
+    fetchUsers(1, value); // Reset to page 1 when changing per_page
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+          <p className="text-muted-foreground">
+            Manage your users and their permissions
+          </p>
+        </div>
+        <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+          <User className="mr-2 h-4 w-4" />
+          Add User
+        </Button>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>User Management</CardTitle>
+              <CardDescription>
+                {apiData.pagination ? (
+                  <span>
+                    Showing {apiData.pagination.from} to {apiData.pagination.to}{" "}
+                    of {apiData.pagination.total} users
+                  </span>
+                ) : (
+                  "View and manage all users"
+                )}
+              </CardDescription>
+            </div>
+
+            {/* Per Page Selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Show: {perPage}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => handlePerPageChange(10)}>
+                  10 per page
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handlePerPageChange(20)}>
+                  20 per page
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handlePerPageChange(50)}>
+                  50 per page
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handlePerPageChange(100)}>
+                  100 per page
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {/* Filters */}
+          <div className="flex gap-4 pt-4">
+            <Input
+              placeholder="Search users..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Role: {filterRole}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setFilterRole("All")}>
+                  All
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterRole("Provider")}>
+                  Provider
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterRole("Client")}>
+                  Client
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Status: {filterStatus}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setFilterStatus("All")}>
+                  All
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus("Active")}>
+                  Active
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus("Pending")}>
+                  Pending
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Verified</TableHead>
+                  <TableHead>Join Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  <>
+                    {" "}
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <div className="flex items-center space-x-3">
+                            <Skeleton className="h-8 w-8 rounded-full" />
+                            <div className="space-y-2">
+                              <Skeleton className="h-4 w-[150px]" />
+                              <Skeleton className="h-3 w-[200px]" />
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-6 w-[80px]" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-6 w-[100px]" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-6 w-[44px]" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-[120px]" />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex gap-2 justify-end">
+                            <Skeleton className="h-4 w-4" />
+                            <Skeleton className="h-4 w-4" />
+                            <Skeleton className="h-4 w-4" />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {apiData?.users?.length > 0 ? (
+                      apiData.users.map((user) => (
+                        <TableRow key={user.id} className="hover:bg-muted/50">
+                          <TableCell>
+                            <div className="flex items-center space-x-3">
+                              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
+                                <span className="text-xs font-medium text-primary-foreground">
+                                  {user?.full_name
+                                    ?.split(" ")
+                                    .map((n) => n[0])
+                                    .join("") || "U"}
+                                </span>
+                              </div>
+                              <div>
+                                <div className="font-medium">
+                                  {user.full_name}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {user.email}
+                                </div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="capitalize">
+                              {user.user_type}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{getStatusBadge(user.status)}</TableCell>
+                          <TableCell>
+                            <ToggleSwitch
+                              enabled={user.is_verified || false}
+                              onChange={() =>
+                                handleVerifyToggle(user.id, user.is_verified)
+                              }
+                              disabled={loadingStates[user.id]}
+                            />
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {new Date(user.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex gap-2 justify-end cursor-pointer">
+                              <Pencil
+                                size={15}
+                                className="hover:text-blue-600 transition-colors"
+                              />
+                              <Eye
+                                size={15}
+                                className="hover:text-green-600 transition-colors"
+                              />
+                              <Trash2
+                                size={15}
+                                className="hover:text-red-600 transition-colors"
+                              />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-12">
+                          <p className="text-muted-foreground">
+                            No users found
+                          </p>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </>
+                )}
+              </TableBody>
+            </Table>
+
+            {/* Pagination */}
+            {apiData.pagination && apiData.pagination.last_page > 1 && (
+              <div className="mt-6">
+                <CustomPagination
+                  currentPage={apiData.pagination.current_page}
+                  lastPage={apiData.pagination.last_page}
+                  onPageChange={handlePageChange}
+                  total={apiData.pagination.total}
+                  from={apiData.pagination.from}
+                  to={apiData.pagination.to}
+                />
+              </div>
+            )}
+          </>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

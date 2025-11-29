@@ -10,8 +10,30 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/context/auth';
+import makeApiRequest from '@/services/axios';
+import { apiUrl } from '@/services/api-end-point';
+import { notify } from '@/utils/utils';
+import { useNavigate } from 'react-router-dom';
 
 export function Header() {
+    const { user } = useAuth();
+const navigate = useNavigate();
+    const handleLogout = async () => {
+      try {
+        const response = await makeApiRequest(apiUrl.logOut, {
+          method: 'POST',
+        });
+        console.log('🚪 Logout Response:', response);
+        if(response.success === true) {
+          notify({ message: response.message, type: 'success' });
+          navigate('/');
+        }
+        // You might want to add additional logout handling here
+      } catch (error) {
+        console.error('❌ Logout Error:', error);
+      }
+    }
   return (
     <header className="bg-card border-b px-6 py-4">
       <div className="flex items-center justify-between">
@@ -59,7 +81,7 @@ export function Header() {
               <Button variant="ghost" className="flex items-center gap-2">
                 {/* <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600" /> */}
                 <img src="https://avatars.githubusercontent.com/u/124599?v=4" className='w-10 rounded-full' alt="" />
-                <span className="hidden md:block">Waquar Choudhary</span>
+                <span className="hidden md:block">{user?.full_name}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -74,7 +96,7 @@ export function Header() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>

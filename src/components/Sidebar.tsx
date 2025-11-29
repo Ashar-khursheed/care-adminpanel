@@ -14,17 +14,19 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/auth';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Users', href: '/users', icon: User },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Users', href: '/dashboard/users', icon: User },
   // { name: 'Products', href: '/products', icon: FileSearch },
   // { name: 'Orders', href: '/orders', icon: FilePlus },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const { user } = useAuth();
 
   return (
     <div className={cn(
@@ -36,7 +38,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between p-4 border-b">
           {!collapsed && (
             <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-           LockSee Panel
+         Care App
             </h1>
           )}
           <Button
@@ -78,8 +80,8 @@ export function Sidebar() {
             <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600" />
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">Admin</p>
-                <p className="text-xs text-muted-foreground truncate">admin@locksee.app</p>
+                <p className="text-sm font-medium truncate">{user?.full_name}</p>
+                <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
               </div>
             )}
           </div>
