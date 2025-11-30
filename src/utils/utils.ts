@@ -5,7 +5,9 @@ interface NotifyOptions {
   message: string;
   type?: 'success' | 'error';
 }
-
+interface Availability {
+  [key: string]: string[];
+}
 
 // export const slugify = (text: string) => {
 //     return text
@@ -64,3 +66,10 @@ export const notify = ({ message, type = 'success' }: NotifyOptions): void => {
     });
   };
   
+
+  export   const formatAvailability = (availability: Availability) => {
+    return Object.entries(availability).map(([day, times]) => ({
+      day: day.charAt(0).toUpperCase() + day.slice(1),
+      times: times.join(", "),
+    }));
+  };

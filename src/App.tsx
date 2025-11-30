@@ -13,6 +13,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Users from "./pages/users";
 import ViewUser from "./pages/users/view-user";
 import ProtectedRoute from "./routes/protected-route";
+import CreateUser from "./pages/users/create-user";
+import JobListing from "./pages/job-listing";
+import ViewJobListing from "./pages/job-listing/view-listing";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -43,7 +46,17 @@ const App = () => (
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="create-user"
+                element={
+                  <ProtectedRoute>
+                    <CreateUser />
+                  </ProtectedRoute>
+                }
+              />
             <Route path="users/:id" element={<ProtectedRoute><ViewUser /></ProtectedRoute>} />
+            <Route path="job-listing" element={<ProtectedRoute><JobListing /></ProtectedRoute>} />
+            <Route path="job-listing/:id" element={<ProtectedRoute><ViewJobListing /></ProtectedRoute>} />
               <Route path="products" element={<Products />} />
               <Route path="orders" element={<Orders />} />
               <Route path="settings" element={<Settings />} />
