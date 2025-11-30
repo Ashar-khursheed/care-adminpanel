@@ -6,6 +6,7 @@ export const apiUrl = {
     logOut:"/auth/logout",
     jobListing:"/admin/listings",
     jobListingByID:"/admin/listings",
+    deleteListing:(userId: string) => `/admin/listings/${userId}`,
     approvedListing:(userId: string) => `/admin/listings/${userId}/approve`,
     rejectedListing:(userId: string) => `/admin/listings/${userId}/reject`,
     suspendedListing:(userId: string) => `/admin/listings/${userId}/suspend`,

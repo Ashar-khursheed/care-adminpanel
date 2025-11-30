@@ -400,10 +400,10 @@ export default function JobListing() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex gap-2 justify-end cursor-pointer">
-                            <Pencil
+                            {/* <Pencil
                               size={15}
                               className="hover:text-blue-600 transition-colors"
-                            />
+                            /> */}
                             <Eye
                               size={15}
                               className="hover:text-green-600 transition-colors"
@@ -411,10 +411,10 @@ export default function JobListing() {
                                 navigate(`/dashboard/job-listing/${user.id}`)
                               }
                             />
-                            <Trash2
+                            {/* <Trash2
                               size={15}
                               className="hover:text-red-600 transition-colors"
-                            />
+                            /> */}
                           </div>
                         </TableCell>
                       </TableRow>

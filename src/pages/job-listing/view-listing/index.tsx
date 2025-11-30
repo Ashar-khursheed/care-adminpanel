@@ -116,8 +116,10 @@ const ViewJobListing = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [suspendDialogOpen, setSuspendDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
   const [isSuspending, setIsSuspending] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<{
     modalOne: boolean;
     modalTwo: boolean;
@@ -198,6 +200,29 @@ const ViewJobListing = () => {
         notify({ message: errorMessage, type: "error" });
     } finally {
         setIsSuspending(false);
+    }
+    };
+
+    const handleListingDelete = async () => {
+    if (!id) return;
+    try {
+        setIsDeleting(true);
+        const response = await makeApiRequest(apiUrl.deleteListing(id), {
+            method: "DELETE",
+        });
+         if(response.success === true){
+            notify({ message: response.message, type: "success" });
+            setDeleteDialogOpen(false);
+            navigate("/dashboard/job-listing");
+            }
+        } catch (error) {
+        console.error("Error deleting listing:", error);
+        const axiosError = error as AxiosError<ApiErrorResponse>;
+        const errorMessage =
+        axiosError.response?.data?.message || "Failed to delete listing";
+        notify({ message: errorMessage, type: "error" });
+    } finally {
+        setIsDeleting(false);
     }
     };
 
@@ -447,10 +472,44 @@ const ViewJobListing = () => {
               <Edit className="mr-2 h-4 w-4" />
               Feature
             </Button>
-            <Button variant="destructive" size="sm">
+              <AlertDialog
+              open={deleteDialogOpen}
+              onOpenChange={setDeleteDialogOpen}
+            >
+              <AlertDialogTrigger asChild>
+               <Button variant="destructive" size="sm">
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={isDeleting}>
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    disabled={isDeleting}
+                    onClick={handleListingDelete}
+                  >
+                    {isDeleting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      "Delete"
+                    )}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          
           </div>
         </div>
 
