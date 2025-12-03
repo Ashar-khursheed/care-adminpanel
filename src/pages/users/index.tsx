@@ -2156,7 +2156,7 @@ export default function Users() {
           </p>
         </div>
         <Link to="/dashboard/create-user">
-          <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+          <Button className="bg-gradient-to-r from-green-500 to-emerald-600">
             <User className="mr-2 h-4 w-4" />
             Add User
           </Button>
@@ -2301,7 +2301,7 @@ export default function Users() {
                       <TableRow key={user.id} className="hover:bg-muted/50">
                         <TableCell>
                           <div className="flex items-center space-x-3">
-                            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
+                            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
                               <span className="text-xs font-medium text-primary-foreground">
                                 {user?.full_name
                                   ?.split(" ")

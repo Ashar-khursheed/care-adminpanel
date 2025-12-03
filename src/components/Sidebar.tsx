@@ -274,6 +274,7 @@ import {
   LucideIcon,
   List,
   ListCheck,
+  FolderCog,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -293,6 +294,14 @@ interface NavigationItem {
 const navigation: NavigationItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Jobs Listing', href: '/dashboard/job-listing', icon: ListCheck },
+  { 
+    name: 'Bookings', 
+    icon: FolderCog,
+    subItems: [
+      { name: 'Dashboard', href: '/dashboard/bookings' },
+      { name: 'All Bookings', href: '/dashboard/my-bookings' },
+    ]
+  },
   { 
     name: 'Users', 
     icon: User,
@@ -329,7 +338,7 @@ export function Sidebar() {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           {!collapsed && (
-            <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
               Care App
             </h1>
           )}
@@ -383,7 +392,7 @@ export function Sidebar() {
                             
                             return cn(
                               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
-                              isExactMatch && "bg-primary text-primary-foreground hover:bg-primary/90"
+                              isExactMatch && "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
                             );
                           }}
                         >
@@ -400,7 +409,7 @@ export function Sidebar() {
                   className={({ isActive }) =>
                     cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
-                      isActive && "bg-primary text-primary-foreground hover:bg-primary/90",
+                      isActive && "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
                       collapsed && "justify-center"
                     )
                   }
@@ -419,7 +428,7 @@ export function Sidebar() {
             "flex items-center gap-3",
             collapsed && "justify-center"
           )}>
-            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center text-white text-sm font-semibold">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-600  flex items-center justify-center text-white text-sm font-semibold">
               {user?.full_name?.split(' ').map(n => n[0]).join('') || 'U'}
             </div>
             {!collapsed && (

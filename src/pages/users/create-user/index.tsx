@@ -473,7 +473,7 @@ const CreateUser = () => {
           </Button>
           <Button
             type="submit"
-            className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+            className="bg-gradient-to-r from-green-500 to-emerald-600"
             disabled={formik.isSubmitting}
           >
             {formik.isSubmitting ? (

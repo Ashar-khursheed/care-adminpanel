@@ -289,7 +289,7 @@ const ViewUser = () => {
               <div className="flex flex-col items-center text-center">
                 <Avatar className="h-32 w-32 mb-4">
                   <AvatarImage src={user.profile_photo || undefined} />
-                  <AvatarFallback className="text-3xl bg-gradient-to-r from-primary to-blue-600 text-white">
+                  <AvatarFallback className="text-3xl bg-gradient-to-r from-green-500 to-emerald-600 text-white">
                     {user.full_name
                       .split(" ")
                       .map((n) => n[0])

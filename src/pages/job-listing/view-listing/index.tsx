@@ -711,7 +711,7 @@ const ViewJobListing = () => {
                     <AvatarImage
                       src={listing.provider.profile_photo || undefined}
                     />
-                    <AvatarFallback className="text-xl bg-gradient-to-r from-primary to-blue-600 text-white">
+                    <AvatarFallback className="text-xl bg-gradient-to-r from-green-500 to-emerald-600  text-white">
                       {listing.provider.name
                         .split(" ")
                         .map((n) => n[0])
