@@ -293,13 +293,21 @@ interface NavigationItem {
 
 const navigation: NavigationItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Jobs Listing', href: '/dashboard/job-listing', icon: ListCheck },
+  { name: 'Care Provider', href: '/dashboard/job-listing', icon: ListCheck },
   { 
     name: 'Bookings', 
     icon: FolderCog,
     subItems: [
       { name: 'Dashboard', href: '/dashboard/bookings' },
       { name: 'All Bookings', href: '/dashboard/my-bookings' },
+    ]
+  },
+  { 
+    name: 'Reviesws', 
+    icon: FolderCog,
+    subItems: [
+      { name: 'Dashboard', href: '/dashboard/reviews' },
+      { name: 'All Reviews', href: '/dashboard/reviews-all' },
     ]
   },
   { 

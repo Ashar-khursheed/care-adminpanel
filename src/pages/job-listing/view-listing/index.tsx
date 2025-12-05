@@ -371,7 +371,7 @@ const ViewJobListing = () => {
             </Button>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-                Job Listing Details
+              Care Provider Details
               </h1>
               <p className="text-muted-foreground">
                 View and manage listing information

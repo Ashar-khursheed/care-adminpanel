@@ -205,9 +205,9 @@ export default function JobListing() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Job Listing</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Care Provider</h1>
           <p className="text-muted-foreground">
-            Manage and overview all job listings
+            Manage and overview all care providers
           </p>
         </div>
         {/* <Link to="/dashboard/create-user">
@@ -222,7 +222,7 @@ export default function JobListing() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Job Listing</CardTitle>
+              <CardTitle>Care Provider</CardTitle>
               <CardDescription>
                 {apiData.pagination ? (
                   <span>

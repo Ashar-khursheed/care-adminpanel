@@ -19,6 +19,9 @@ import ViewJobListing from "./pages/job-listing/view-listing";
 import DashboardBooking from "./pages/bookings/dashboard";
 import AllBookings from "./pages/bookings/all-bookings";
 import BookingDetail from "./pages/bookings/booking-detail";
+import ReviewDashboard from "./pages/reviews/dashboard";
+import AllReviews from "./pages/reviews/all-review";
+import ReviewDetail from "./pages/reviews/review-detail";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -64,6 +67,9 @@ const App = () => (
                      <Route path="bookings" element={<ProtectedRoute><DashboardBooking /></ProtectedRoute>} />
                      <Route path="my-bookings" element={<ProtectedRoute><AllBookings /></ProtectedRoute>} />
                      <Route path="booking/:id" element={<ProtectedRoute><BookingDetail /></ProtectedRoute>} />
+                     <Route path="reviews" element={<ProtectedRoute><ReviewDashboard /></ProtectedRoute>} />
+                     <Route path="reviews/:id" element={<ProtectedRoute><ReviewDetail /></ProtectedRoute>} />
+                     <Route path="reviews-all" element={<ProtectedRoute><AllReviews /></ProtectedRoute>} />
               <Route path="products" element={<Products />} />
               <Route path="orders" element={<Orders />} />
               <Route path="settings" element={<Settings />} />
