@@ -303,11 +303,19 @@ const navigation: NavigationItem[] = [
     ]
   },
   { 
-    name: 'Reviesws', 
+    name: 'Reviews', 
     icon: FolderCog,
     subItems: [
       { name: 'Dashboard', href: '/dashboard/reviews' },
       { name: 'All Reviews', href: '/dashboard/reviews-all' },
+    ]
+  },
+  { 
+    name: 'Messages', 
+    icon: FolderCog,
+    subItems: [
+      { name: 'Dashboard', href: '/dashboard/messages' },
+      // { name: 'All Messages', href: '/dashboard/messages-all' },
     ]
   },
   { 
