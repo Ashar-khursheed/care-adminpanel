@@ -275,6 +275,7 @@ import {
   List,
   ListCheck,
   FolderCog,
+  Banknote,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -293,6 +294,15 @@ interface NavigationItem {
 
 const navigation: NavigationItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+   { 
+    name: 'Users', 
+    icon: User,
+    subItems: [
+      { name: 'All Users', href: '/dashboard/users' },
+      { name: 'Providers', href: '/dashboard/users?user_type=provider' },
+      { name: 'Clients', href: '/dashboard/users?user_type=client' },
+    ]
+  },
   { name: 'Care Provider', href: '/dashboard/job-listing', icon: ListCheck },
   { 
     name: 'Bookings', 
@@ -318,15 +328,18 @@ const navigation: NavigationItem[] = [
       // { name: 'All Messages', href: '/dashboard/messages-all' },
     ]
   },
-  { 
-    name: 'Users', 
-    icon: User,
-    subItems: [
-      { name: 'All Users', href: '/dashboard/users' },
-      { name: 'Providers', href: '/dashboard/users?user_type=provider' },
-      { name: 'Clients', href: '/dashboard/users?user_type=client' },
-    ]
-  },
+
+  //  { 
+  //   name: 'Users', 
+  //   icon: User,
+  //   subItems: [
+  //     { name: 'All Users', href: '/dashboard/users' },
+  //     // { name: 'Providers', href: '/dashboard/users?user_type=provider' },
+  //     // { name: 'Clients', href: '/dashboard/users?user_type=client' },
+  //   ]
+  // },
+ 
+  { name: 'Transactions', href: '/dashboard/transactions', icon: Banknote },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 
