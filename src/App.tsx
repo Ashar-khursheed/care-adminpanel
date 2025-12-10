@@ -24,6 +24,10 @@ import AllReviews from "./pages/reviews/all-review";
 import ReviewDetail from "./pages/reviews/review-detail";
 import DashboardMessages from "./pages/messages/dashboard";
 import TransactionHistory from "./pages/transactions";
+import AddPlanSubscription from "./pages/subscription/add-plan-subscripton";
+import GetAllSubscription from "./pages/subscription/all-subscription";
+import EditPlanSubscription from "./pages/subscription/edit-subscription";
+import ViewPlanDetail from "./pages/subscription/view-detail";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -147,7 +151,39 @@ const App = () => (
                 path="transactions"
                 element={
                   <ProtectedRoute>
-                  <TransactionHistory />
+                    <TransactionHistory />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="subscription/add-plan-subscription"
+                element={
+                  <ProtectedRoute>
+                    <AddPlanSubscription />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="subscription/all-subscription"
+                element={
+                  <ProtectedRoute>
+                    <GetAllSubscription />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="subscription/view-plan/:planId"
+                element={
+                  <ProtectedRoute>
+                <ViewPlanDetail/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="subscription/edit-subscription/:id"
+                element={
+                  <ProtectedRoute>
+               <EditPlanSubscription />
                   </ProtectedRoute>
                 }
               />

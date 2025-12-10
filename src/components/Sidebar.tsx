@@ -321,6 +321,15 @@ const navigation: NavigationItem[] = [
     ]
   },
   { 
+    name: 'Manage Subscriptions', 
+    icon: FolderCog,
+    subItems: [
+      // { name: 'Dashboard', href: '/dashboard/subscription' },
+      { name: 'Create Subscription', href: '/dashboard/subscription/add-plan-subscription' },
+      { name: 'All Subscriptions', href: '/dashboard/subscription/all-subscription' },
+    ]
+  },
+  { 
     name: 'Messages', 
     icon: FolderCog,
     subItems: [
