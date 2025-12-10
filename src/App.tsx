@@ -28,6 +28,8 @@ import AddPlanSubscription from "./pages/subscription/add-plan-subscripton";
 import GetAllSubscription from "./pages/subscription/all-subscription";
 import EditPlanSubscription from "./pages/subscription/edit-subscription";
 import ViewPlanDetail from "./pages/subscription/view-detail";
+import BookingsAnalytics from "./pages/dashboard/booking";
+import RevenueAnalytics from "./pages/dashboard/revenue";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -55,6 +57,22 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <Users />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="analytics/bookings"
+                element={
+                  <ProtectedRoute>
+                  <BookingsAnalytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="analytics/revenue"
+                element={
+                  <ProtectedRoute>
+                  <RevenueAnalytics />
                   </ProtectedRoute>
                 }
               />
@@ -175,7 +193,7 @@ const App = () => (
                 path="subscription/view-plan/:planId"
                 element={
                   <ProtectedRoute>
-                <ViewPlanDetail/>
+                    <ViewPlanDetail />
                   </ProtectedRoute>
                 }
               />
@@ -183,7 +201,7 @@ const App = () => (
                 path="subscription/edit-subscription/:id"
                 element={
                   <ProtectedRoute>
-               <EditPlanSubscription />
+                    <EditPlanSubscription />
                   </ProtectedRoute>
                 }
               />
