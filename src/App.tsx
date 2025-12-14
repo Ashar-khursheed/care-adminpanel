@@ -30,6 +30,17 @@ import EditPlanSubscription from "./pages/subscription/edit-subscription";
 import ViewPlanDetail from "./pages/subscription/view-detail";
 import BookingsAnalytics from "./pages/dashboard/booking";
 import RevenueAnalytics from "./pages/dashboard/revenue";
+import ProviderAnalytics from "./pages/dashboard/provider";
+import ReviewAnalytics from "./pages/dashboard/review";
+import GetAllSettings from "./pages/Settings/get-all-settings";
+import SlidersSettings from "./pages/Settings/sliders";
+import CreateSlider from "./pages/Settings/sliders/create-slider";
+import EditSlider from "./pages/Settings/sliders/edit-slider";
+import ViewSlider from "./pages/Settings/sliders/view-slider";
+import AnnouncementsList from "./pages/Settings/announsment";
+import CreateAnnouncement from "./pages/Settings/announsment/create-announcements";
+import EditAnnouncement from "./pages/Settings/announsment/edit-announcement";
+import ViewAnnouncement from "./pages/Settings/announsment/view-announscement";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -64,7 +75,23 @@ const App = () => (
                 path="analytics/bookings"
                 element={
                   <ProtectedRoute>
-                  <BookingsAnalytics />
+                    <BookingsAnalytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="analytics/provider"
+                element={
+                  <ProtectedRoute>
+                    <ProviderAnalytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="analytics/review"
+                element={
+                  <ProtectedRoute>
+                    <ReviewAnalytics />
                   </ProtectedRoute>
                 }
               />
@@ -72,7 +99,7 @@ const App = () => (
                 path="analytics/revenue"
                 element={
                   <ProtectedRoute>
-                  <RevenueAnalytics />
+                    <RevenueAnalytics />
                   </ProtectedRoute>
                 }
               />
@@ -202,6 +229,86 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <EditPlanSubscription />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="subscription/edit-subscription/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditPlanSubscription />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="get-all-settings"
+                element={
+                  <ProtectedRoute>
+                    <GetAllSettings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="sliders"
+                element={
+                  <ProtectedRoute>
+                    <SlidersSettings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="create-slider"
+                element={
+                  <ProtectedRoute>
+                    <CreateSlider />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="edit-slider/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditSlider />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="view-slider/:id"
+                element={
+                  <ProtectedRoute>
+                    <ViewSlider />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="get-all-announcements"
+                element={
+                  <ProtectedRoute>
+                   <AnnouncementsList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/create-announcements"
+                element={
+                  <ProtectedRoute>
+                 <CreateAnnouncement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/edit-announcements/:id"
+                element={
+                  <ProtectedRoute>
+                 <EditAnnouncement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/view-announcements/:id"
+                element={
+                  <ProtectedRoute>
+                <ViewAnnouncement />
                   </ProtectedRoute>
                 }
               />

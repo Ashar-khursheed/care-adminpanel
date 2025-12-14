@@ -1,9 +1,8 @@
-
 // // // import { useState } from 'react';
 // // // import { NavLink } from 'react-router-dom';
-// // // import { 
-// // //   LayoutDashboard, 
-// // //   User, 
+// // // import {
+// // //   LayoutDashboard,
+// // //   User,
 // // //   Settings,
 // // //   LogOut,
 // // //   ChevronLeft,
@@ -93,9 +92,9 @@
 
 // // // import { useState } from 'react';
 // // // import { NavLink } from 'react-router-dom';
-// // // import { 
-// // //   LayoutDashboard, 
-// // //   User, 
+// // // import {
+// // //   LayoutDashboard,
+// // //   User,
 // // //   Settings,
 // // //   ChevronLeft,
 // // //   ChevronRight,
@@ -120,8 +119,8 @@
 
 // // // const navigation: NavigationItem[] = [
 // // //   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-// // //   { 
-// // //     name: 'Users', 
+// // //   {
+// // //     name: 'Users',
 // // //     icon: User,
 // // //     subItems: [
 // // //       { name: 'All Users', href: '/dashboard/users' },
@@ -138,8 +137,8 @@
 // // //   const { user } = useAuth();
 
 // // //   const toggleMenu = (menuName: string) => {
-// // //     setOpenMenus(prev => 
-// // //       prev.includes(menuName) 
+// // //     setOpenMenus(prev =>
+// // //       prev.includes(menuName)
 // // //         ? prev.filter(name => name !== menuName)
 // // //         : [...prev, menuName]
 // // //     );
@@ -188,7 +187,7 @@
 // // //                     {!collapsed && (
 // // //                       <>
 // // //                         <span className="flex-1 text-left">{item.name}</span>
-// // //                         {isMenuOpen(item.name) 
+// // //                         {isMenuOpen(item.name)
 // // //                           ? <ChevronUp className="h-4 w-4" />
 // // //                           : <ChevronDown className="h-4 w-4" />
 // // //                         }
@@ -256,16 +255,11 @@
 // // //   );
 // // // }
 
-
-
-
-
-
 // // import { useState } from 'react';
 // // import { NavLink } from 'react-router-dom';
-// // import { 
-// //   LayoutDashboard, 
-// //   User, 
+// // import {
+// //   LayoutDashboard,
+// //   User,
 // //   Settings,
 // //   ChevronLeft,
 // //   ChevronRight,
@@ -296,8 +290,8 @@
 // //   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
 // //   { name: 'Booking Analytics', href:  "/dashboard/analytics/bookings",icon: LayoutDashboard },
 // //   { name: 'Revenue Analytics', href:"/dashboard/analytics/revenue", icon: LayoutDashboard },
-// //    { 
-// //     name: 'Users', 
+// //    {
+// //     name: 'Users',
 // //     icon: User,
 // //     subItems: [
 // //       { name: 'All Users', href: '/dashboard/users' },
@@ -306,24 +300,24 @@
 // //     ]
 // //   },
 // //   { name: 'Care Provider', href: '/dashboard/job-listing', icon: ListCheck },
-// //   { 
-// //     name: 'Bookings', 
+// //   {
+// //     name: 'Bookings',
 // //     icon: FolderCog,
 // //     subItems: [
 // //       { name: 'Dashboard', href: '/dashboard/bookings' },
 // //       { name: 'All Bookings', href: '/dashboard/my-bookings' },
 // //     ]
 // //   },
-// //   { 
-// //     name: 'Reviews', 
+// //   {
+// //     name: 'Reviews',
 // //     icon: FolderCog,
 // //     subItems: [
 // //       { name: 'Dashboard', href: '/dashboard/reviews' },
 // //       { name: 'All Reviews', href: '/dashboard/reviews-all' },
 // //     ]
 // //   },
-// //   { 
-// //     name: 'Manage Subscriptions', 
+// //   {
+// //     name: 'Manage Subscriptions',
 // //     icon: FolderCog,
 // //     subItems: [
 // //       // { name: 'Dashboard', href: '/dashboard/subscription' },
@@ -331,8 +325,8 @@
 // //       { name: 'All Subscriptions', href: '/dashboard/subscription/all-subscription' },
 // //     ]
 // //   },
-// //   { 
-// //     name: 'Messages', 
+// //   {
+// //     name: 'Messages',
 // //     icon: FolderCog,
 // //     subItems: [
 // //       { name: 'Dashboard', href: '/dashboard/messages' },
@@ -340,8 +334,8 @@
 // //     ]
 // //   },
 
-// //   //  { 
-// //   //   name: 'Users', 
+// //   //  {
+// //   //   name: 'Users',
 // //   //   icon: User,
 // //   //   subItems: [
 // //   //     { name: 'All Users', href: '/dashboard/users' },
@@ -349,7 +343,7 @@
 // //   //     // { name: 'Clients', href: '/dashboard/users?user_type=client' },
 // //   //   ]
 // //   // },
- 
+
 // //   { name: 'Transactions', href: '/dashboard/transactions', icon: Banknote },
 // //   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 // // ];
@@ -360,8 +354,8 @@
 // //   const { user } = useAuth();
 
 // //   const toggleMenu = (menuName: string) => {
-// //     setOpenMenus(prev => 
-// //       prev.includes(menuName) 
+// //     setOpenMenus(prev =>
+// //       prev.includes(menuName)
 // //         ? prev.filter(name => name !== menuName)
 // //         : [...prev, menuName]
 // //     );
@@ -410,7 +404,7 @@
 // //                     {!collapsed && (
 // //                       <>
 // //                         <span className="flex-1 text-left">{item.name}</span>
-// //                         {isMenuOpen(item.name) 
+// //                         {isMenuOpen(item.name)
 // //                           ? <ChevronUp className="h-4 w-4" />
 // //                           : <ChevronDown className="h-4 w-4" />
 // //                         }
@@ -429,7 +423,7 @@
 // //                             // Check if current URL matches exactly
 // //                             const currentPath = window.location.pathname + window.location.search;
 // //                             const isExactMatch = currentPath === subItem.href;
-                            
+
 // //                             return cn(
 // //                               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
 // //                               isExactMatch && "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
@@ -484,13 +478,11 @@
 // //   );
 // // }
 
-
-
 // import { useState } from 'react';
 // import { NavLink, useLocation } from 'react-router-dom';
-// import { 
-//   LayoutDashboard, 
-//   User, 
+// import {
+//   LayoutDashboard,
+//   User,
 //   Settings,
 //   ChevronLeft,
 //   ChevronRight,
@@ -521,8 +513,8 @@
 //   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
 //   { name: 'Booking Analytics', href: "/dashboard/analytics/bookings", icon: LayoutDashboard },
 //   { name: 'Revenue Analytics', href: "/dashboard/analytics/revenue", icon: LayoutDashboard },
-//   { 
-//     name: 'Users', 
+//   {
+//     name: 'Users',
 //     icon: User,
 //     subItems: [
 //       { name: 'All Users', href: '/dashboard/users' },
@@ -531,32 +523,32 @@
 //     ]
 //   },
 //   { name: 'Care Provider', href: '/dashboard/job-listing', icon: ListCheck },
-//   { 
-//     name: 'Bookings', 
+//   {
+//     name: 'Bookings',
 //     icon: FolderCog,
 //     subItems: [
 //       { name: 'Dashboard', href: '/dashboard/bookings' },
 //       { name: 'All Bookings', href: '/dashboard/my-bookings' },
 //     ]
 //   },
-//   { 
-//     name: 'Reviews', 
+//   {
+//     name: 'Reviews',
 //     icon: FolderCog,
 //     subItems: [
 //       { name: 'Dashboard', href: '/dashboard/reviews' },
 //       { name: 'All Reviews', href: '/dashboard/reviews-all' },
 //     ]
 //   },
-//   { 
-//     name: 'Manage Subscriptions', 
+//   {
+//     name: 'Manage Subscriptions',
 //     icon: FolderCog,
 //     subItems: [
 //       { name: 'Create Subscription', href: '/dashboard/subscription/add-plan-subscription' },
 //       { name: 'All Subscriptions', href: '/dashboard/subscription/all-subscription' },
 //     ]
 //   },
-//   { 
-//     name: 'Messages', 
+//   {
+//     name: 'Messages',
 //     icon: FolderCog,
 //     subItems: [
 //       { name: 'Dashboard', href: '/dashboard/messages' },
@@ -576,8 +568,8 @@
 //   const currentPath = location.pathname + location.search;
 
 //   const toggleMenu = (menuName: string) => {
-//     setOpenMenus(prev => 
-//       prev.includes(menuName) 
+//     setOpenMenus(prev =>
+//       prev.includes(menuName)
 //         ? prev.filter(name => name !== menuName)
 //         : [...prev, menuName]
 //     );
@@ -642,7 +634,7 @@
 //                     {!collapsed && (
 //                       <>
 //                         <span className="flex-1 text-left">{item.name}</span>
-//                         {isMenuOpen(item.name) 
+//                         {isMenuOpen(item.name)
 //                           ? <ChevronUp className="h-4 w-4" />
 //                           : <ChevronDown className="h-4 w-4" />
 //                         }
@@ -655,7 +647,7 @@
 //                     <div className="mt-1 space-y-1 pl-8">
 //                       {item.subItems.map((subItem) => {
 //                         const isActive = isPathActive(subItem.href);
-                        
+
 //                         return (
 //                           <NavLink
 //                             key={subItem.name}
@@ -712,18 +704,11 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  User, 
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  User,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -738,10 +723,11 @@ import {
   Star,
   CreditCard,
   MessageCircle,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/context/auth';
+  CircleDotDashed,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/auth";
 
 interface SubMenuItem {
   name: string;
@@ -755,57 +741,86 @@ interface NavigationItem {
 }
 
 const navigation: NavigationItem[] = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Booking Analytics', href: "/dashboard/analytics/bookings", icon: BarChart3 },
-  { name: 'Revenue Analytics', href: "/dashboard/analytics/revenue", icon: TrendingUp },
-  { 
-    name: 'Users', 
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  {
+    name: "Booking Analytics",
+    href: "/dashboard/analytics/bookings",
+    icon: BarChart3,
+  },
+  {
+    name: "Revenue Analytics",
+    href: "/dashboard/analytics/revenue",
+    icon: TrendingUp,
+  },
+  {
+    name: "Provider Analytics",
+    href: "/dashboard/analytics/provider",
+    icon: CircleDotDashed,
+  },
+  { name: "Review Analytics", href: "/dashboard/analytics/review", icon: Star },
+  {
+    name: "Users",
     icon: User,
     subItems: [
-      { name: 'All Users', href: '/dashboard/users' },
-      { name: 'Providers', href: '/dashboard/users?user_type=provider' },
-      { name: 'Clients', href: '/dashboard/users?user_type=client' },
-    ]
+      { name: "All Users", href: "/dashboard/users" },
+      { name: "Providers", href: "/dashboard/users?user_type=provider" },
+      { name: "Clients", href: "/dashboard/users?user_type=client" },
+    ],
   },
-  { name: 'Care Provider', href: '/dashboard/job-listing', icon: ListCheck },
-  { 
-    name: 'Bookings', 
+  { name: "Care Provider", href: "/dashboard/job-listing", icon: ListCheck },
+  {
+    name: "Bookings",
     icon: CalendarCheck,
     subItems: [
-      { name: 'Dashboard', href: '/dashboard/bookings' },
-      { name: 'All Bookings', href: '/dashboard/my-bookings' },
-    ]
+      { name: "Dashboard", href: "/dashboard/bookings" },
+      { name: "All Bookings", href: "/dashboard/my-bookings" },
+    ],
   },
-  { 
-    name: 'Reviews', 
+  {
+    name: "Reviews",
     icon: Star,
     subItems: [
-      { name: 'Dashboard', href: '/dashboard/reviews' },
-      { name: 'All Reviews', href: '/dashboard/reviews-all' },
-    ]
+      { name: "Dashboard", href: "/dashboard/reviews" },
+      { name: "All Reviews", href: "/dashboard/reviews-all" },
+    ],
   },
-  { 
-    name: 'Manage Subscriptions', 
+  {
+    name: "Manage Subscriptions",
     icon: CreditCard,
     subItems: [
-      { name: 'Create Subscription', href: '/dashboard/subscription/add-plan-subscription' },
-      { name: 'All Subscriptions', href: '/dashboard/subscription/all-subscription' },
-    ]
+      {
+        name: "Create Subscription",
+        href: "/dashboard/subscription/add-plan-subscription",
+      },
+      {
+        name: "All Subscriptions",
+        href: "/dashboard/subscription/all-subscription",
+      },
+    ],
   },
-  { 
-    name: 'Messages', 
+  {
+    name: "Messages",
     icon: MessageCircle,
-    subItems: [
-      { name: 'Dashboard', href: '/dashboard/messages' },
-    ]
+    subItems: [{ name: "Dashboard", href: "/dashboard/messages" }],
   },
-  { name: 'Transactions', href: '/dashboard/transactions', icon: Banknote },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  {
+    name: "Site Settings",
+    icon: Settings,
+    subItems: [
+      { name: "Get All Settings", href: "/dashboard/get-all-settings" },
+      { name: "Sliders", href: "/dashboard/sliders" },
+      { name: "Announcements", href: "/dashboard/get-all-announcements" },
+      // { name: "Get Header Menu", href: "/dashboard/get-header-menu" },
+      // { name: "Get Footer Menu", href: "/dashboard/get-footer-menu" },
+    ],
+  },
+  { name: "Transactions", href: "/dashboard/transactions", icon: Banknote },
+  // { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [openMenus, setOpenMenus] = useState<string[]>(['Users']); // Default open Users menu
+  const [openMenus, setOpenMenus] = useState<string[]>(["Users"]); // Default open Users menu
   const { user } = useAuth();
   const location = useLocation();
 
@@ -813,9 +828,9 @@ export function Sidebar() {
   const currentPath = location.pathname + location.search;
 
   const toggleMenu = (menuName: string) => {
-    setOpenMenus(prev => 
-      prev.includes(menuName) 
-        ? prev.filter(name => name !== menuName)
+    setOpenMenus((prev) =>
+      prev.includes(menuName)
+        ? prev.filter((name) => name !== menuName)
         : [...prev, menuName]
     );
   };
@@ -825,7 +840,7 @@ export function Sidebar() {
   // Check if current path matches the href
   const isPathActive = (href: string) => {
     // Exact match for paths with query params
-    if (href.includes('?')) {
+    if (href.includes("?")) {
       return currentPath === href;
     }
     // Exact match for paths without query params
@@ -834,14 +849,16 @@ export function Sidebar() {
 
   // Check if any sub-item is active
   const isSubMenuActive = (subItems: SubMenuItem[]) => {
-    return subItems.some(subItem => isPathActive(subItem.href));
+    return subItems.some((subItem) => isPathActive(subItem.href));
   };
 
   return (
-    <div className={cn(
-      "bg-card border-r transition-all duration-300 ease-in-out",
-      collapsed ? "w-16" : "w-72"
-    )}>
+    <div
+      className={cn(
+        "bg-card border-r transition-all duration-300 ease-in-out",
+        collapsed ? "w-16" : "w-72"
+      )}
+    >
       <div className="flex h-full flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
@@ -856,7 +873,11 @@ export function Sidebar() {
             onClick={() => setCollapsed(!collapsed)}
             className="hover:bg-muted"
           >
-            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
           </Button>
         </div>
 
@@ -872,17 +893,19 @@ export function Sidebar() {
                     className={cn(
                       "w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                       collapsed && "justify-center",
-                      isSubMenuActive(item.subItems) && "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600"
+                      isSubMenuActive(item.subItems) &&
+                        "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600"
                     )}
                   >
                     <item.icon className="h-5 w-5 flex-shrink-0" />
                     {!collapsed && (
                       <>
                         <span className="flex-1 text-left">{item.name}</span>
-                        {isMenuOpen(item.name) 
-                          ? <ChevronUp className="h-4 w-4" />
-                          : <ChevronDown className="h-4 w-4" />
-                        }
+                        {isMenuOpen(item.name) ? (
+                          <ChevronUp className="h-4 w-4" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4" />
+                        )}
                       </>
                     )}
                   </button>
@@ -892,14 +915,15 @@ export function Sidebar() {
                     <div className="mt-1 space-y-1 pl-8">
                       {item.subItems.map((subItem) => {
                         const isActive = isPathActive(subItem.href);
-                        
+
                         return (
                           <NavLink
                             key={subItem.name}
                             to={subItem.href}
                             className={cn(
                               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
-                              isActive && "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+                              isActive &&
+                                "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
                             )}
                           >
                             <span>{subItem.name}</span>
@@ -915,7 +939,8 @@ export function Sidebar() {
                   to={item.href!}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
-                    isPathActive(item.href!) && "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+                    isPathActive(item.href!) &&
+                      "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
                     collapsed && "justify-center"
                   )}
                 >
@@ -929,17 +954,26 @@ export function Sidebar() {
 
         {/* User Profile */}
         <div className="border-t p-4">
-          <div className={cn(
-            "flex items-center gap-3",
-            collapsed && "justify-center"
-          )}>
+          <div
+            className={cn(
+              "flex items-center gap-3",
+              collapsed && "justify-center"
+            )}
+          >
             <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-semibold">
-              {user?.full_name?.split(' ').map(n => n[0]).join('') || 'U'}
+              {user?.full_name
+                ?.split(" ")
+                .map((n) => n[0])
+                .join("") || "U"}
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{user?.full_name}</p>
-                <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                <p className="text-sm font-medium truncate">
+                  {user?.full_name}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {user?.email}
+                </p>
               </div>
             )}
           </div>
