@@ -28,6 +28,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     console.warn("⚠️ User not authenticated, redirecting to login");
     return <Navigate to="/" replace />;
   }
+ 
 
   // Render children if authenticated
   return <>{children}</>;

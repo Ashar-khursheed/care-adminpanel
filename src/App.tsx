@@ -41,6 +41,7 @@ import AnnouncementsList from "./pages/Settings/announsment";
 import CreateAnnouncement from "./pages/Settings/announsment/create-announcements";
 import EditAnnouncement from "./pages/Settings/announsment/edit-announcement";
 import ViewAnnouncement from "./pages/Settings/announsment/view-announscement";
+import PublicRoute from "./routes/public-route";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -51,8 +52,15 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             {/* Public Route - Login */}
-            <Route path="/" element={<Authlogin />} />
-
+            {/* <Route path="/" element={<Authlogin />} /> */}
+  <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Authlogin />
+            </PublicRoute>
+          }
+        />
             {/* Protected Routes - All dashboard routes */}
             <Route
               path="/dashboard"
@@ -284,7 +292,7 @@ const App = () => (
                 path="get-all-announcements"
                 element={
                   <ProtectedRoute>
-                   <AnnouncementsList />
+                    <AnnouncementsList />
                   </ProtectedRoute>
                 }
               />
@@ -292,7 +300,7 @@ const App = () => (
                 path="/dashboard/create-announcements"
                 element={
                   <ProtectedRoute>
-                 <CreateAnnouncement />
+                    <CreateAnnouncement />
                   </ProtectedRoute>
                 }
               />
@@ -300,7 +308,7 @@ const App = () => (
                 path="/dashboard/edit-announcements/:id"
                 element={
                   <ProtectedRoute>
-                 <EditAnnouncement />
+                    <EditAnnouncement />
                   </ProtectedRoute>
                 }
               />
@@ -308,7 +316,7 @@ const App = () => (
                 path="/dashboard/view-announcements/:id"
                 element={
                   <ProtectedRoute>
-                <ViewAnnouncement />
+                    <ViewAnnouncement />
                   </ProtectedRoute>
                 }
               />
