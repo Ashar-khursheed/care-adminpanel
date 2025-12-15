@@ -42,6 +42,7 @@ import CreateAnnouncement from "./pages/Settings/announsment/create-announcement
 import EditAnnouncement from "./pages/Settings/announsment/edit-announcement";
 import ViewAnnouncement from "./pages/Settings/announsment/view-announscement";
 import PublicRoute from "./routes/public-route";
+import SEOManager from "./pages/seo";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -317,6 +318,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <ViewAnnouncement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/get-seo"
+                element={
+                  <ProtectedRoute>
+                  <SEOManager/>
                   </ProtectedRoute>
                 }
               />

@@ -1,4 +1,5 @@
 
+
 export const apiUrl = {
     login:"/auth/login",
     dashboardStats:"/admin/dashboard",
@@ -22,4 +23,6 @@ export const apiUrl = {
         createPlan: "/admin/subscriptions/plans",
         allSubscriptions: "/admin/subscriptions",
     },
+
+    seoManagement:"/admin/cms/seo"
 }

@@ -814,6 +814,13 @@ const navigation: NavigationItem[] = [
       // { name: "Get Footer Menu", href: "/dashboard/get-footer-menu" },
     ],
   },
+  {
+    name: "SEO Settings",
+    icon: Settings,
+    subItems: [
+      { name: "Get SEO", href: "/dashboard/get-seo" },
+    ],
+  },
   { name: "Transactions", href: "/dashboard/transactions", icon: Banknote },
   // { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
