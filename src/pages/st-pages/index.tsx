@@ -470,7 +470,7 @@ export default function GetAllPagesListing() {
                             variant="ghost"
                             size="icon"
                             onClick={() =>
-                              navigate(`/admin/pages/view/${page.id}`)
+                              navigate(`/dashboard/pages/edit/${page.id}`)
                             }
                             className="h-8 w-8"
                             title="View page"
@@ -481,7 +481,7 @@ export default function GetAllPagesListing() {
                             variant="ghost"
                             size="icon"
                             onClick={() =>
-                              navigate(`/admin/pages/edit/${page.id}`)
+                              navigate(`/dashboard/pages/edit/${page.id}`)
                             }
                             className="h-8 w-8"
                             title="Edit page"
