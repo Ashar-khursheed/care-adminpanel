@@ -24,5 +24,6 @@ export const apiUrl = {
         allSubscriptions: "/admin/subscriptions",
     },
 
-    seoManagement:"/admin/cms/seo"
+    seoManagement:"/admin/cms/seo",
+    cmsPages:"/admin/cms/pages",
 }

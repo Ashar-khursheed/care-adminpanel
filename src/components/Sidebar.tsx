@@ -821,6 +821,13 @@ const navigation: NavigationItem[] = [
       { name: "Get SEO", href: "/dashboard/get-seo" },
     ],
   },
+  {
+    name: "Pages Settings" ,
+    icon: Settings,
+    subItems: [
+      { name: "Get All Pages", href: "/dashboard/get-all-pages" },
+    ],
+  },
   { name: "Transactions", href: "/dashboard/transactions", icon: Banknote },
   // { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];

@@ -43,6 +43,8 @@ import EditAnnouncement from "./pages/Settings/announsment/edit-announcement";
 import ViewAnnouncement from "./pages/Settings/announsment/view-announscement";
 import PublicRoute from "./routes/public-route";
 import SEOManager from "./pages/seo";
+import GetAllPagesListing from "./pages/st-pages";
+import CreateEditPage from "./pages/st-pages/create-page";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -326,6 +328,30 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                   <SEOManager/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="get-all-pages"
+                element={
+                  <ProtectedRoute>
+                <GetAllPagesListing/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/pages/create"
+                element={
+                  <ProtectedRoute>
+                <CreateEditPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/pages/edit/:id"
+                element={
+                  <ProtectedRoute>
+                <CreateEditPage />
                   </ProtectedRoute>
                 }
               />
