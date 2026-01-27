@@ -1,750 +1,3 @@
-// import {
-//   CreditCard,
-//   DollarSign,
-//   TrendingUp,
-//   TrendingDown,
-//   Search,
-//   Filter,
-//   Download,
-//   Eye,
-//   CheckCircle,
-//   XCircle,
-//   Clock,
-//   AlertCircle,
-//   Calendar,
-//   User,
-//   Building,
-//   Hash,
-//   ArrowUpRight,
-//   ArrowDownLeft,
-//   Receipt,
-//   LucideIcon,
-// } from "lucide-react";
-// import { StatsCard } from "@/components/StatsCard";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { Badge } from "@/components/ui/badge";
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-// } from "@/components/ui/dialog";
-// import { Separator } from "@/components/ui/separator";
-
-// import makeApiRequest from "@/services/axios";
-// import { useEffect, useState } from "react";
-
-// // Type definitions
-// interface TransactionUser {
-//   id: number;
-//   name: string;
-//   email: string;
-//   profile_photo: string | null;
-// }
-
-// interface Transaction {
-//   id: number;
-//   transaction_id: string;
-//   user: TransactionUser;
-//   amount: number;
-//   currency: string;
-//   type: "credit" | "debit" | "refund" | "purchase" | "withdrawal";
-//   status: "completed" | "pending" | "failed" | "cancelled";
-//   payment_method: string;
-//   payment_gateway: string;
-//   description: string;
-//   reference_number: string | null;
-//   metadata: {
-//     order_id?: string;
-//     product_name?: string;
-//     quantity?: number;
-//     [key: string]: any;
-//   } | null;
-//   created_at: string;
-//   updated_at: string;
-// }
-
-// interface TransactionStats {
-//   total_transactions: number;
-//   total_amount: number;
-//   completed_transactions: number;
-//   pending_transactions: number;
-//   failed_transactions: number;
-//   total_credits: number;
-//   total_debits: number;
-// }
-
-// interface TransactionsResponse {
-//   data: Transaction[];
-//   meta: {
-//     current_page: number;
-//     from: number;
-//     last_page: number;
-//     per_page: number;
-//     to: number;
-//     total: number;
-//   };
-//   stats?: TransactionStats;
-// }
-
-// interface StatCard {
-//   title: string;
-//   value: string;
-//   change: string;
-//   icon: LucideIcon;
-//   trend: "up" | "down";
-// }
-
-// const TransactionHistory = () => {
-//   const [transactions, setTransactions] = useState<Transaction[]>([]);
-//   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
-//   const [statsData, setStatsData] = useState<StatCard[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [statusFilter, setStatusFilter] = useState("all");
-//   const [typeFilter, setTypeFilter] = useState("all");
-//   const [isDetailOpen, setIsDetailOpen] = useState(false);
-
-//   const fetchTransactions = async () => {
-//     try {
-//       setLoading(true);
-      
-//       // Replace with your actual API endpoint
-//       const response: TransactionsResponse = await makeApiRequest("/admin/transactions?page=1", {
-//         method: "GET",
-//       });
-
-//       console.log("Transactions API Response:", response);
-
-//       if (response?.data && Array.isArray(response.data)) {
-//         setTransactions(response.data);
-
-//         // If stats are available in response
-//         if (response.stats) {
-//           const stats = response.stats;
-//           const transformedStats: StatCard[] = [
-//             {
-//               title: "Total Transactions",
-//               value: stats.total_transactions.toString(),
-//               change: "All time",
-//               icon: Receipt,
-//               trend: "up" as const,
-//             },
-//             {
-//               title: "Total Amount",
-//               value: `$${stats.total_amount.toFixed(2)}`,
-//               change: "Overall revenue",
-//               icon: DollarSign,
-//               trend: "up" as const,
-//             },
-//             {
-//               title: "Completed",
-//               value: stats.completed_transactions.toString(),
-//               change: "Successful transactions",
-//               icon: CheckCircle,
-//               trend: "up" as const,
-//             },
-//             {
-//               title: "Pending",
-//               value: stats.pending_transactions.toString(),
-//               change: "In progress",
-//               icon: Clock,
-//               trend: "up" as const,
-//             },
-//             {
-//               title: "Total Credits",
-//               value: `$${stats.total_credits.toFixed(2)}`,
-//               change: "Money received",
-//               icon: TrendingUp,
-//               trend: "up" as const,
-//             },
-//             {
-//               title: "Total Debits",
-//               value: `$${stats.total_debits.toFixed(2)}`,
-//               change: "Money spent",
-//               icon: TrendingDown,
-//               trend: "down" as const,
-//             },
-//           ];
-//           setStatsData(transformedStats);
-//         }
-//       }
-//     } catch (error) {
-//       console.error("Error fetching transactions:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchTransactions();
-//   }, []);
-
-//   const getStatusConfig = (status: string) => {
-//     const config: Record<string, { className: string; icon: LucideIcon; label: string }> = {
-//       completed: {
-//         className: "bg-green-100 text-green-800 hover:bg-green-100",
-//         icon: CheckCircle,
-//         label: "Completed",
-//       },
-//       pending: {
-//         className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
-//         icon: Clock,
-//         label: "Pending",
-//       },
-//       failed: {
-//         className: "bg-red-100 text-red-800 hover:bg-red-100",
-//         icon: XCircle,
-//         label: "Failed",
-//       },
-//       cancelled: {
-//         className: "bg-gray-100 text-gray-800 hover:bg-gray-100",
-//         icon: AlertCircle,
-//         label: "Cancelled",
-//       },
-//     };
-//     return config[status] || config.pending;
-//   };
-
-//   const getTypeConfig = (type: string) => {
-//     const config: Record<string, { className: string; icon: LucideIcon; label: string }> = {
-//       credit: {
-//         className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
-//         icon: ArrowDownLeft,
-//         label: "Credit",
-//       },
-//       debit: {
-//         className: "bg-purple-100 text-purple-800 hover:bg-purple-100",
-//         icon: ArrowUpRight,
-//         label: "Debit",
-//       },
-//       refund: {
-//         className: "bg-orange-100 text-orange-800 hover:bg-orange-100",
-//         icon: TrendingDown,
-//         label: "Refund",
-//       },
-//       purchase: {
-//         className: "bg-indigo-100 text-indigo-800 hover:bg-indigo-100",
-//         icon: CreditCard,
-//         label: "Purchase",
-//       },
-//       withdrawal: {
-//         className: "bg-pink-100 text-pink-800 hover:bg-pink-100",
-//         icon: ArrowUpRight,
-//         label: "Withdrawal",
-//       },
-//     };
-//     return config[type] || config.debit;
-//   };
-
-//   const formatDateTime = (dateString: string) => {
-//     return new Date(dateString).toLocaleString("en-US", {
-//       month: "short",
-//       day: "numeric",
-//       year: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-//   };
-
-//   const formatCurrency = (amount: number, currency: string = "USD") => {
-//     return new Intl.NumberFormat("en-US", {
-//       style: "currency",
-//       currency: currency,
-//     }).format(amount);
-//   };
-
-//   const getInitials = (name: string) => {
-//     return name
-//       .split(" ")
-//       .map((n) => n[0])
-//       .join("")
-//       .toUpperCase()
-//       .slice(0, 2);
-//   };
-
-//   const handleViewDetails = (transaction: Transaction) => {
-//     setSelectedTransaction(transaction);
-//     setIsDetailOpen(true);
-//   };
-
-//   const filteredTransactions = transactions.filter((transaction) => {
-//     const matchesSearch =
-//       transaction.transaction_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       transaction.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       transaction.description.toLowerCase().includes(searchQuery.toLowerCase());
-
-//     const matchesStatus = statusFilter === "all" || transaction.status === statusFilter;
-//     const matchesType = typeFilter === "all" || transaction.type === typeFilter;
-
-//     return matchesSearch && matchesStatus && matchesType;
-//   });
-
-//   return (
-//     <div className="space-y-6">
-//       {/* Stats Cards */}
-//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-//         {loading ? (
-//           Array.from({ length: 6 }).map((_, index) => (
-//             <div key={index} className="h-32 bg-gray-200 animate-pulse rounded-lg" />
-//           ))
-//         ) : statsData.length > 0 ? (
-//           statsData.map((stat, index) => <StatsCard key={index} {...stat} />)
-//         ) : (
-//           <div className="col-span-3 text-center text-gray-500">No data available</div>
-//         )}
-//       </div>
-
-//       {/* Transactions Table */}
-//       <Card>
-//         <CardHeader>
-//           <div className="flex items-center justify-between">
-//             <div>
-//               <CardTitle className="text-xl">Transaction History</CardTitle>
-//               <CardDescription>View and manage all transactions</CardDescription>
-//             </div>
-//             <Button variant="outline" size="sm">
-//               <Download className="w-4 h-4 mr-2" />
-//               Export
-//             </Button>
-//           </div>
-//         </CardHeader>
-//         <CardContent>
-//           {/* Filters */}
-//           <div className="flex flex-col md:flex-row gap-4 mb-6">
-//             <div className="flex-1 relative">
-//               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-//               <Input
-//                 type="text"
-//                 placeholder="Search by transaction ID, user, or description..."
-//                 className="pl-10"
-//                 value={searchQuery}
-//                 onChange={(e) => setSearchQuery(e.target.value)}
-//               />
-//             </div>
-//             <Select value={statusFilter} onValueChange={setStatusFilter}>
-//               <SelectTrigger className="w-full md:w-[180px]">
-//                 <SelectValue placeholder="Filter by status" />
-//               </SelectTrigger>
-//               <SelectContent>
-//                 <SelectItem value="all">All Status</SelectItem>
-//                 <SelectItem value="completed">Completed</SelectItem>
-//                 <SelectItem value="pending">Pending</SelectItem>
-//                 <SelectItem value="failed">Failed</SelectItem>
-//                 <SelectItem value="cancelled">Cancelled</SelectItem>
-//               </SelectContent>
-//             </Select>
-//             <Select value={typeFilter} onValueChange={setTypeFilter}>
-//               <SelectTrigger className="w-full md:w-[180px]">
-//                 <SelectValue placeholder="Filter by type" />
-//               </SelectTrigger>
-//               <SelectContent>
-//                 <SelectItem value="all">All Types</SelectItem>
-//                 <SelectItem value="credit">Credit</SelectItem>
-//                 <SelectItem value="debit">Debit</SelectItem>
-//                 <SelectItem value="refund">Refund</SelectItem>
-//                 <SelectItem value="purchase">Purchase</SelectItem>
-//                 <SelectItem value="withdrawal">Withdrawal</SelectItem>
-//               </SelectContent>
-//             </Select>
-//           </div>
-
-//           {/* Table */}
-//           <div className="rounded-md border">
-//             <Table>
-//               <TableHeader>
-//                 <TableRow>
-//                   <TableHead>Transaction ID</TableHead>
-//                   <TableHead>User</TableHead>
-//                   <TableHead>Type</TableHead>
-//                   <TableHead>Amount</TableHead>
-//                   <TableHead>Status</TableHead>
-//                   <TableHead>Payment Method</TableHead>
-//                   <TableHead>Date</TableHead>
-//                   <TableHead className="text-right">Actions</TableHead>
-//                 </TableRow>
-//               </TableHeader>
-//               <TableBody>
-//                 {loading ? (
-//                   <TableRow>
-//                     <TableCell colSpan={8} className="text-center py-8">
-//                       Loading transactions...
-//                     </TableCell>
-//                   </TableRow>
-//                 ) : filteredTransactions.length > 0 ? (
-//                   filteredTransactions.map((transaction) => {
-//                     const statusConfig = getStatusConfig(transaction.status);
-//                     const typeConfig = getTypeConfig(transaction.type);
-//                     const StatusIcon = statusConfig.icon;
-//                     const TypeIcon = typeConfig.icon;
-
-//                     return (
-//                       <TableRow key={transaction.id} className="hover:bg-gray-50">
-//                         <TableCell className="font-mono text-sm">
-//                           {transaction.transaction_id}
-//                         </TableCell>
-//                         <TableCell>
-//                           <div className="flex items-center gap-3">
-//                             <Avatar className="w-8 h-8">
-//                               <AvatarImage src={transaction.user.profile_photo || undefined} />
-//                               <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-//                                 {getInitials(transaction.user.name)}
-//                               </AvatarFallback>
-//                             </Avatar>
-//                             <div>
-//                               <p className="font-medium text-sm">{transaction.user.name}</p>
-//                               <p className="text-xs text-gray-500">{transaction.user.email}</p>
-//                             </div>
-//                           </div>
-//                         </TableCell>
-//                         <TableCell>
-//                           <Badge className={typeConfig.className}>
-//                             <TypeIcon className="w-3 h-3 mr-1" />
-//                             {typeConfig.label}
-//                           </Badge>
-//                         </TableCell>
-//                         <TableCell>
-//                           <span
-//                             className={`font-semibold ${
-//                               transaction.type === "credit" || transaction.type === "refund"
-//                                 ? "text-green-600"
-//                                 : "text-red-600"
-//                             }`}
-//                           >
-//                             {transaction.type === "credit" || transaction.type === "refund"
-//                               ? "+"
-//                               : "-"}
-//                             {formatCurrency(transaction.amount, transaction.currency)}
-//                           </span>
-//                         </TableCell>
-//                         <TableCell>
-//                           <Badge className={statusConfig.className}>
-//                             <StatusIcon className="w-3 h-3 mr-1" />
-//                             {statusConfig.label}
-//                           </Badge>
-//                         </TableCell>
-//                         <TableCell>
-//                           <div className="flex items-center gap-2">
-//                             <CreditCard className="w-4 h-4 text-gray-400" />
-//                             <span className="text-sm">{transaction.payment_method}</span>
-//                           </div>
-//                         </TableCell>
-//                         <TableCell className="text-sm text-gray-600">
-//                           {formatDateTime(transaction.created_at)}
-//                         </TableCell>
-//                         <TableCell className="text-right">
-//                           <Button
-//                             variant="ghost"
-//                             size="sm"
-//                             onClick={() => handleViewDetails(transaction)}
-//                           >
-//                             <Eye className="w-4 h-4 mr-1" />
-//                             View
-//                           </Button>
-//                         </TableCell>
-//                       </TableRow>
-//                     );
-//                   })
-//                 ) : (
-//                   <TableRow>
-//                     <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-//                       No transactions found
-//                     </TableCell>
-//                   </TableRow>
-//                 )}
-//               </TableBody>
-//             </Table>
-//           </div>
-
-//           {/* Pagination Info */}
-//           {filteredTransactions.length > 0 && (
-//             <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
-//               <p>
-//                 Showing {filteredTransactions.length} of {transactions.length} transactions
-//               </p>
-//               <div className="flex items-center gap-2">
-//                 <Button variant="outline" size="sm" disabled>
-//                   Previous
-//                 </Button>
-//                 <Button variant="outline" size="sm" disabled>
-//                   Next
-//                 </Button>
-//               </div>
-//             </div>
-//           )}
-//         </CardContent>
-//       </Card>
-
-//       {/* Transaction Detail Modal */}
-//       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-//         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-//           <DialogHeader>
-//             <DialogTitle className="text-2xl">Transaction Details</DialogTitle>
-//             <DialogDescription>
-//               Complete information about this transaction
-//             </DialogDescription>
-//           </DialogHeader>
-
-//           {selectedTransaction && (
-//             <div className="space-y-6">
-//               {/* Transaction Header */}
-//               <div className="flex items-start justify-between p-4 bg-gray-50 rounded-lg">
-//                 <div>
-//                   <p className="text-sm text-gray-500 mb-1">Transaction ID</p>
-//                   <p className="font-mono font-semibold text-lg">
-//                     {selectedTransaction.transaction_id}
-//                   </p>
-//                 </div>
-//                 <div className="text-right">
-//                   <p className="text-sm text-gray-500 mb-1">Amount</p>
-//                   <p
-//                     className={`text-2xl font-bold ${
-//                       selectedTransaction.type === "credit" ||
-//                       selectedTransaction.type === "refund"
-//                         ? "text-green-600"
-//                         : "text-red-600"
-//                     }`}
-//                   >
-//                     {selectedTransaction.type === "credit" ||
-//                     selectedTransaction.type === "refund"
-//                       ? "+"
-//                       : "-"}
-//                     {formatCurrency(
-//                       selectedTransaction.amount,
-//                       selectedTransaction.currency
-//                     )}
-//                   </p>
-//                 </div>
-//               </div>
-
-//               {/* Status and Type */}
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div className="p-4 border rounded-lg">
-//                   <p className="text-sm text-gray-500 mb-2">Status</p>
-//                   {(() => {
-//                     const config = getStatusConfig(selectedTransaction.status);
-//                     const Icon = config.icon;
-//                     return (
-//                       <Badge className={config.className}>
-//                         <Icon className="w-4 h-4 mr-2" />
-//                         {config.label}
-//                       </Badge>
-//                     );
-//                   })()}
-//                 </div>
-//                 <div className="p-4 border rounded-lg">
-//                   <p className="text-sm text-gray-500 mb-2">Type</p>
-//                   {(() => {
-//                     const config = getTypeConfig(selectedTransaction.type);
-//                     const Icon = config.icon;
-//                     return (
-//                       <Badge className={config.className}>
-//                         <Icon className="w-4 h-4 mr-2" />
-//                         {config.label}
-//                       </Badge>
-//                     );
-//                   })()}
-//                 </div>
-//               </div>
-
-//               <Separator />
-
-//               {/* User Information */}
-//               <div>
-//                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-//                   <User className="w-5 h-5" />
-//                   User Information
-//                 </h3>
-//                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-//                   <Avatar className="w-12 h-12">
-//                     <AvatarImage
-//                       src={selectedTransaction.user.profile_photo || undefined}
-//                     />
-//                     <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-//                       {getInitials(selectedTransaction.user.name)}
-//                     </AvatarFallback>
-//                   </Avatar>
-//                   <div>
-//                     <p className="font-semibold">{selectedTransaction.user.name}</p>
-//                     <p className="text-sm text-gray-600">
-//                       {selectedTransaction.user.email}
-//                     </p>
-//                     <p className="text-xs text-gray-500">
-//                       User ID: {selectedTransaction.user.id}
-//                     </p>
-//                   </div>
-//                 </div>
-//               </div>
-
-//               <Separator />
-
-//               {/* Payment Information */}
-//               <div>
-//                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-//                   <CreditCard className="w-5 h-5" />
-//                   Payment Information
-//                 </h3>
-//                 <div className="grid grid-cols-2 gap-4">
-//                   <div className="p-3 bg-gray-50 rounded-lg">
-//                     <p className="text-sm text-gray-500 mb-1">Payment Method</p>
-//                     <p className="font-medium">{selectedTransaction.payment_method}</p>
-//                   </div>
-//                   <div className="p-3 bg-gray-50 rounded-lg">
-//                     <p className="text-sm text-gray-500 mb-1">Payment Gateway</p>
-//                     <p className="font-medium">{selectedTransaction.payment_gateway}</p>
-//                   </div>
-//                   {selectedTransaction.reference_number && (
-//                     <div className="p-3 bg-gray-50 rounded-lg col-span-2">
-//                       <p className="text-sm text-gray-500 mb-1">Reference Number</p>
-//                       <p className="font-mono text-sm">
-//                         {selectedTransaction.reference_number}
-//                       </p>
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-
-//               <Separator />
-
-//               {/* Description */}
-//               <div>
-//                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-//                   <Receipt className="w-5 h-5" />
-//                   Description
-//                 </h3>
-//                 <p className="text-gray-700 p-3 bg-gray-50 rounded-lg">
-//                   {selectedTransaction.description}
-//                 </p>
-//               </div>
-
-//               {/* Metadata */}
-//               {selectedTransaction.metadata && (
-//                 <>
-//                   <Separator />
-//                   <div>
-//                     <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-//                       <Hash className="w-5 h-5" />
-//                       Additional Information
-//                     </h3>
-//                     <div className="grid grid-cols-2 gap-3">
-//                       {Object.entries(selectedTransaction.metadata).map(([key, value]) => (
-//                         <div key={key} className="p-3 bg-gray-50 rounded-lg">
-//                           <p className="text-sm text-gray-500 mb-1 capitalize">
-//                             {key.replace(/_/g, " ")}
-//                           </p>
-//                           <p className="font-medium">{String(value)}</p>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </>
-//               )}
-
-//               <Separator />
-
-//               {/* Timestamps */}
-//               <div>
-//                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-//                   <Calendar className="w-5 h-5" />
-//                   Timeline
-//                 </h3>
-//                 <div className="space-y-3">
-//                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-//                     <span className="text-sm text-gray-600">Created At</span>
-//                     <span className="font-medium">
-//                       {formatDateTime(selectedTransaction.created_at)}
-//                     </span>
-//                   </div>
-//                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-//                     <span className="text-sm text-gray-600">Last Updated</span>
-//                     <span className="font-medium">
-//                       {formatDateTime(selectedTransaction.updated_at)}
-//                     </span>
-//                   </div>
-//                 </div>
-//               </div>
-
-//               {/* Action Buttons */}
-//               <div className="flex gap-3 pt-4">
-//                 <Button variant="outline" className="flex-1">
-//                   <Download className="w-4 h-4 mr-2" />
-//                   Download Receipt
-//                 </Button>
-//                 <Button variant="outline" className="flex-1">
-//                   Print
-//                 </Button>
-//               </div>
-//             </div>
-//           )}
-//         </DialogContent>
-//       </Dialog>
-//     </div>
-//   );
-// };
-
-// export default TransactionHistory;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// with mock dataa
-
-
-
 import {
   CreditCard,
   DollarSign,
@@ -805,58 +58,142 @@ import { Separator } from "@/components/ui/separator";
 
 import makeApiRequest from "@/services/axios";
 import { useEffect, useState } from "react";
+import { notify } from "@/utils/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// Type definitions
-interface TransactionUser {
+// Type definitions based on API response
+interface PaymentUser {
   id: number;
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   profile_photo: string | null;
+  phone: string | null;
+  city: string | null;
+  state: string | null;
+  country: string | null;
 }
 
-interface Transaction {
+interface Booking {
   id: number;
-  transaction_id: string;
-  user: TransactionUser;
-  amount: number;
+  booking_date: string;
+  start_time: string;
+  end_time: string;
+  hours: string;
+  hourly_rate: string;
+  total_amount: string;
+  service_location: string;
+  special_requirements: string;
+  status: string;
+  payment_status: string;
+  created_at: string;
+}
+
+interface Payment {
+  id: number;
+  booking_id: number;
+  client_id: number;
+  provider_id: number;
+  amount: string;
+  platform_fee: string;
+  provider_amount: string;
   currency: string;
-  type: "credit" | "debit" | "refund" | "purchase" | "withdrawal";
-  status: "completed" | "pending" | "failed" | "cancelled";
-  payment_method: string;
-  payment_gateway: string;
-  description: string;
-  reference_number: string | null;
-  metadata: {
-    order_id?: string;
-    product_name?: string;
-    quantity?: number;
-    [key: string]: any;
-  } | null;
+  stripe_payment_intent_id: string;
+  stripe_charge_id: string | null;
+  stripe_customer_id: string;
+  payment_method_id: string | null;
+  payment_method_type: string;
+  card_brand: string | null;
+  card_last4: string | null;
+  status: string;
+  paid_at: string | null;
+  failed_at: string | null;
+  refunded_at: string | null;
+  refund_amount: string | null;
+  refund_reason: string | null;
+  stripe_error: string | null;
+  metadata: any;
   created_at: string;
   updated_at: string;
+  deleted_at: string | null;
+  booking: Booking | null;
+  client: PaymentUser;
+  provider: PaymentUser;
+  payout?: any;
+  transactions?: any[];
 }
 
-interface TransactionStats {
-  total_transactions: number;
-  total_amount: number;
-  completed_transactions: number;
-  pending_transactions: number;
-  failed_transactions: number;
-  total_credits: number;
-  total_debits: number;
+interface PaginationLink {
+  url: string | null;
+  label: string;
+  page: number | null;
+  active: boolean;
 }
 
-interface TransactionsResponse {
-  data: Transaction[];
-  meta: {
-    current_page: number;
-    from: number;
-    last_page: number;
-    per_page: number;
-    to: number;
-    total: number;
+interface PaymentMeta {
+  current_page: number;
+  from: number;
+  last_page: number;
+  per_page: number;
+  to: number;
+  total: number;
+}
+
+interface PaymentsResponse {
+  current_page: number;
+  data: Payment[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: PaginationLink[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+}
+
+// Statistics API Types
+interface PaymentStatistics {
+  overview: {
+    total_payments: number;
+    total_amount: number;
+    total_platform_fees: number;
+    total_provider_earnings: number;
   };
-  stats?: TransactionStats;
+  status_breakdown: {
+    pending: number;
+    succeeded: number;
+    failed: number;
+    refunded: number;
+  };
+  refunds: {
+    total_refunds: number;
+    total_refund_amount: number;
+  };
+  recent_payments: Array<{
+    date: string;
+    count: number;
+    total: string;
+  }>;
+  top_providers: Array<any>;
+  payouts: {
+    pending_payouts: number;
+    total_payouts: number;
+  };
+}
+
+interface StatisticsResponse {
+  success: boolean;
+  data: PaymentStatistics;
+}
+
+// Payment Detail Response
+interface PaymentDetailResponse {
+  success: boolean;
+  data: Payment;
 }
 
 interface StatCard {
@@ -867,406 +204,178 @@ interface StatCard {
   trend: "up" | "down";
 }
 
-// Mock Data
-const mockTransactions: Transaction[] = [
-  {
-    id: 1,
-    transaction_id: "TXN-2025-001234",
-    user: {
-      id: 1,
-      name: "Ahmed Ali",
-      email: "ahmed.ali@example.com",
-      profile_photo: null,
-    },
-    amount: 2500.00,
-    currency: "USD",
-    type: "purchase",
-    status: "completed",
-    payment_method: "Credit Card",
-    payment_gateway: "Stripe",
-    description: "Premium Subscription Plan - Annual",
-    reference_number: "REF-STR-78945",
-    metadata: {
-      order_id: "ORD-001234",
-      product_name: "Premium Annual Plan",
-      quantity: 1,
-      billing_cycle: "yearly",
-    },
-    created_at: "2025-12-08 10:30:00",
-    updated_at: "2025-12-08 10:30:00",
-  },
-  {
-    id: 2,
-    transaction_id: "TXN-2025-001235",
-    user: {
-      id: 2,
-      name: "Fatima Khan",
-      email: "fatima.khan@example.com",
-      profile_photo: null,
-    },
-    amount: 150.00,
-    currency: "USD",
-    type: "credit",
-    status: "completed",
-    payment_method: "Bank Transfer",
-    payment_gateway: "Square",
-    description: "Payment received for invoice #INV-5678",
-    reference_number: "REF-SQR-45632",
-    metadata: {
-      invoice_id: "INV-5678",
-      customer_id: "CUST-002",
-    },
-    created_at: "2025-12-08 09:15:00",
-    updated_at: "2025-12-08 09:15:00",
-  },
-  {
-    id: 3,
-    transaction_id: "TXN-2025-001236",
-    user: {
-      id: 3,
-      name: "Omar Hassan",
-      email: "omar.hassan@example.com",
-      profile_photo: null,
-    },
-    amount: 75.50,
-    currency: "USD",
-    type: "refund",
-    status: "completed",
-    payment_method: "Credit Card",
-    payment_gateway: "Stripe",
-    description: "Refund for cancelled order #ORD-9876",
-    reference_number: "REF-STR-99887",
-    metadata: {
-      order_id: "ORD-9876",
-      reason: "Customer request",
-      original_transaction: "TXN-2025-001100",
-    },
-    created_at: "2025-12-08 08:45:00",
-    updated_at: "2025-12-08 08:45:00",
-  },
-  {
-    id: 4,
-    transaction_id: "TXN-2025-001237",
-    user: {
-      id: 4,
-      name: "Sara Ahmed",
-      email: "sara.ahmed@example.com",
-      profile_photo: null,
-    },
-    amount: 500.00,
-    currency: "USD",
-    type: "purchase",
-    status: "pending",
-    payment_method: "PayPal",
-    payment_gateway: "PayPal",
-    description: "Restaurant Equipment Purchase",
-    reference_number: "REF-PPL-12345",
-    metadata: {
-      order_id: "ORD-001237",
-      product_name: "Commercial Blender",
-      quantity: 2,
-      warehouse: "UAE-DXB",
-    },
-    created_at: "2025-12-08 07:20:00",
-    updated_at: "2025-12-08 07:20:00",
-  },
-  {
-    id: 5,
-    transaction_id: "TXN-2025-001238",
-    user: {
-      id: 5,
-      name: "Mohammed Raza",
-      email: "mohammed.raza@example.com",
-      profile_photo: null,
-    },
-    amount: 1200.00,
-    currency: "USD",
-    type: "debit",
-    status: "failed",
-    payment_method: "Credit Card",
-    payment_gateway: "Stax",
-    description: "Kitchen Supplies Order",
-    reference_number: null,
-    metadata: {
-      order_id: "ORD-001238",
-      error_code: "insufficient_funds",
-      retry_count: 2,
-    },
-    created_at: "2025-12-07 18:30:00",
-    updated_at: "2025-12-07 18:35:00",
-  },
-  {
-    id: 6,
-    transaction_id: "TXN-2025-001239",
-    user: {
-      id: 6,
-      name: "Aisha Rahman",
-      email: "aisha.rahman@example.com",
-      profile_photo: null,
-    },
-    amount: 350.00,
-    currency: "USD",
-    type: "withdrawal",
-    status: "completed",
-    payment_method: "Bank Account",
-    payment_gateway: "Stripe",
-    description: "Withdrawal to bank account ****4567",
-    reference_number: "REF-STR-66778",
-    metadata: {
-      bank_name: "Emirates NBD",
-      account_last4: "4567",
-      processing_time: "2-3 business days",
-    },
-    created_at: "2025-12-07 16:00:00",
-    updated_at: "2025-12-07 16:00:00",
-  },
-  {
-    id: 7,
-    transaction_id: "TXN-2025-001240",
-    user: {
-      id: 7,
-      name: "Yusuf Ibrahim",
-      email: "yusuf.ibrahim@example.com",
-      profile_photo: null,
-    },
-    amount: 899.99,
-    currency: "USD",
-    type: "purchase",
-    status: "completed",
-    payment_method: "Debit Card",
-    payment_gateway: "Paymob",
-    description: "Commercial Coffee Machine",
-    reference_number: "REF-PMB-88990",
-    metadata: {
-      order_id: "ORD-001240",
-      product_name: "Espresso Machine Pro",
-      quantity: 1,
-      warranty: "2 years",
-    },
-    created_at: "2025-12-07 14:15:00",
-    updated_at: "2025-12-07 14:15:00",
-  },
-  {
-    id: 8,
-    transaction_id: "TXN-2025-001241",
-    user: {
-      id: 8,
-      name: "Nadia Malik",
-      email: "nadia.malik@example.com",
-      profile_photo: null,
-    },
-    amount: 45.00,
-    currency: "USD",
-    type: "purchase",
-    status: "cancelled",
-    payment_method: "Credit Card",
-    payment_gateway: "Stripe",
-    description: "Monthly Subscription - Basic Plan",
-    reference_number: "REF-STR-11223",
-    metadata: {
-      subscription_id: "SUB-001241",
-      plan: "Basic Monthly",
-      cancellation_reason: "Customer request",
-    },
-    created_at: "2025-12-07 12:00:00",
-    updated_at: "2025-12-07 12:30:00",
-  },
-  {
-    id: 9,
-    transaction_id: "TXN-2025-001242",
-    user: {
-      id: 9,
-      name: "Bilal Sheikh",
-      email: "bilal.sheikh@example.com",
-      profile_photo: null,
-    },
-    amount: 3200.00,
-    currency: "USD",
-    type: "credit",
-    status: "completed",
-    payment_method: "Wire Transfer",
-    payment_gateway: "Square",
-    description: "Bulk order payment - Restaurant supplies",
-    reference_number: "REF-SQR-99887",
-    metadata: {
-      invoice_id: "INV-7890",
-      po_number: "PO-2025-123",
-      customer_id: "CUST-009",
-    },
-    created_at: "2025-12-07 10:45:00",
-    updated_at: "2025-12-07 10:45:00",
-  },
-  {
-    id: 10,
-    transaction_id: "TXN-2025-001243",
-    user: {
-      id: 10,
-      name: "Layla Hussain",
-      email: "layla.hussain@example.com",
-      profile_photo: null,
-    },
-    amount: 125.00,
-    currency: "USD",
-    type: "refund",
-    status: "pending",
-    payment_method: "PayPal",
-    payment_gateway: "PayPal",
-    description: "Partial refund for damaged items",
-    reference_number: "REF-PPL-77665",
-    metadata: {
-      order_id: "ORD-9988",
-      refund_type: "partial",
-      items_affected: 3,
-    },
-    created_at: "2025-12-07 09:30:00",
-    updated_at: "2025-12-07 09:30:00",
-  },
-  {
-    id: 11,
-    transaction_id: "TXN-2025-001244",
-    user: {
-      id: 11,
-      name: "Hamza Farooq",
-      email: "hamza.farooq@example.com",
-      profile_photo: null,
-    },
-    amount: 675.50,
-    currency: "USD",
-    type: "purchase",
-    status: "completed",
-    payment_method: "Credit Card",
-    payment_gateway: "Stripe",
-    description: "Hotel kitchen equipment accessories",
-    reference_number: "REF-STR-44556",
-    metadata: {
-      order_id: "ORD-001244",
-      product_name: "Kitchen Accessories Bundle",
-      quantity: 5,
-      delivery_date: "2025-12-10",
-    },
-    created_at: "2025-12-06 16:20:00",
-    updated_at: "2025-12-06 16:20:00",
-  },
-  {
-    id: 12,
-    transaction_id: "TXN-2025-001245",
-    user: {
-      id: 12,
-      name: "Zainab Ali",
-      email: "zainab.ali@example.com",
-      profile_photo: null,
-    },
-    amount: 280.00,
-    currency: "USD",
-    type: "debit",
-    status: "completed",
-    payment_method: "Debit Card",
-    payment_gateway: "Stax",
-    description: "Restaurant supplies - Monthly order",
-    reference_number: "REF-STX-33445",
-    metadata: {
-      order_id: "ORD-001245",
-      subscription: "monthly_supplies",
-      auto_renewal: true,
-    },
-    created_at: "2025-12-06 14:00:00",
-    updated_at: "2025-12-06 14:00:00",
-  },
-];
-
-const mockStats: TransactionStats = {
-  total_transactions: 12,
-  total_amount: 10553.99,
-  completed_transactions: 8,
-  pending_transactions: 2,
-  failed_transactions: 1,
-  total_credits: 3475.00,
-  total_debits: 7078.99,
-};
-
 const TransactionHistory = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [statsData, setStatsData] = useState<StatCard[]>([]);
   const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [detailLoading, setDetailLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [perPage, setPerPage] = useState(15);
 
-  const fetchTransactions = async () => {
+  const fetchStatistics = async () => {
+    try {
+      setStatsLoading(true);
+      
+      const response = await makeApiRequest<StatisticsResponse>(
+        "https://careapi.in-sourceit.com/api/v1/admin/payments/statistics",
+        {
+          method: "GET",
+        }
+      );
+
+      if (response?.success && response.data) {
+        const stats = response.data;
+        
+        const transformedStats: StatCard[] = [
+          {
+            title: "Total Payments",
+            value: stats.overview.total_payments.toString(),
+            change: "All time transactions",
+            icon: Receipt,
+            trend: "up" as const,
+          },
+          {
+            title: "Total Amount",
+            value: `$${stats.overview.total_amount.toFixed(2)}`,
+            change: "Overall revenue",
+            icon: DollarSign,
+            trend: "up" as const,
+          },
+          {
+            title: "Succeeded",
+            value: stats.status_breakdown.succeeded.toString(),
+            change: "Successful payments",
+            icon: CheckCircle,
+            trend: "up" as const,
+          },
+          {
+            title: "Pending",
+            value: stats.status_breakdown.pending.toString(),
+            change: "Awaiting payment",
+            icon: Clock,
+            trend: "up" as const,
+          },
+          {
+            title: "Platform Fees",
+            value: `$${stats.overview.total_platform_fees.toFixed(2)}`,
+            change: "Total fees collected",
+            icon: TrendingUp,
+            trend: "up" as const,
+          },
+          {
+            title: "Provider Earnings",
+            value: `$${stats.overview.total_provider_earnings.toFixed(2)}`,
+            change: "Total to providers",
+            icon: TrendingDown,
+            trend: "down" as const,
+          },
+        ];
+        
+        setStatsData(transformedStats);
+      }
+    } catch (error: any) {
+      console.error("❌ Error fetching statistics:", error);
+      notify({ 
+        message: error?.response?.data?.message || "Failed to fetch statistics", 
+        type: "error" 
+      });
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  const fetchPayments = async (page: number = 1) => {
     try {
       setLoading(true);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await makeApiRequest<PaymentsResponse>(
+        `https://careapi.in-sourceit.com/api/v1/admin/payments?page=${page}`,
+        {
+          method: "GET",
+        }
+      );
 
-      // Use mock data
-      setTransactions(mockTransactions);
-
-      // Transform stats
-      const transformedStats: StatCard[] = [
-        {
-          title: "Total Transactions",
-          value: mockStats.total_transactions.toString(),
-          change: "All time",
-          icon: Receipt,
-          trend: "up" as const,
-        },
-        {
-          title: "Total Amount",
-          value: `$${mockStats.total_amount.toFixed(2)}`,
-          change: "Overall revenue",
-          icon: DollarSign,
-          trend: "up" as const,
-        },
-        {
-          title: "Completed",
-          value: mockStats.completed_transactions.toString(),
-          change: "Successful transactions",
-          icon: CheckCircle,
-          trend: "up" as const,
-        },
-        {
-          title: "Pending",
-          value: mockStats.pending_transactions.toString(),
-          change: "In progress",
-          icon: Clock,
-          trend: "up" as const,
-        },
-        {
-          title: "Total Credits",
-          value: `$${mockStats.total_credits.toFixed(2)}`,
-          change: "Money received",
-          icon: TrendingUp,
-          trend: "up" as const,
-        },
-        {
-          title: "Total Debits",
-          value: `$${mockStats.total_debits.toFixed(2)}`,
-          change: "Money spent",
-          icon: TrendingDown,
-          trend: "down" as const,
-        },
-      ];
-      setStatsData(transformedStats);
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
+      if (response && response.data) {
+        setPayments(response.data);
+        setCurrentPage(response.current_page);
+        setTotalPages(response.last_page);
+        setTotalRecords(response.total);
+        setPerPage(response.per_page);
+      }
+    } catch (error: any) {
+      console.error("❌ Error fetching payments:", error);
+      notify({ 
+        message: error?.response?.data?.message || "Failed to fetch payments", 
+        type: "error" 
+      });
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchPaymentDetail = async (paymentId: number) => {
+    try {
+      setDetailLoading(true);
+      
+      const response = await makeApiRequest<PaymentDetailResponse>(
+        `https://careapi.in-sourceit.com/api/v1/admin/payments/${paymentId}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (response?.success && response.data) {
+        setSelectedPayment(response.data);
+        setIsDetailOpen(true);
+      }
+    } catch (error: any) {
+      console.error("❌ Error fetching payment details:", error);
+      notify({ 
+        message: error?.response?.data?.message || "Failed to fetch payment details", 
+        type: "error" 
+      });
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetchTransactions();
+    fetchStatistics();
+    fetchPayments(currentPage);
   }, []);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      fetchPayments(page);
+    }
+  };
 
   const getStatusConfig = (status: string) => {
     const config: Record<string, { className: string; icon: LucideIcon; label: string }> = {
+      succeeded: {
+        className: "bg-green-100 text-green-800 hover:bg-green-100",
+        icon: CheckCircle,
+        label: "Succeeded",
+      },
       completed: {
         className: "bg-green-100 text-green-800 hover:bg-green-100",
         icon: CheckCircle,
         label: "Completed",
+      },
+      requires_payment_method: {
+        className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+        icon: Clock,
+        label: "Requires Payment",
       },
       pending: {
         className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
@@ -1283,39 +392,13 @@ const TransactionHistory = () => {
         icon: AlertCircle,
         label: "Cancelled",
       },
+      refunded: {
+        className: "bg-orange-100 text-orange-800 hover:bg-orange-100",
+        icon: ArrowDownLeft,
+        label: "Refunded",
+      },
     };
     return config[status] || config.pending;
-  };
-
-  const getTypeConfig = (type: string) => {
-    const config: Record<string, { className: string; icon: LucideIcon; label: string }> = {
-      credit: {
-        className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
-        icon: ArrowDownLeft,
-        label: "Credit",
-      },
-      debit: {
-        className: "bg-purple-100 text-purple-800 hover:bg-purple-100",
-        icon: ArrowUpRight,
-        label: "Debit",
-      },
-      refund: {
-        className: "bg-orange-100 text-orange-800 hover:bg-orange-100",
-        icon: TrendingDown,
-        label: "Refund",
-      },
-      purchase: {
-        className: "bg-indigo-100 text-indigo-800 hover:bg-indigo-100",
-        icon: CreditCard,
-        label: "Purchase",
-      },
-      withdrawal: {
-        className: "bg-pink-100 text-pink-800 hover:bg-pink-100",
-        icon: ArrowUpRight,
-        label: "Withdrawal",
-      },
-    };
-    return config[type] || config.debit;
   };
 
   const formatDateTime = (dateString: string) => {
@@ -1328,46 +411,48 @@ const TransactionHistory = () => {
     });
   };
 
-  const formatCurrency = (amount: number, currency: string = "USD") => {
+  const formatCurrency = (amount: string | number, currency: string = "USD") => {
+    const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: currency,
-    }).format(amount);
+      currency: currency.toUpperCase(),
+    }).format(numAmount);
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
+  const getInitials = (firstName: string, lastName: string) => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  const handleViewDetails = (transaction: Transaction) => {
-    setSelectedTransaction(transaction);
-    setIsDetailOpen(true);
+  const getUserFullName = (user: PaymentUser) => {
+    return `${user.first_name} ${user.last_name}`;
   };
 
-  const filteredTransactions = transactions.filter((transaction) => {
+  const handleViewDetails = (payment: Payment) => {
+    fetchPaymentDetail(payment.id);
+  };
+
+  const filteredPayments = payments.filter((payment) => {
+    const clientName = getUserFullName(payment.client).toLowerCase();
+    const providerName = getUserFullName(payment.provider).toLowerCase();
+    
     const matchesSearch =
-      transaction.transaction_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transaction.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transaction.description.toLowerCase().includes(searchQuery.toLowerCase());
+      payment.stripe_payment_intent_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      clientName.includes(searchQuery.toLowerCase()) ||
+      providerName.includes(searchQuery.toLowerCase()) ||
+      payment.client.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesStatus = statusFilter === "all" || transaction.status === statusFilter;
-    const matchesType = typeFilter === "all" || transaction.type === typeFilter;
+    const matchesStatus = statusFilter === "all" || payment.status === statusFilter;
 
-    return matchesSearch && matchesStatus && matchesType;
+    return matchesSearch && matchesStatus;
   });
 
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {loading ? (
+        {statsLoading ? (
           Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="h-32 bg-gray-200 animate-pulse rounded-lg" />
+            <Skeleton key={index} className="h-32 rounded-lg" />
           ))
         ) : statsData.length > 0 ? (
           statsData.map((stat, index) => <StatsCard key={index} {...stat} />)
@@ -1376,13 +461,13 @@ const TransactionHistory = () => {
         )}
       </div>
 
-      {/* Transactions Table */}
+      {/* Payments Table */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-xl">Transaction History</CardTitle>
-              <CardDescription>View and manage all transactions</CardDescription>
+              <CardTitle className="text-xl">Payment History</CardTitle>
+              <CardDescription>View and manage all payment transactions</CardDescription>
             </div>
             <Button variant="outline" size="sm">
               <Download className="w-4 h-4 mr-2" />
@@ -1397,35 +482,25 @@ const TransactionHistory = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search by transaction ID, user, or description..."
+                placeholder="Search by payment ID, client, provider, or email..."
                 className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="succeeded">Succeeded</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="requires_payment_method">Requires Payment</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="failed">Failed</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Filter by type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="credit">Credit</SelectItem>
-                <SelectItem value="debit">Debit</SelectItem>
-                <SelectItem value="refund">Refund</SelectItem>
-                <SelectItem value="purchase">Purchase</SelectItem>
-                <SelectItem value="withdrawal">Withdrawal</SelectItem>
+                <SelectItem value="refunded">Refunded</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1435,10 +510,11 @@ const TransactionHistory = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Transaction ID</TableHead>
-                  <TableHead>User</TableHead>
-                  <TableHead>Type</TableHead>
+                  <TableHead>Payment ID</TableHead>
+                  <TableHead>Client</TableHead>
+                  <TableHead>Provider</TableHead>
                   <TableHead>Amount</TableHead>
+                  <TableHead>Platform Fee</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Payment Method</TableHead>
                   <TableHead>Date</TableHead>
@@ -1448,54 +524,58 @@ const TransactionHistory = () => {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8">
-                      Loading transactions...
+                    <TableCell colSpan={9} className="text-center py-8">
+                      <div className="flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                      </div>
                     </TableCell>
                   </TableRow>
-                ) : filteredTransactions.length > 0 ? (
-                  filteredTransactions.map((transaction) => {
-                    const statusConfig = getStatusConfig(transaction.status);
-                    const typeConfig = getTypeConfig(transaction.type);
+                ) : filteredPayments.length > 0 ? (
+                  filteredPayments.map((payment) => {
+                    const statusConfig = getStatusConfig(payment.status);
                     const StatusIcon = statusConfig.icon;
-                    const TypeIcon = typeConfig.icon;
 
                     return (
-                      <TableRow key={transaction.id} className="hover:bg-gray-50">
-                        <TableCell className="font-mono text-sm">
-                          {transaction.transaction_id}
+                      <TableRow key={payment.id} className="hover:bg-gray-50">
+                        <TableCell className="font-mono text-xs">
+                          {payment.stripe_payment_intent_id?.substring(0, 20)}...
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar className="w-8 h-8">
-                              <AvatarImage src={transaction.user.profile_photo || undefined} />
+                              <AvatarImage src={payment.client.profile_photo || undefined} />
                               <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-                                {getInitials(transaction.user.name)}
+                                {getInitials(payment.client.first_name, payment.client.last_name)}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className="font-medium text-sm">{transaction.user.name}</p>
-                              <p className="text-xs text-gray-500">{transaction.user.email}</p>
+                              <p className="font-medium text-sm">{getUserFullName(payment.client)}</p>
+                              <p className="text-xs text-gray-500">{payment.client.email}</p>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge className={typeConfig.className}>
-                            <TypeIcon className="w-3 h-3 mr-1" />
-                            {typeConfig.label}
-                          </Badge>
+                          <div className="flex items-center gap-3">
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage src={payment.provider.profile_photo || undefined} />
+                              <AvatarFallback className="bg-blue-100 text-blue-800 text-xs font-semibold">
+                                {getInitials(payment.provider.first_name, payment.provider.last_name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="font-medium text-sm">{getUserFullName(payment.provider)}</p>
+                              <p className="text-xs text-gray-500">{payment.provider.email}</p>
+                            </div>
+                          </div>
                         </TableCell>
                         <TableCell>
-                          <span
-                            className={`font-semibold ${
-                              transaction.type === "credit" || transaction.type === "refund"
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }`}
-                          >
-                            {transaction.type === "credit" || transaction.type === "refund"
-                              ? "+"
-                              : "-"}
-                            {formatCurrency(transaction.amount, transaction.currency)}
+                          <span className="font-semibold text-green-600">
+                            {formatCurrency(payment.amount, payment.currency)}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-sm text-gray-600">
+                            {formatCurrency(payment.platform_fee, payment.currency)}
                           </span>
                         </TableCell>
                         <TableCell>
@@ -1507,20 +587,24 @@ const TransactionHistory = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <CreditCard className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm">{transaction.payment_method}</span>
+                            <span className="text-sm capitalize">{payment.payment_method_type}</span>
+                            {payment.card_last4 && (
+                              <span className="text-xs text-gray-500">****{payment.card_last4}</span>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="text-sm text-gray-600">
-                          {formatDateTime(transaction.created_at)}
+                          {formatDateTime(payment.created_at)}
                         </TableCell>
                         <TableCell className="text-right">
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleViewDetails(transaction)}
+                            onClick={() => handleViewDetails(payment)}
+                            disabled={detailLoading}
                           >
                             <Eye className="w-4 h-4 mr-1" />
-                            View
+                            {detailLoading ? "Loading..." : "View"}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -1528,8 +612,8 @@ const TransactionHistory = () => {
                   })
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                      No transactions found
+                    <TableCell colSpan={9} className="text-center py-8 text-gray-500">
+                      No payments found
                     </TableCell>
                   </TableRow>
                 )}
@@ -1537,17 +621,30 @@ const TransactionHistory = () => {
             </Table>
           </div>
 
-          {/* Pagination Info */}
-          {filteredTransactions.length > 0 && (
+          {/* Pagination */}
+          {!loading && filteredPayments.length > 0 && (
             <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
               <p>
-                Showing {filteredTransactions.length} of {transactions.length} transactions
+                Showing {((currentPage - 1) * perPage) + 1} to {Math.min(currentPage * perPage, totalRecords)} of {totalRecords} payments
               </p>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" disabled>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
                   Previous
                 </Button>
-                <Button variant="outline" size="sm" disabled>
+                <span className="px-3 py-1 bg-gray-100 rounded">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
                   Next
                 </Button>
               </div>
@@ -1556,67 +653,61 @@ const TransactionHistory = () => {
         </CardContent>
       </Card>
 
-      {/* Transaction Detail Modal */}
+      {/* Payment Detail Modal */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Transaction Details</DialogTitle>
+            <DialogTitle className="text-2xl">Payment Details</DialogTitle>
             <DialogDescription>
-              Complete information about this transaction
+              Complete information about this payment transaction
             </DialogDescription>
           </DialogHeader>
 
-          {selectedTransaction && (
+          {detailLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-48 w-full" />
+            </div>
+          ) : selectedPayment ? (
             <div className="space-y-6">
-              {/* Transaction Header */}
+              {/* Payment Header */}
               <div className="flex items-start justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Transaction ID</p>
-                  <p className="font-mono font-semibold text-lg">
-                    {selectedTransaction.transaction_id}
+                  <p className="text-sm text-gray-500 mb-1">Payment Intent ID</p>
+                  <p className="font-mono font-semibold text-sm">
+                    {selectedPayment.stripe_payment_intent_id}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Booking ID: #{selectedPayment.booking_id}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-500 mb-1">Amount</p>
-                  <p
-                    className={`text-2xl font-bold ${
-                      selectedTransaction.type === "credit" ||
-                      selectedTransaction.type === "refund"
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {selectedTransaction.type === "credit" ||
-                    selectedTransaction.type === "refund"
-                      ? "+"
-                      : "-"}
-                    {formatCurrency(
-                      selectedTransaction.amount,
-                      selectedTransaction.currency
-                    )}
+                  <p className="text-sm text-gray-500 mb-1">Total Amount</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {formatCurrency(selectedPayment.amount, selectedPayment.currency)}
                   </p>
                 </div>
               </div>
 
-              {/* Status and Type */}
-              <div className="grid grid-cols-2 gap-4">
+              {/* Amount Breakdown */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="p-4 border rounded-lg">
+                  <p className="text-sm text-gray-500 mb-2">Platform Fee</p>
+                  <p className="text-lg font-semibold text-blue-600">
+                    {formatCurrency(selectedPayment.platform_fee, selectedPayment.currency)}
+                  </p>
+                </div>
+                <div className="p-4 border rounded-lg">
+                  <p className="text-sm text-gray-500 mb-2">Provider Amount</p>
+                  <p className="text-lg font-semibold text-purple-600">
+                    {formatCurrency(selectedPayment.provider_amount, selectedPayment.currency)}
+                  </p>
+                </div>
                 <div className="p-4 border rounded-lg">
                   <p className="text-sm text-gray-500 mb-2">Status</p>
                   {(() => {
-                    const config = getStatusConfig(selectedTransaction.status);
-                    const Icon = config.icon;
-                    return (
-                      <Badge className={config.className}>
-                        <Icon className="w-4 h-4 mr-2" />
-                        {config.label}
-                      </Badge>
-                    );
-                  })()}
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <p className="text-sm text-gray-500 mb-2">Type</p>
-                  {(() => {
-                    const config = getTypeConfig(selectedTransaction.type);
+                    const config = getStatusConfig(selectedPayment.status);
                     const Icon = config.icon;
                     return (
                       <Badge className={config.className}>
@@ -1630,29 +721,50 @@ const TransactionHistory = () => {
 
               <Separator />
 
-              {/* User Information */}
-              <div>
-                <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                  <User className="w-5 h-5" />
-                  User Information
-                </h3>
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage
-                      src={selectedTransaction.user.profile_photo || undefined}
-                    />
-                    <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                      {getInitials(selectedTransaction.user.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-semibold">{selectedTransaction.user.name}</p>
-                    <p className="text-sm text-gray-600">
-                      {selectedTransaction.user.email}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      User ID: {selectedTransaction.user.id}
-                    </p>
+              {/* Client & Provider Information */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    Client Information
+                  </h3>
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={selectedPayment.client.profile_photo || undefined} />
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        {getInitials(selectedPayment.client.first_name, selectedPayment.client.last_name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-semibold">{getUserFullName(selectedPayment.client)}</p>
+                      <p className="text-sm text-gray-600">{selectedPayment.client.email}</p>
+                      <p className="text-xs text-gray-500">
+                        {selectedPayment.client.phone && `Phone: ${selectedPayment.client.phone}`}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                    <Building className="w-5 h-5" />
+                    Provider Information
+                  </h3>
+                  <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={selectedPayment.provider.profile_photo || undefined} />
+                      <AvatarFallback className="bg-blue-100 text-blue-800 font-semibold">
+                        {getInitials(selectedPayment.provider.first_name, selectedPayment.provider.last_name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-semibold">{getUserFullName(selectedPayment.provider)}</p>
+                      <p className="text-sm text-gray-600">{selectedPayment.provider.email}</p>
+                      <p className="text-xs text-gray-500">
+                        {selectedPayment.provider.city && selectedPayment.provider.state && 
+                          `${selectedPayment.provider.city}, ${selectedPayment.provider.state}`}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1668,52 +780,134 @@ const TransactionHistory = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-3 bg-gray-50 rounded-lg">
                     <p className="text-sm text-gray-500 mb-1">Payment Method</p>
-                    <p className="font-medium">{selectedTransaction.payment_method}</p>
+                    <p className="font-medium capitalize">{selectedPayment.payment_method_type}</p>
                   </div>
                   <div className="p-3 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-500 mb-1">Payment Gateway</p>
-                    <p className="font-medium">{selectedTransaction.payment_gateway}</p>
+                    <p className="text-sm text-gray-500 mb-1">Currency</p>
+                    <p className="font-medium uppercase">{selectedPayment.currency}</p>
                   </div>
-                  {selectedTransaction.reference_number && (
+                  {selectedPayment.card_brand && (
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <p className="text-sm text-gray-500 mb-1">Card Brand</p>
+                      <p className="font-medium capitalize">{selectedPayment.card_brand}</p>
+                    </div>
+                  )}
+                  {selectedPayment.card_last4 && (
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <p className="text-sm text-gray-500 mb-1">Card Number</p>
+                      <p className="font-mono text-sm">****{selectedPayment.card_last4}</p>
+                    </div>
+                  )}
+                  <div className="p-3 bg-gray-50 rounded-lg col-span-2">
+                    <p className="text-sm text-gray-500 mb-1">Stripe Customer ID</p>
+                    <p className="font-mono text-sm">{selectedPayment.stripe_customer_id}</p>
+                  </div>
+                  {selectedPayment.stripe_charge_id && (
                     <div className="p-3 bg-gray-50 rounded-lg col-span-2">
-                      <p className="text-sm text-gray-500 mb-1">Reference Number</p>
-                      <p className="font-mono text-sm">
-                        {selectedTransaction.reference_number}
-                      </p>
+                      <p className="text-sm text-gray-500 mb-1">Stripe Charge ID</p>
+                      <p className="font-mono text-sm">{selectedPayment.stripe_charge_id}</p>
                     </div>
                   )}
                 </div>
               </div>
 
-              <Separator />
+              {/* Booking Information */}
+              {selectedPayment.booking && (
+                <>
+                  <Separator />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                      <Receipt className="w-5 h-5" />
+                      Booking Information
+                    </h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">Service Location</p>
+                        <p className="font-medium text-sm">{selectedPayment.booking.service_location}</p>
+                      </div>
+                      <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">Hourly Rate</p>
+                        <p className="font-medium">{formatCurrency(selectedPayment.booking.hourly_rate, selectedPayment.currency)}</p>
+                      </div>
+                      <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">Total Hours</p>
+                        <p className="font-medium">{selectedPayment.booking.hours} hours</p>
+                      </div>
+                      <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">Booking Status</p>
+                        <Badge variant="outline" className="capitalize">
+                          {selectedPayment.booking.status}
+                        </Badge>
+                      </div>
+                      <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">Booking Date</p>
+                        <p className="font-medium text-sm">{formatDateTime(selectedPayment.booking.booking_date)}</p>
+                      </div>
+                      <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">Payment Status</p>
+                        <Badge variant="outline" className="capitalize">
+                          {selectedPayment.booking.payment_status}
+                        </Badge>
+                      </div>
+                      {selectedPayment.booking.special_requirements && (
+                        <div className="p-3 bg-gray-50 rounded-lg col-span-2">
+                          <p className="text-sm text-gray-500 mb-1">Special Requirements</p>
+                          <p className="text-sm">{selectedPayment.booking.special_requirements}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
 
-              {/* Description */}
-              <div>
-                <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                  <Receipt className="w-5 h-5" />
-                  Description
-                </h3>
-                <p className="text-gray-700 p-3 bg-gray-50 rounded-lg">
-                  {selectedTransaction.description}
-                </p>
-              </div>
+              {/* Refund Information */}
+              {(selectedPayment.refunded_at || selectedPayment.refund_amount) && (
+                <>
+                  <Separator />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-3 flex items-center gap-2 text-orange-600">
+                      <ArrowDownLeft className="w-5 h-5" />
+                      Refund Information
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4 p-4 bg-orange-50 rounded-lg border border-orange-200">
+                      {selectedPayment.refund_amount && (
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1">Refund Amount</p>
+                          <p className="font-semibold text-orange-700">
+                            {formatCurrency(selectedPayment.refund_amount, selectedPayment.currency)}
+                          </p>
+                        </div>
+                      )}
+                      {selectedPayment.refunded_at && (
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1">Refunded At</p>
+                          <p className="font-medium">{formatDateTime(selectedPayment.refunded_at)}</p>
+                        </div>
+                      )}
+                      {selectedPayment.refund_reason && (
+                        <div className="col-span-2">
+                          <p className="text-sm text-gray-600 mb-1">Refund Reason</p>
+                          <p className="text-sm">{selectedPayment.refund_reason}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
 
-              {/* Metadata */}
-              {selectedTransaction.metadata && (
+              {/* Transactions */}
+              {selectedPayment.transactions && selectedPayment.transactions.length > 0 && (
                 <>
                   <Separator />
                   <div>
                     <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                       <Hash className="w-5 h-5" />
-                      Additional Information
+                      Related Transactions
                     </h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      {Object.entries(selectedTransaction.metadata).map(([key, value]) => (
-                        <div key={key} className="p-3 bg-gray-50 rounded-lg">
-                          <p className="text-sm text-gray-500 mb-1 capitalize">
-                            {key.replace(/_/g, " ")}
-                          </p>
-                          <p className="font-medium">{String(value)}</p>
+                    <div className="space-y-2">
+                      {selectedPayment.transactions.map((transaction: any, index: number) => (
+                        <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                          <p className="text-sm">Transaction #{index + 1}</p>
                         </div>
                       ))}
                     </div>
@@ -1732,18 +926,40 @@ const TransactionHistory = () => {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <span className="text-sm text-gray-600">Created At</span>
-                    <span className="font-medium">
-                      {formatDateTime(selectedTransaction.created_at)}
-                    </span>
+                    <span className="font-medium">{formatDateTime(selectedPayment.created_at)}</span>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <span className="text-sm text-gray-600">Last Updated</span>
-                    <span className="font-medium">
-                      {formatDateTime(selectedTransaction.updated_at)}
-                    </span>
+                    <span className="font-medium">{formatDateTime(selectedPayment.updated_at)}</span>
                   </div>
+                  {selectedPayment.paid_at && (
+                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                      <span className="text-sm text-green-600 font-medium">Paid At</span>
+                      <span className="font-medium">{formatDateTime(selectedPayment.paid_at)}</span>
+                    </div>
+                  )}
+                  {selectedPayment.failed_at && (
+                    <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                      <span className="text-sm text-red-600 font-medium">Failed At</span>
+                      <span className="font-medium">{formatDateTime(selectedPayment.failed_at)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* Stripe Error */}
+              {selectedPayment.stripe_error && (
+                <>
+                  <Separator />
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <h3 className="font-semibold text-red-700 mb-2 flex items-center gap-2">
+                      <AlertCircle className="w-5 h-5" />
+                      Stripe Error
+                    </h3>
+                    <p className="text-sm text-red-600">{selectedPayment.stripe_error}</p>
+                  </div>
+                </>
+              )}
 
               {/* Action Buttons */}
               <div className="flex gap-3 pt-4">
@@ -1755,6 +971,10 @@ const TransactionHistory = () => {
                   Print
                 </Button>
               </div>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              No payment details available
             </div>
           )}
         </DialogContent>
