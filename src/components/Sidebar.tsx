@@ -784,20 +784,20 @@ const navigation: NavigationItem[] = [
       { name: "All Reviews", href: "/dashboard/reviews-all" },
     ],
   },
-  {
-    name: "Manage Subscriptions",
-    icon: CreditCard,
-    subItems: [
-      {
-        name: "Create Subscription",
-        href: "/dashboard/subscription/add-plan-subscription",
-      },
-      {
-        name: "All Subscriptions",
-        href: "/dashboard/subscription/all-subscription",
-      },
-    ],
-  },
+  // {
+  //   name: "Manage Subscriptions",
+  //   icon: CreditCard,
+  //   subItems: [
+  //     {
+  //       name: "Create Subscription",
+  //       href: "/dashboard/subscription/add-plan-subscription",
+  //     },
+  //     {
+  //       name: "All Subscriptions",
+  //       href: "/dashboard/subscription/all-subscription",
+  //     },
+  //   ],
+  // },
   {
     name: "Messages",
     icon: MessageCircle,
@@ -829,7 +829,10 @@ const navigation: NavigationItem[] = [
     ],
   },
   { name: "Transactions", href: "/dashboard/transactions", icon: Banknote },
+  { name: "Payouts", href: "/dashboard/payouts", icon: Banknote },
   // { name: "Settings", href: "/dashboard/settings", icon: Settings },
+  { name: "Job Application", href: "/dashboard/jobs", icon: Banknote },
+  { name: "Notifications", href: "/dashboard/notifications", icon: Banknote },
 ];
 
 export function Sidebar() {

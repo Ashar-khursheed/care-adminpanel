@@ -45,6 +45,9 @@ import PublicRoute from "./routes/public-route";
 import SEOManager from "./pages/seo";
 import GetAllPagesListing from "./pages/st-pages";
 import CreateEditPage from "./pages/st-pages/create-page";
+import AllJobs from "./pages/jobs";
+import Payouts from "./pages/payouts";
+import Notifications from "./pages/notifications";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -358,6 +361,9 @@ const App = () => (
               <Route path="products" element={<Products />} />
               <Route path="orders" element={<Orders />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="jobs" element={<AllJobs />} />
+              <Route path="payouts" element={<Payouts />} />
+              <Route path="notifications" element={<Notifications />} />
             </Route>
 
             {/* Catch-all route */}
