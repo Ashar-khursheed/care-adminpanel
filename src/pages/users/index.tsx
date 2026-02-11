@@ -742,8 +742,8 @@
 // //                 <DropdownMenuItem onClick={() => setFilterRole("Admin")}>
 // //                   Admin
 // //                 </DropdownMenuItem>
-// //                 <DropdownMenuItem onClick={() => setFilterRole("Provider")}>
-// //                   Provider
+// //                 <DropdownMenuItem onClick={() => setFilterRole("Service Provider")}>
+// //                   Service Provider
 // //                 </DropdownMenuItem>
 // //                 <DropdownMenuItem onClick={() => setFilterRole("Client")}>
 // //                   Client
@@ -1032,7 +1032,7 @@
 //     }
 //   };
 
- 
+
 
 //   // Toggle verify user
 //   const handleVerifyToggle = async (userId: number, currentStatus: boolean) => {
@@ -1514,12 +1514,12 @@
 
 //       // Build URL with proper parameters
 //       let url = `${apiUrl.users}?page=${page}&per_page=${itemsPerPage}`;
-      
+
 //       // Add role filter if not "all"
 //       if (role && role !== "all") {
 //         url += `&user_type=${role}`;
 //       }
-      
+
 //       // Add status filter if not "all"
 //       if (status && status !== "all") {
 //         url += `&status=${status}`;
@@ -1606,7 +1606,7 @@
 
 //   const handleRoleFilterChange = async (role: string) => {
 //     setFilterRole(role);
-    
+
 //     // Update URL params
 //     if (role === "all") {
 //       searchParams.delete('user_type');
@@ -1614,7 +1614,7 @@
 //       searchParams.set('user_type', role);
 //     }
 //     setSearchParams(searchParams);
-    
+
 //     const apiRole = role === "all" ? "" : role;
 //     const apiStatus = filterStatus === "all" ? "" : filterStatus;
 //     await fetchUsers(1, perPage, apiRole, apiStatus);
@@ -1634,7 +1634,7 @@
 //   const handlePageChange = (page: number) => {
 //     if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
 //       return;
-    
+
 //     const apiRole = filterRole === "all" ? "" : filterRole;
 //     const apiStatus = filterStatus === "all" ? "" : filterStatus;
 //     fetchUsers(page, perPage, apiRole, apiStatus);
@@ -1652,7 +1652,7 @@
 //   useEffect(() => {
 //     fetchUsers(1, perPage);
 //   }, []);
-  
+
 //   useEffect(() => {
 //     const apiRole = filterRole === "all" ? "" : filterRole;
 //     fetchUsers(1, perPage, apiRole, "");
@@ -1970,10 +1970,10 @@ interface PaginationData {
 export default function Users() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // ✅ Get filter from URL
   const urlUserType = searchParams.get('user_type') || 'all';
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState(urlUserType);
   const [filterStatus, setFilterStatus] = useState("all");
@@ -1998,12 +1998,12 @@ export default function Users() {
       setIsLoading(true);
 
       let url = `${apiUrl.users}?page=${page}&per_page=${itemsPerPage}`;
-      
+
       // ✅ Add user_type filter
       if (role && role !== "all") {
         url += `&user_type=${role}`;
       }
-      
+
       if (status && status !== "all") {
         url += `&status=${status}`;
       }
@@ -2054,14 +2054,14 @@ export default function Users() {
       console.error("❌ Error updating verification:", error);
       const errorMessage =
         error &&
-        typeof error === "object" &&
-        "response" in error &&
-        error.response &&
-        typeof error.response === "object" &&
-        "data" in error.response &&
-        error.response.data &&
-        typeof error.response.data === "object" &&
-        "message" in error.response.data
+          typeof error === "object" &&
+          "response" in error &&
+          error.response &&
+          typeof error.response === "object" &&
+          "data" in error.response &&
+          error.response.data &&
+          typeof error.response.data === "object" &&
+          "message" in error.response.data
           ? String(error.response.data.message)
           : "Failed to update verification";
       notify({
@@ -2080,8 +2080,8 @@ export default function Users() {
           status === "active"
             ? "bg-green-100 text-green-800 hover:bg-green-100"
             : status === "pending_verification"
-            ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-            : "bg-red-100 text-red-800 hover:bg-red-100"
+              ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+              : "bg-red-100 text-red-800 hover:bg-red-100"
         }
       >
         {status}
@@ -2092,7 +2092,7 @@ export default function Users() {
   const handleRoleFilterChange = async (role: string) => {
     console.log("🔄 Changing role filter to:", role);
     setFilterRole(role);
-    
+
     // Update URL params
     if (role === "all") {
       searchParams.delete('user_type');
@@ -2100,7 +2100,7 @@ export default function Users() {
       searchParams.set('user_type', role);
     }
     setSearchParams(searchParams);
-    
+
     const apiRole = role === "all" ? "" : role;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
     await fetchUsers(1, perPage, apiRole, apiStatus);
@@ -2116,7 +2116,7 @@ export default function Users() {
   const handlePageChange = (page: number) => {
     if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
       return;
-    
+
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
     fetchUsers(page, perPage, apiRole, apiStatus);
@@ -2135,12 +2135,12 @@ export default function Users() {
     console.log("🚀 Component mounted/URL changed");
     console.log("📍 URL user_type param:", urlUserType);
     console.log("📍 Current filterRole state:", filterRole);
-    
+
     // Update filterRole if URL changed
     if (urlUserType !== filterRole) {
       setFilterRole(urlUserType);
     }
-    
+
     // Fetch with URL params
     const apiRole = urlUserType === "all" ? "" : urlUserType;
     fetchUsers(1, perPage, apiRole, "");

@@ -150,7 +150,7 @@ const AllJobs = () => {
       setLoading(true);
 
       const response = await makeApiRequest<ApiResponse>(
-        `https://careapi.in-sourceit.com/api/v1/admin/job-applications?page=${page}`,
+        `admin/job-applications?page=${page}`,
         {
           method: "GET",
         }
@@ -179,10 +179,10 @@ const AllJobs = () => {
 
   const calculateStats = (data: JobApplication[], total: number) => {
     const uniquePositions = new Set(data.map((app) => app.position.toLowerCase())).size;
-    const fullTimeCount = data.filter((app) => 
+    const fullTimeCount = data.filter((app) =>
       app.availability.toLowerCase().includes("full")
     ).length;
-    const remoteCount = data.filter((app) => 
+    const remoteCount = data.filter((app) =>
       app.availability.toLowerCase().includes("remote")
     ).length;
 

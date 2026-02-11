@@ -164,7 +164,7 @@ const Payouts = () => {
       setStatsLoading(true);
 
       const response = await makeApiRequest<StatisticsResponse>(
-        "https://careapi.in-sourceit.com/api/v1/admin/payouts/statistics",
+        "admin/payouts/statistics",
         {
           method: "GET",
         }
@@ -220,7 +220,7 @@ const Payouts = () => {
       setLoading(true);
 
       const response = await makeApiRequest<PayoutsResponse>(
-        `https://careapi.in-sourceit.com/api/v1/admin/payouts?page=${page}`,
+        `admin/payouts?page=${page}`,
         {
           method: "GET",
         }
@@ -258,31 +258,31 @@ const Payouts = () => {
 
 
 
-const getStatusConfig = (status: string) => {
-  const config: Record<string, { className: string; icon: any; label: string }> = {
-    paid: {
-      className: "bg-green-100 text-green-800 hover:bg-green-100",
-      icon: CheckCircle,
-      label: "Paid",
-    },
-    pending: {
-      className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
-      icon: Clock,
-      label: "Pending",
-    },
-    rejected: {
-      className: "bg-red-100 text-red-800 hover:bg-red-100",
-      icon: XCircle,
-      label: "Rejected",
-    },
-    processing: {
-      className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
-      icon: TrendingUp,
-      label: "Processing",
-    },
+  const getStatusConfig = (status: string) => {
+    const config: Record<string, { className: string; icon: any; label: string }> = {
+      paid: {
+        className: "bg-green-100 text-green-800 hover:bg-green-100",
+        icon: CheckCircle,
+        label: "Paid",
+      },
+      pending: {
+        className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+        icon: Clock,
+        label: "Pending",
+      },
+      rejected: {
+        className: "bg-red-100 text-red-800 hover:bg-red-100",
+        icon: XCircle,
+        label: "Rejected",
+      },
+      processing: {
+        className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
+        icon: TrendingUp,
+        label: "Processing",
+      },
+    };
+    return config[status] || config.pending;
   };
-  return config[status] || config.pending;
-};
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString("en-US", {
       month: "short",
@@ -330,7 +330,7 @@ const getStatusConfig = (status: string) => {
       setApproving(true);
 
       const response = await makeApiRequest(
-        `https://careapi.in-sourceit.com/api/v1/admin/payouts/${selectedPayoutForAction.id}/approve`,
+        `admin/payouts/${selectedPayoutForAction.id}/approve`,
         {
           method: "POST",
         }
@@ -364,7 +364,7 @@ const getStatusConfig = (status: string) => {
       setRejecting(true);
 
       const response = await makeApiRequest(
-        `https://careapi.in-sourceit.com/api/v1/admin/payouts/${selectedPayoutForAction.id}/reject`,
+        `admin/payouts/${selectedPayoutForAction.id}/reject`,
         {
           method: "POST",
         }
@@ -414,7 +414,7 @@ const getStatusConfig = (status: string) => {
             Payouts Management
           </h1>
           <p className="text-muted-foreground">
-            Manage and process provider payouts
+            Manage and process service provider payouts
           </p>
         </div>
         <div className="flex gap-2">
@@ -459,7 +459,7 @@ const getStatusConfig = (status: string) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search by ID, provider name, or email..."
+                placeholder="Search by ID, service provider name, or email..."
                 className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -485,7 +485,7 @@ const getStatusConfig = (status: string) => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Payout ID</TableHead>
-                  <TableHead>Provider</TableHead>
+                  <TableHead>Service Provider</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Created Date</TableHead>
@@ -685,7 +685,7 @@ const getStatusConfig = (status: string) => {
               <div>
                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                   <User className="w-5 h-5" />
-                  Provider Information
+                  Service Provider Information
                 </h3>
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                   <Avatar className="w-16 h-16">

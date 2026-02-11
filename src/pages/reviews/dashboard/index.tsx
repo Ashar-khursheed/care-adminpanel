@@ -99,11 +99,10 @@ const StarRating = ({ rating, size = "sm" }: { rating: number; size?: "sm" | "md
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
-          className={`${sizeClasses[size]} ${
-            star <= rating
+          className={`${sizeClasses[size]} ${star <= rating
               ? "fill-yellow-400 text-yellow-400"
               : "fill-gray-200 text-gray-200"
-          }`}
+            }`}
         />
       ))}
     </div>
@@ -204,7 +203,7 @@ export default function ReviewDashboard() {
           {
             title: "With Response",
             value: data.with_response.toString(),
-            change: "Provider replied",
+            change: "Service Provider replied",
             icon: MessageSquare,
             trend: "up" as const,
           },
@@ -416,9 +415,9 @@ export default function ReviewDashboard() {
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
-            Top Reviewed Providers
+            Top Reviewed Service Providers
           </CardTitle>
-          <CardDescription>Providers with most customer reviews</CardDescription>
+          <CardDescription>Service Providers with most customer reviews</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -445,7 +444,7 @@ export default function ReviewDashboard() {
                       {index + 1}
                     </div>
 
-                    {/* Provider Info */}
+                    {/* Service Provider Info */}
                     <div>
                       <p className="font-semibold text-lg">
                         {provider.provider_name}
@@ -472,7 +471,7 @@ export default function ReviewDashboard() {
               ))
             ) : (
               <div className="text-center text-gray-500 py-8">
-                No provider data available
+                No service provider data available
               </div>
             )}
           </div>
@@ -484,7 +483,7 @@ export default function ReviewDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="text-xl">Response Rate</CardTitle>
-            <CardDescription>Provider engagement with reviews</CardDescription>
+            <CardDescription>Service Provider engagement with reviews</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -499,8 +498,8 @@ export default function ReviewDashboard() {
                     {reviewStats.with_response}
                   </span>
                 </div>
-                <Progress 
-                  value={(reviewStats.with_response / reviewStats.total_reviews) * 100} 
+                <Progress
+                  value={(reviewStats.with_response / reviewStats.total_reviews) * 100}
                   className="h-3"
                 />
                 <p className="text-sm text-gray-500">
@@ -519,8 +518,8 @@ export default function ReviewDashboard() {
                     {reviewStats.without_response}
                   </span>
                 </div>
-                <Progress 
-                  value={(reviewStats.without_response / reviewStats.total_reviews) * 100} 
+                <Progress
+                  value={(reviewStats.without_response / reviewStats.total_reviews) * 100}
                   className="h-3 [&>div]:bg-orange-600"
                 />
                 <p className="text-sm text-gray-500">

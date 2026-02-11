@@ -387,7 +387,7 @@ export default function Dashboard() {
             trend: "up" as const,
           },
           {
-            title: "Active Providers",
+            title: "Active Service Providers",
             value: data.users.active_providers.toString(),
             change: "currently active",
             icon: Activity,

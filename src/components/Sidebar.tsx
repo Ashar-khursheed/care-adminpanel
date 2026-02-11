@@ -753,7 +753,7 @@ const navigation: NavigationItem[] = [
     icon: TrendingUp,
   },
   {
-    name: "Provider Analytics",
+    name: "Service Provider Analytics",
     href: "/dashboard/analytics/provider",
     icon: CircleDotDashed,
   },
@@ -763,11 +763,11 @@ const navigation: NavigationItem[] = [
     icon: User,
     subItems: [
       { name: "All Users", href: "/dashboard/users" },
-      { name: "Providers", href: "/dashboard/users?user_type=provider" },
+      { name: "Service Providers", href: "/dashboard/users?user_type=provider" },
       { name: "Clients", href: "/dashboard/users?user_type=client" },
     ],
   },
-  { name: "Care Provider", href: "/dashboard/job-listing", icon: ListCheck },
+  { name: "Care Service Provider", href: "/dashboard/job-listing", icon: ListCheck },
   {
     name: "Bookings",
     icon: CalendarCheck,
@@ -822,7 +822,7 @@ const navigation: NavigationItem[] = [
     ],
   },
   {
-    name: "Pages Settings" ,
+    name: "Pages Settings",
     icon: Settings,
     subItems: [
       { name: "Get All Pages", href: "/dashboard/get-all-pages" },
@@ -911,7 +911,7 @@ export function Sidebar() {
                       "w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                       collapsed && "justify-center",
                       isSubMenuActive(item.subItems) &&
-                        "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600"
+                      "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600"
                     )}
                   >
                     <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -940,7 +940,7 @@ export function Sidebar() {
                             className={cn(
                               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                               isActive &&
-                                "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+                              "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
                             )}
                           >
                             <span>{subItem.name}</span>
@@ -957,7 +957,7 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                     isPathActive(item.href!) &&
-                      "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+                    "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
                     collapsed && "justify-center"
                   )}
                 >

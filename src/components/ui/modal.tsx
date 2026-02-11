@@ -1,8 +1,30 @@
 import { useEffect, useState } from 'react';
 
 // Modal Component - Reusable
-export const Modal = ({ isOpen, onClose, title, children, width, footerBtnText, zIndex,  showFooter = true, onConfirm }) => {
-   // Background scroll lock
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  width: string;
+  footerBtnText?: string;
+  zIndex?: boolean;
+  showFooter?: boolean;
+  onConfirm?: () => void;
+}
+
+export const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  width,
+  footerBtnText = 'Confirm',
+  zIndex = false,
+  showFooter = true,
+  onConfirm = () => { }
+}: ModalProps) => {
+  // Background scroll lock
   useEffect(() => {
     if (isOpen) {
       // Modal open hone pe body scroll lock karo
@@ -24,7 +46,7 @@ export const Modal = ({ isOpen, onClose, title, children, width, footerBtnText, 
   return (
     <div
       className={`fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center p-4  animate-fadeIn backdrop-blur-sm ${zIndex === true ? 'z-[9999]' : 'z-50'}`}
-      // onClick={onClose}
+    // onClick={onClose}
     >
       <div
         className={`bg-white rounded-md shadow-2xl ${width} w-full animate-slideUp`}

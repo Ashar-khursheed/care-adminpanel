@@ -93,7 +93,7 @@ interface Payment {
   id: number;
   booking_id: number;
   client_id: number;
-  provider_id: number;
+  service_provider_id: number;
   amount: string;
   platform_fee: string;
   provider_amount: string;
@@ -214,7 +214,7 @@ const TransactionHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -224,9 +224,9 @@ const TransactionHistory = () => {
   const fetchStatistics = async () => {
     try {
       setStatsLoading(true);
-      
+
       const response = await makeApiRequest<StatisticsResponse>(
-        "https://careapi.in-sourceit.com/api/v1/admin/payments/statistics",
+        "admin/payments/statistics",
         {
           method: "GET",
         }
@@ -234,7 +234,7 @@ const TransactionHistory = () => {
 
       if (response?.success && response.data) {
         const stats = response.data;
-        
+
         const transformedStats: StatCard[] = [
           {
             title: "Total Payments",
@@ -272,21 +272,21 @@ const TransactionHistory = () => {
             trend: "up" as const,
           },
           {
-            title: "Provider Earnings",
+            title: "Service Provider Earnings",
             value: `$${stats.overview.total_provider_earnings.toFixed(2)}`,
-            change: "Total to providers",
+            change: "Total to service providers",
             icon: TrendingDown,
             trend: "down" as const,
           },
         ];
-        
+
         setStatsData(transformedStats);
       }
     } catch (error: any) {
       console.error("❌ Error fetching statistics:", error);
-      notify({ 
-        message: error?.response?.data?.message || "Failed to fetch statistics", 
-        type: "error" 
+      notify({
+        message: error?.response?.data?.message || "Failed to fetch statistics",
+        type: "error"
       });
     } finally {
       setStatsLoading(false);
@@ -296,9 +296,9 @@ const TransactionHistory = () => {
   const fetchPayments = async (page: number = 1) => {
     try {
       setLoading(true);
-      
+
       const response = await makeApiRequest<PaymentsResponse>(
-        `https://careapi.in-sourceit.com/api/v1/admin/payments?page=${page}`,
+        `admin/payments?page=${page}`,
         {
           method: "GET",
         }
@@ -313,9 +313,9 @@ const TransactionHistory = () => {
       }
     } catch (error: any) {
       console.error("❌ Error fetching payments:", error);
-      notify({ 
-        message: error?.response?.data?.message || "Failed to fetch payments", 
-        type: "error" 
+      notify({
+        message: error?.response?.data?.message || "Failed to fetch payments",
+        type: "error"
       });
     } finally {
       setLoading(false);
@@ -325,9 +325,9 @@ const TransactionHistory = () => {
   const fetchPaymentDetail = async (paymentId: number) => {
     try {
       setDetailLoading(true);
-      
+
       const response = await makeApiRequest<PaymentDetailResponse>(
-        `https://careapi.in-sourceit.com/api/v1/admin/payments/${paymentId}`,
+        `admin/payments/${paymentId}`,
         {
           method: "GET",
         }
@@ -339,9 +339,9 @@ const TransactionHistory = () => {
       }
     } catch (error: any) {
       console.error("❌ Error fetching payment details:", error);
-      notify({ 
-        message: error?.response?.data?.message || "Failed to fetch payment details", 
-        type: "error" 
+      notify({
+        message: error?.response?.data?.message || "Failed to fetch payment details",
+        type: "error"
       });
     } finally {
       setDetailLoading(false);
@@ -434,7 +434,7 @@ const TransactionHistory = () => {
   const filteredPayments = payments.filter((payment) => {
     const clientName = getUserFullName(payment.client).toLowerCase();
     const providerName = getUserFullName(payment.provider).toLowerCase();
-    
+
     const matchesSearch =
       payment.stripe_payment_intent_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       clientName.includes(searchQuery.toLowerCase()) ||
@@ -512,7 +512,7 @@ const TransactionHistory = () => {
                 <TableRow>
                   <TableHead>Payment ID</TableHead>
                   <TableHead>Client</TableHead>
-                  <TableHead>Provider</TableHead>
+                  <TableHead>Service Provider</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Platform Fee</TableHead>
                   <TableHead>Status</TableHead>
@@ -628,9 +628,9 @@ const TransactionHistory = () => {
                 Showing {((currentPage - 1) * perPage) + 1} to {Math.min(currentPage * perPage, totalRecords)} of {totalRecords} payments
               </p>
               <div className="flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
@@ -639,9 +639,9 @@ const TransactionHistory = () => {
                 <span className="px-3 py-1 bg-gray-100 rounded">
                   Page {currentPage} of {totalPages}
                 </span>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   disabled={currentPage === totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
@@ -748,7 +748,7 @@ const TransactionHistory = () => {
                 <div>
                   <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                     <Building className="w-5 h-5" />
-                    Provider Information
+                    Service Provider Information
                   </h3>
                   <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                     <Avatar className="w-12 h-12">
@@ -761,7 +761,7 @@ const TransactionHistory = () => {
                       <p className="font-semibold">{getUserFullName(selectedPayment.provider)}</p>
                       <p className="text-sm text-gray-600">{selectedPayment.provider.email}</p>
                       <p className="text-xs text-gray-500">
-                        {selectedPayment.provider.city && selectedPayment.provider.state && 
+                        {selectedPayment.provider.city && selectedPayment.provider.state &&
                           `${selectedPayment.provider.city}, ${selectedPayment.provider.state}`}
                       </p>
                     </div>

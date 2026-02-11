@@ -373,7 +373,7 @@ const CreateUser = () => {
                     <SelectGroup>
                       <SelectLabel>User Types</SelectLabel>
                       <SelectItem value="client">Client</SelectItem>
-                      <SelectItem value="provider">Provider</SelectItem>
+                      <SelectItem value="provider">Service Provider</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>

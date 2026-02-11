@@ -189,7 +189,7 @@ const Notifications = () => {
       setStatsLoading(true);
 
       const response = await makeApiRequest<StatisticsResponse>(
-        "https://careapi.in-sourceit.com/api/v1/admin/notifications/statistics",
+        "admin/notifications/statistics",
         {
           method: "GET",
         }
@@ -247,7 +247,7 @@ const Notifications = () => {
       setLoading(true);
 
       const response = await makeApiRequest<NotificationsResponse>(
-        `https://careapi.in-sourceit.com/api/v1/admin/notifications?page=${page}`,
+        `admin/notifications?page=${page}`,
         {
           method: "GET",
         }
@@ -284,64 +284,64 @@ const Notifications = () => {
     }
   };
 
- const getTypeConfig = (type: string) => {
-  const config: Record<string, { className: string; icon: any; label: string }> = {
-    system_announcement: {
-      className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
-      icon: Bell,
-      label: "System Announcement",
-    },
-    booking_update: {
-      className: "bg-purple-100 text-purple-800 hover:bg-purple-100",
-      icon: Clock,
-      label: "Booking Update",
-    },
-    payment_notification: {
-      className: "bg-green-100 text-green-800 hover:bg-green-100",
-      icon: CheckCircle,
-      label: "Payment",
-    },
-    alert: {
-      className: "bg-red-100 text-red-800 hover:bg-red-100",
-      icon: AlertCircle,
-      label: "Alert",
-    },
+  const getTypeConfig = (type: string) => {
+    const config: Record<string, { className: string; icon: any; label: string }> = {
+      system_announcement: {
+        className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
+        icon: Bell,
+        label: "System Announcement",
+      },
+      booking_update: {
+        className: "bg-purple-100 text-purple-800 hover:bg-purple-100",
+        icon: Clock,
+        label: "Booking Update",
+      },
+      payment_notification: {
+        className: "bg-green-100 text-green-800 hover:bg-green-100",
+        icon: CheckCircle,
+        label: "Payment",
+      },
+      alert: {
+        className: "bg-red-100 text-red-800 hover:bg-red-100",
+        icon: AlertCircle,
+        label: "Alert",
+      },
+    };
+    return (
+      config[type] || {
+        className: "bg-gray-100 text-gray-800 hover:bg-gray-100",
+        icon: Bell,
+        label: type.replace(/_/g, " "),
+      }
+    );
   };
-  return (
-    config[type] || {
-      className: "bg-gray-100 text-gray-800 hover:bg-gray-100",
-      icon: Bell,
-      label: type.replace(/_/g, " "),
-    }
-  );
-};
 
-const getPriorityConfig = (priority: string) => {
-  const config: Record<string, { className: string; label: string; dotColor: string }> = {
-    high: {
-      className: "bg-red-100 text-red-800 hover:bg-red-100",
-      label: "High",
-      dotColor: "bg-red-500",
-    },
-    medium: {
-      className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
-      label: "Medium",
-      dotColor: "bg-yellow-500",
-    },
-    low: {
-      className: "bg-green-100 text-green-800 hover:bg-green-100",
-      label: "Low",
-      dotColor: "bg-green-500",
-    },
+  const getPriorityConfig = (priority: string) => {
+    const config: Record<string, { className: string; label: string; dotColor: string }> = {
+      high: {
+        className: "bg-red-100 text-red-800 hover:bg-red-100",
+        label: "High",
+        dotColor: "bg-red-500",
+      },
+      medium: {
+        className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+        label: "Medium",
+        dotColor: "bg-yellow-500",
+      },
+      low: {
+        className: "bg-green-100 text-green-800 hover:bg-green-100",
+        label: "Low",
+        dotColor: "bg-green-500",
+      },
+    };
+    return (
+      config[priority] || {
+        className: "bg-gray-100 text-gray-800 hover:bg-gray-100",
+        label: priority,
+        dotColor: "bg-gray-500",
+      }
+    );
   };
-  return (
-    config[priority] || {
-      className: "bg-gray-100 text-gray-800 hover:bg-gray-100",
-      label: priority,
-      dotColor: "bg-gray-500",
-    }
-  );
-};
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString("en-US", {
       month: "short",
@@ -529,9 +529,8 @@ const getPriorityConfig = (priority: string) => {
                     return (
                       <TableRow
                         key={notification.id}
-                        className={`hover:bg-gray-50 ${
-                          !notification.is_read ? "bg-blue-50/30" : ""
-                        }`}
+                        className={`hover:bg-gray-50 ${!notification.is_read ? "bg-blue-50/30" : ""
+                          }`}
                       >
                         <TableCell>
                           {notification.is_read ? (
@@ -811,19 +810,17 @@ const getPriorityConfig = (priority: string) => {
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div
-                    className={`p-4 rounded-lg border-2 ${
-                      selectedNotification.sent_email
+                    className={`p-4 rounded-lg border-2 ${selectedNotification.sent_email
                         ? "bg-green-50 border-green-200"
                         : "bg-gray-50 border-gray-200"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <Mail
-                        className={`w-5 h-5 ${
-                          selectedNotification.sent_email
+                        className={`w-5 h-5 ${selectedNotification.sent_email
                             ? "text-green-600"
                             : "text-gray-400"
-                        }`}
+                          }`}
                       />
                       <span className="font-semibold">Email</span>
                     </div>
@@ -837,19 +834,17 @@ const getPriorityConfig = (priority: string) => {
                   </div>
 
                   <div
-                    className={`p-4 rounded-lg border-2 ${
-                      selectedNotification.sent_push
+                    className={`p-4 rounded-lg border-2 ${selectedNotification.sent_push
                         ? "bg-blue-50 border-blue-200"
                         : "bg-gray-50 border-gray-200"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <Smartphone
-                        className={`w-5 h-5 ${
-                          selectedNotification.sent_push
+                        className={`w-5 h-5 ${selectedNotification.sent_push
                             ? "text-blue-600"
                             : "text-gray-400"
-                        }`}
+                          }`}
                       />
                       <span className="font-semibold">Push</span>
                     </div>
@@ -863,19 +858,17 @@ const getPriorityConfig = (priority: string) => {
                   </div>
 
                   <div
-                    className={`p-4 rounded-lg border-2 ${
-                      selectedNotification.sent_sms
+                    className={`p-4 rounded-lg border-2 ${selectedNotification.sent_sms
                         ? "bg-purple-50 border-purple-200"
                         : "bg-gray-50 border-gray-200"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <MessageSquare
-                        className={`w-5 h-5 ${
-                          selectedNotification.sent_sms
+                        className={`w-5 h-5 ${selectedNotification.sent_sms
                             ? "text-purple-600"
                             : "text-gray-400"
-                        }`}
+                          }`}
                       />
                       <span className="font-semibold">SMS</span>
                     </div>
@@ -889,19 +882,17 @@ const getPriorityConfig = (priority: string) => {
                   </div>
 
                   <div
-                    className={`p-4 rounded-lg border-2 ${
-                      selectedNotification.sent_in_app
+                    className={`p-4 rounded-lg border-2 ${selectedNotification.sent_in_app
                         ? "bg-indigo-50 border-indigo-200"
                         : "bg-gray-50 border-gray-200"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <Bell
-                        className={`w-5 h-5 ${
-                          selectedNotification.sent_in_app
+                        className={`w-5 h-5 ${selectedNotification.sent_in_app
                             ? "text-indigo-600"
                             : "text-gray-400"
-                        }`}
+                          }`}
                       />
                       <span className="font-semibold">In-App</span>
                     </div>

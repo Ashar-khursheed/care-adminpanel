@@ -58,12 +58,12 @@ interface JobListing {
   category: {
     name: string;
 
-}
-    years_of_experience: number;
-    service_location: string;
-    service_radius: number;
-    status: string;
-    created_at: string;
+  }
+  years_of_experience: number;
+  service_location: string;
+  service_radius: number;
+  status: string;
+  created_at: string;
 }
 
 export default function JobListing() {
@@ -134,23 +134,22 @@ export default function JobListing() {
       }
 
       notify({
-        message: `User ${
-          !currentStatus ? "verified" : "unverified"
-        } successfully`,
+        message: `User ${!currentStatus ? "verified" : "unverified"
+          } successfully`,
         type: "success",
       });
     } catch (error: unknown) {
       console.error("❌ Error updating verification:", error);
       const errorMessage =
         error &&
-        typeof error === "object" &&
-        "response" in error &&
-        error.response &&
-        typeof error.response === "object" &&
-        "data" in error.response &&
-        error.response.data &&
-        typeof error.response.data === "object" &&
-        "message" in error.response.data
+          typeof error === "object" &&
+          "response" in error &&
+          error.response &&
+          typeof error.response === "object" &&
+          "data" in error.response &&
+          error.response.data &&
+          typeof error.response.data === "object" &&
+          "message" in error.response.data
           ? String(error.response.data.message)
           : "Failed to update verification";
       notify({
@@ -169,8 +168,8 @@ export default function JobListing() {
           status === "active"
             ? "bg-green-100 text-green-800 hover:bg-green-100"
             : status === "pending_verification"
-            ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-            : "bg-red-100 text-red-800 hover:bg-red-100"
+              ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+              : "bg-red-100 text-red-800 hover:bg-red-100"
         }
       >
         {status}
@@ -178,9 +177,9 @@ export default function JobListing() {
     );
   };
 
-  
 
-  
+
+
   const handlePageChange = (page: number) => {
     if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
       return;
@@ -205,9 +204,9 @@ export default function JobListing() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Care Provider</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Care Service Provider</h1>
           <p className="text-muted-foreground">
-            Manage and overview all care providers
+            Manage and overview all care service providers
           </p>
         </div>
         {/* <Link to="/dashboard/create-user">
@@ -222,7 +221,7 @@ export default function JobListing() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Care Provider</CardTitle>
+              <CardTitle>Care Service Provider</CardTitle>
               <CardDescription>
                 {apiData.pagination ? (
                   <span>
