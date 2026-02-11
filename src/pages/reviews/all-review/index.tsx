@@ -1,49 +1,49 @@
-import { useEffect, useState } from "react";
-import { User, ChevronDown, Eye, Star, MessageSquare, ThumbsUp, Flag, Check, X } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { CustomPagination } from "@/components/custom-pagination";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
-import makeApiRequest from "@/services/axios";
-import { notify } from "@/utils/utils";
-import { CustomPagination } from "@/components/custom-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useNavigate } from "react-router-dom";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import makeApiRequest from "@/services/axios";
+import { formatDate, notify } from "@/utils/utils";
+import { Check, ChevronDown, Eye, Flag, MessageSquare, Star, ThumbsUp, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface PaginationMeta {
   current_page: number;
@@ -366,6 +366,7 @@ export default function AllReviews() {
         </CardHeader>
 
         <CardContent>
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -539,11 +540,7 @@ export default function AllReviews() {
                         {/* Date */}
                         <TableCell>
                           <div className="text-sm">
-                            {new Date(review.created_at).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })}
+                            {formatDate(review.created_at)}
                           </div>
                         </TableCell>
 
@@ -621,6 +618,7 @@ export default function AllReviews() {
               )}
             </TableBody>
           </Table>
+          </div>
 
           {/* Pagination */}
           {apiData.pagination && apiData.pagination.last_page > 1 && (

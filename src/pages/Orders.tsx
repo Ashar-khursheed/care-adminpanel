@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { FilePlus, ChevronDown, Clock, Activity, CalendarDays } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { formatDate } from '@/utils/utils';
+import { Activity, CalendarDays, ChevronDown, Clock, FilePlus } from 'lucide-react';
+import { useState } from 'react';
 
 const orderData = [
   { id: '#ORD-001', customer: 'John Doe', email: 'john@example.com', total: 129.99, status: 'Delivered', date: '2024-06-01' },
@@ -154,7 +155,8 @@ export default function Orders() {
         </CardHeader>
         
         <CardContent>
-          <Table>
+          <div className="overflow-x-auto">
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Order ID</TableHead>
@@ -179,8 +181,8 @@ export default function Orders() {
                   <TableCell>
                     {getStatusBadge(order.status)}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {new Date(order.date).toLocaleDateString()}
+                  <TableCell className="text-muted-foreground whitespace-nowrap">
+                    {formatDate(order.date)}
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
@@ -202,6 +204,7 @@ export default function Orders() {
               ))}
             </TableBody>
           </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
