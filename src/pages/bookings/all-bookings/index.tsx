@@ -1,32 +1,32 @@
-import { useEffect, useState } from "react";
-import { User, ChevronDown, Eye, Calendar, DollarSign } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { CustomPagination } from "@/components/custom-pagination";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import makeApiRequest from "@/services/axios";
 import { notify } from "@/utils/utils";
-import { CustomPagination } from "@/components/custom-pagination";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Calendar, ChevronDown, DollarSign, Eye } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface PaginationData {
@@ -235,6 +235,7 @@ export default function AllBookings() {
         </CardHeader>
 
         <CardContent>
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -418,6 +419,7 @@ export default function AllBookings() {
               )}
             </TableBody>
           </Table>
+          </div>
 
           {/* Pagination */}
           {apiData.pagination && apiData.pagination.last_page > 1 && (

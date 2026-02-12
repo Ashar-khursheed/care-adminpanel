@@ -811,8 +811,7 @@
 // //                                 {user.email}
 // //                               </div>
 // //                             </div>
-// //                           </div>
-// //                         </TableCell>
+// //                           </TableCell>
 // //                         <TableCell>
 // //                           <Badge variant="outline">{user.user_type}</Badge>
 // //                         </TableCell>
@@ -1905,48 +1904,48 @@
 
 
 
-import { useEffect, useState } from "react";
-import { User, ChevronDown, Pencil, Eye, Trash2 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import makeApiRequest from "@/services/axios";
-import { apiUrl } from "@/services/api-end-point";
-import ToggleSwitch from "@/components/ui/toggle-switch";
-import { notify } from "@/utils/utils";
 import { CustomPagination } from "@/components/custom-pagination";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import ToggleSwitch from "@/components/ui/toggle-switch";
+import { apiUrl } from "@/services/api-end-point";
+import makeApiRequest from "@/services/axios";
+import { formatDate, notify } from "@/utils/utils";
+import { ChevronDown, Eye, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 interface User {
   id: number;
@@ -2247,6 +2246,7 @@ export default function Users() {
         </CardHeader>
 
         <CardContent>
+          <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -2332,8 +2332,8 @@ export default function Users() {
                             disabled={loadingStates[user.id]}
                           />
                         </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {new Date(user.created_at).toLocaleDateString()}
+                        <TableCell className="text-muted-foreground whitespace-nowrap">
+                          {formatDate(user.created_at)}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex gap-2 justify-end cursor-pointer">
@@ -2365,6 +2365,7 @@ export default function Users() {
               )}
             </TableBody>
           </Table>
+          </div>
 
           {/* Pagination */}
           {apiData.pagination && apiData.pagination.last_page > 1 && (

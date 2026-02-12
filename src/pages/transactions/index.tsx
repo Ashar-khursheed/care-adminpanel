@@ -1,26 +1,7 @@
-import {
-  CreditCard,
-  DollarSign,
-  TrendingUp,
-  TrendingDown,
-  Search,
-  Filter,
-  Download,
-  Eye,
-  CheckCircle,
-  XCircle,
-  Clock,
-  AlertCircle,
-  Calendar,
-  User,
-  Building,
-  Hash,
-  ArrowUpRight,
-  ArrowDownLeft,
-  Receipt,
-  LucideIcon,
-} from "lucide-react";
 import { StatsCard } from "@/components/StatsCard";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -29,16 +10,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -48,18 +34,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
+  AlertCircle,
+  ArrowDownLeft,
+  Building,
+  Calendar,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  DollarSign,
+  Download,
+  Eye,
+  Hash,
+  LucideIcon,
+  Receipt,
+  Search,
+  TrendingDown,
+  TrendingUp,
+  User,
+  XCircle
+} from "lucide-react";
 
-import makeApiRequest from "@/services/axios";
-import { useEffect, useState } from "react";
-import { notify } from "@/utils/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import makeApiRequest from "@/services/axios";
+import { notify } from "@/utils/utils";
+import { useEffect, useState } from "react";
 
 // Type definitions based on API response
 interface PaymentUser {
@@ -449,7 +447,7 @@ const TransactionHistory = () => {
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {statsLoading ? (
           Array.from({ length: 6 }).map((_, index) => (
             <Skeleton key={index} className="h-32 rounded-lg" />
@@ -478,12 +476,12 @@ const TransactionHistory = () => {
         <CardContent>
           {/* Filters */}
           <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <div className="flex-1 relative">
+            <div className="flex-1 relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="text"
                 placeholder="Search by payment ID, client, provider, or email..."
-                className="pl-10"
+                className="pl-10 w-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -506,18 +504,18 @@ const TransactionHistory = () => {
           </div>
 
           {/* Table */}
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Payment ID</TableHead>
+                  <TableHead className="hidden md:table-cell">Payment ID</TableHead>
                   <TableHead>Client</TableHead>
-                  <TableHead>Service Provider</TableHead>
+                  <TableHead className="hidden lg:table-cell">Service Provider</TableHead>
                   <TableHead>Amount</TableHead>
-                  <TableHead>Platform Fee</TableHead>
+                  <TableHead className="hidden xl:table-cell">Platform Fee</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Payment Method</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="hidden lg:table-cell">Payment Method</TableHead>
+                  <TableHead className="hidden md:table-cell">Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -537,7 +535,7 @@ const TransactionHistory = () => {
 
                     return (
                       <TableRow key={payment.id} className="hover:bg-gray-50">
-                        <TableCell className="font-mono text-xs">
+                        <TableCell className="font-mono text-xs hidden md:table-cell">
                           {payment.stripe_payment_intent_id?.substring(0, 20)}...
                         </TableCell>
                         <TableCell>
@@ -554,7 +552,7 @@ const TransactionHistory = () => {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           <div className="flex items-center gap-3">
                             <Avatar className="w-8 h-8">
                               <AvatarImage src={payment.provider.profile_photo || undefined} />
@@ -573,7 +571,7 @@ const TransactionHistory = () => {
                             {formatCurrency(payment.amount, payment.currency)}
                           </span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden xl:table-cell">
                           <span className="text-sm text-gray-600">
                             {formatCurrency(payment.platform_fee, payment.currency)}
                           </span>
@@ -584,7 +582,7 @@ const TransactionHistory = () => {
                             {statusConfig.label}
                           </Badge>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           <div className="flex items-center gap-2">
                             <CreditCard className="w-4 h-4 text-gray-400" />
                             <span className="text-sm capitalize">{payment.payment_method_type}</span>
@@ -593,7 +591,7 @@ const TransactionHistory = () => {
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600">
+                        <TableCell className="text-sm text-gray-600 hidden md:table-cell">
                           {formatDateTime(payment.created_at)}
                         </TableCell>
                         <TableCell className="text-right">
@@ -623,7 +621,7 @@ const TransactionHistory = () => {
 
           {/* Pagination */}
           {!loading && filteredPayments.length > 0 && (
-            <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-600">
               <p>
                 Showing {((currentPage - 1) * perPage) + 1} to {Math.min(currentPage * perPage, totalRecords)} of {totalRecords} payments
               </p>
@@ -691,7 +689,7 @@ const TransactionHistory = () => {
               </div>
 
               {/* Amount Breakdown */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 border rounded-lg">
                   <p className="text-sm text-gray-500 mb-2">Platform Fee</p>
                   <p className="text-lg font-semibold text-blue-600">
@@ -722,7 +720,7 @@ const TransactionHistory = () => {
               <Separator />
 
               {/* Client & Provider Information */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                     <User className="w-5 h-5" />
@@ -777,7 +775,7 @@ const TransactionHistory = () => {
                   <CreditCard className="w-5 h-5" />
                   Payment Information
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="p-3 bg-gray-50 rounded-lg">
                     <p className="text-sm text-gray-500 mb-1">Payment Method</p>
                     <p className="font-medium capitalize">{selectedPayment.payment_method_type}</p>
@@ -820,7 +818,7 @@ const TransactionHistory = () => {
                       <Receipt className="w-5 h-5" />
                       Booking Information
                     </h3>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="p-3 bg-gray-50 rounded-lg">
                         <p className="text-sm text-gray-500 mb-1">Service Location</p>
                         <p className="font-medium text-sm">{selectedPayment.booking.service_location}</p>
@@ -869,7 +867,7 @@ const TransactionHistory = () => {
                       <ArrowDownLeft className="w-5 h-5" />
                       Refund Information
                     </h3>
-                    <div className="grid grid-cols-2 gap-4 p-4 bg-orange-50 rounded-lg border border-orange-200">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-orange-50 rounded-lg border border-orange-200">
                       {selectedPayment.refund_amount && (
                         <div>
                           <p className="text-sm text-gray-600 mb-1">Refund Amount</p>
