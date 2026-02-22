@@ -48,6 +48,8 @@ import CreateEditPage from "./pages/st-pages/create-page";
 import AllJobs from "./pages/jobs";
 import Payouts from "./pages/payouts";
 import Notifications from "./pages/notifications";
+import EnquiryListing from "./pages/enquiry";
+import EnquiryDetails from "./pages/enquiry/enquiry-detail";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -364,6 +366,8 @@ const App = () => (
               <Route path="jobs" element={<AllJobs />} />
               <Route path="payouts" element={<Payouts />} />
               <Route path="notifications" element={<Notifications />} />
+              <Route path="enquiries" element={<EnquiryListing />} />
+              <Route path="enquiries/:id" element={<EnquiryDetails />} />
             </Route>
 
             {/* Catch-all route */}

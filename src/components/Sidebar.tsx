@@ -724,11 +724,12 @@ import {
   CreditCard,
   MessageCircle,
   CircleDotDashed,
+  Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth";
-
+import Logo from "@/assets/logo-DXWJtGXP.png";
 interface SubMenuItem {
   name: string;
   href: string;
@@ -759,15 +760,22 @@ const navigation: NavigationItem[] = [
   },
   { name: "Review Analytics", href: "/dashboard/analytics/review", icon: Star },
   {
+    name: "Care Service Provider",
+    href: "/dashboard/job-listing",
+    icon: ListCheck,
+  },
+  {
     name: "Users",
     icon: User,
     subItems: [
       { name: "All Users", href: "/dashboard/users" },
-      { name: "Service Providers", href: "/dashboard/users?user_type=provider" },
+      {
+        name: "Service Providers",
+        href: "/dashboard/users?user_type=provider",
+      },
       { name: "Clients", href: "/dashboard/users?user_type=client" },
     ],
   },
-  { name: "Care Service Provider", href: "/dashboard/job-listing", icon: ListCheck },
   {
     name: "Bookings",
     icon: CalendarCheck,
@@ -817,27 +825,24 @@ const navigation: NavigationItem[] = [
   {
     name: "SEO Settings",
     icon: Settings,
-    subItems: [
-      { name: "Get SEO", href: "/dashboard/get-seo" },
-    ],
+    subItems: [{ name: "Get SEO", href: "/dashboard/get-seo" }],
   },
   {
     name: "Pages Settings",
     icon: Settings,
-    subItems: [
-      { name: "Get All Pages", href: "/dashboard/get-all-pages" },
-    ],
+    subItems: [{ name: "Get All Pages", href: "/dashboard/get-all-pages" }],
   },
   { name: "Transactions", href: "/dashboard/transactions", icon: Banknote },
   { name: "Payouts", href: "/dashboard/payouts", icon: Banknote },
   // { name: "Settings", href: "/dashboard/settings", icon: Settings },
-  { name: "Job Application", href: "/dashboard/jobs", icon: Banknote },
-  { name: "Notifications", href: "/dashboard/notifications", icon: Banknote },
+  { name: "Job Application", href: "/dashboard/jobs", icon: ListCheck },
+  { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
+  { name: "Enquiries", href: "/dashboard/enquiries", icon: MessageCircle },
 ];
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [openMenus, setOpenMenus] = useState<string[]>(["Users"]); // Default open Users menu
+  const [openMenus, setOpenMenus] = useState<string[]>(["Dashboard"]); // Default open Users menu
   const { user } = useAuth();
   const location = useLocation();
 
@@ -848,7 +853,7 @@ export function Sidebar() {
     setOpenMenus((prev) =>
       prev.includes(menuName)
         ? prev.filter((name) => name !== menuName)
-        : [...prev, menuName]
+        : [...prev, menuName],
     );
   };
 
@@ -873,16 +878,14 @@ export function Sidebar() {
     <div
       className={cn(
         "bg-card border-r transition-all duration-300 ease-in-out",
-        collapsed ? "w-16" : "w-72"
+        collapsed ? "w-16" : "w-72",
       )}
     >
       <div className="flex h-full flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           {!collapsed && (
-            <h1 className="text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
-              Care App
-            </h1>
+            <img src={Logo} alt="Logo" className="h-[54px] w-auto" />
           )}
           <Button
             variant="ghost"
@@ -911,7 +914,7 @@ export function Sidebar() {
                       "w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                       collapsed && "justify-center",
                       isSubMenuActive(item.subItems) &&
-                      "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600"
+                        "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600",
                     )}
                   >
                     <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -940,7 +943,7 @@ export function Sidebar() {
                             className={cn(
                               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                               isActive &&
-                              "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+                                "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
                             )}
                           >
                             <span>{subItem.name}</span>
@@ -957,8 +960,8 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                     isPathActive(item.href!) &&
-                    "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
-                    collapsed && "justify-center"
+                      "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+                    collapsed && "justify-center",
                   )}
                 >
                   <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -974,7 +977,7 @@ export function Sidebar() {
           <div
             className={cn(
               "flex items-center gap-3",
-              collapsed && "justify-center"
+              collapsed && "justify-center",
             )}
           >
             <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-semibold">

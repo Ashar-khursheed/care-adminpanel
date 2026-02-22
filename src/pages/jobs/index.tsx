@@ -265,7 +265,7 @@ const AllJobs = () => {
   };
 
   const handleDownloadResume = (resumePath: string, applicantName: string) => {
-    window.open(resumePath, "_blank");
+    window.open(`https://care-storage-app.s3.us-east-1.amazonaws.com/${resumePath}`, "_blank");
     notify({
       message: `Downloading resume for ${applicantName}`,
       type: "success",
@@ -273,7 +273,7 @@ const AllJobs = () => {
   };
 
   const handleViewVideo = (videoPath: string) => {
-    window.open(videoPath, "_blank");
+    window.open(`https://care-storage-app.s3.us-east-1.amazonaws.com/${videoPath}`, "_blank");
   };
 
   const filteredApplications = applications.filter((app) => {
