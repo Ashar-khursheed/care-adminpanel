@@ -50,6 +50,8 @@ import Payouts from "./pages/payouts";
 import Notifications from "./pages/notifications";
 import EnquiryListing from "./pages/enquiry";
 import EnquiryDetails from "./pages/enquiry/enquiry-detail";
+import W9Form from "./pages/w9-form";
+import W9Deteail from "./pages/w9-form/detail";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -368,6 +370,8 @@ const App = () => (
               <Route path="notifications" element={<Notifications />} />
               <Route path="enquiries" element={<EnquiryListing />} />
               <Route path="enquiries/:id" element={<EnquiryDetails />} />
+              <Route path="w9-form" element={<W9Form />} />
+              <Route path="w9-form/:id" element={<W9Deteail />} />
             </Route>
 
             {/* Catch-all route */}

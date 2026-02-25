@@ -838,6 +838,7 @@ const navigation: NavigationItem[] = [
   { name: "Job Application", href: "/dashboard/jobs", icon: ListCheck },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
   { name: "Enquiries", href: "/dashboard/enquiries", icon: MessageCircle },
+  { name: "W9 Form", href: "/dashboard/w9-form", icon: MessageCircle },
 ];
 
 export function Sidebar() {
