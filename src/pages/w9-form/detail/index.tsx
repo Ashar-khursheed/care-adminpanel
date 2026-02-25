@@ -620,7 +620,7 @@ interface W9FormDetail {
   rejection_reason: string | null;
   document_url: string;
   verified_at: string | null;
-  verified_by: string | null;
+  verified_by: { id: number; name: string } | string | null;
   uploaded_at: string;
 }
 
@@ -909,7 +909,9 @@ const W9Detail = () => {
                     <div>
                       <p className="text-sm font-medium">Verified By</p>
                       <p className="text-sm text-muted-foreground">
-                        {form.verified_by}
+                        {typeof form.verified_by === "object"
+                          ? form.verified_by?.name
+                          : form.verified_by}
                       </p>
                     </div>
                   </div>
