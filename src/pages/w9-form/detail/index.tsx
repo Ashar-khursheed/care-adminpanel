@@ -275,7 +275,9 @@
 //                 </div>
 //                 <h2 className="text-xl font-bold">{form.user?.name}</h2>
 //                 <Badge variant="outline" className="capitalize mt-1">
-//                   {form.user?.user_type}
+//                   {typeof form.user?.user_type === "object"
+                     ?form.user?.user_type?.name
+                     : form.user?.user_type}
 //                 </Badge>
 //                 <div className="mt-2">
 //                   {getStatusBadge(form.verification_status)}
@@ -611,7 +613,7 @@ interface W9FormDetail {
     id: number;
     name: string;
     email: string;
-    user_type: string;
+    user_type: { id: number; name: string } | string;
   };
   document_name: string;
   verification_status: "pending" | "verified" | "rejected";
@@ -655,10 +657,10 @@ const W9Detail = () => {
         setForm((prev) =>
           prev
             ? {
-                ...prev,
-                verification_status: "rejected",
-                rejection_reason: values.reason,
-              }
+              ...prev,
+              verification_status: "rejected",
+              rejection_reason: values.reason,
+            }
             : null
         );
 
@@ -702,10 +704,10 @@ const W9Detail = () => {
       setForm((prev) =>
         prev
           ? {
-              ...prev,
-              verification_status: "verified",
-              verified_at: new Date().toISOString(),
-            }
+            ...prev,
+            verification_status: "verified",
+            verified_at: new Date().toISOString(),
+          }
           : null
       );
 
@@ -1145,12 +1147,11 @@ const W9Detail = () => {
               onChange={rejectionFormik.handleChange}
               onBlur={rejectionFormik.handleBlur}
               rows={4}
-              className={`resize-none ${
-                rejectionFormik.touched.reason &&
-                rejectionFormik.errors.reason
+              className={`resize-none ${rejectionFormik.touched.reason &&
+                  rejectionFormik.errors.reason
                   ? "border-red-500 focus:ring-red-500"
                   : ""
-              }`}
+                }`}
             />
             {rejectionFormik.touched.reason &&
               rejectionFormik.errors.reason && (

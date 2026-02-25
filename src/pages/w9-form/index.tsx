@@ -46,7 +46,7 @@ interface W9Form {
     id: number;
     name: string;
     email: string;
-    user_type: string;
+    user_type: { id: number; name: string } | string;
   };
   document_name: string;
   verification_status: "pending" | "verified" | "rejected";
@@ -338,7 +338,9 @@ export default function W9FormListing() {
                         {/* User Type */}
                         <TableCell>
                           <Badge variant="outline" className="capitalize">
-                            {form.user?.user_type}
+                            {typeof form.user?.user_type === "object"
+                              ? form.user?.user_type?.name
+                              : form.user?.user_type}
                           </Badge>
                         </TableCell>
 
