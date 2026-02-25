@@ -276,8 +276,8 @@
 //                 <h2 className="text-xl font-bold">{form.user?.name}</h2>
 //                 <Badge variant="outline" className="capitalize mt-1">
 //                   {typeof form.user?.user_type === "object"
-                     ?form.user?.user_type?.name
-                     : form.user?.user_type}
+//  ?form.user?.user_type?.name
+//  : form.user?.user_type}
 //                 </Badge>
 //                 <div className="mt-2">
 //                   {getStatusBadge(form.verification_status)}
@@ -843,7 +843,9 @@ const W9Detail = () => {
                 </div>
                 <h2 className="text-xl font-bold">{form.user?.name}</h2>
                 <Badge variant="outline" className="capitalize mt-1">
-                  {form.user?.user_type}
+                  {typeof form.user?.user_type === "object"
+                    ? form.user?.user_type?.name
+                    : form.user?.user_type}
                 </Badge>
                 <div className="mt-2">
                   {getStatusBadge(form.verification_status)}
@@ -1148,9 +1150,9 @@ const W9Detail = () => {
               onBlur={rejectionFormik.handleBlur}
               rows={4}
               className={`resize-none ${rejectionFormik.touched.reason &&
-                  rejectionFormik.errors.reason
-                  ? "border-red-500 focus:ring-red-500"
-                  : ""
+                rejectionFormik.errors.reason
+                ? "border-red-500 focus:ring-red-500"
+                : ""
                 }`}
             />
             {rejectionFormik.touched.reason &&
