@@ -754,7 +754,7 @@ const navigation: NavigationItem[] = [
     icon: TrendingUp,
   },
   {
-    name: "Service Provider Analytics",
+    name: "Worker Analytics",
     href: "/dashboard/analytics/provider",
     icon: CircleDotDashed,
   },
@@ -772,8 +772,8 @@ const navigation: NavigationItem[] = [
     icon: Banknote,
     subItems: [
       { name: "Transactions", href: "/dashboard/transactions" },
-      { name: "Payouts (Balance)", href: "/dashboard/payouts" },
-      { name: "Withdrawals (Jobs)", href: "/dashboard/withdrawals" },
+      { name: "Worker Payouts", href: "/dashboard/payouts" },
+      { name: "Job Payouts", href: "/dashboard/withdrawals" },
     ],
   },
   {
@@ -782,10 +782,10 @@ const navigation: NavigationItem[] = [
     subItems: [
       { name: "All Users", href: "/dashboard/users" },
       {
-        name: "Service Providers",
+        name: "Workers",
         href: "/dashboard/users?user_type=provider",
       },
-      { name: "Clients", href: "/dashboard/users?user_type=client" },
+      { name: "Employers", href: "/dashboard/users?user_type=client" },
     ],
   },
   {
@@ -879,7 +879,7 @@ export function Sidebar() {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           {!collapsed && (
-            <img src={Logo} alt="Logo" className="h-[54px] w-auto" />
+            <img src={Logo} alt="Quality Temp Service Agency" className="h-[54px] w-auto" />
           )}
           <Button
             variant="ghost"

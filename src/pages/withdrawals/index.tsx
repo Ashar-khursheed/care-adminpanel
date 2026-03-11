@@ -90,6 +90,8 @@ export default function Withdrawals() {
     const [selectedWithdrawal, setSelectedWithdrawal] = useState<Withdrawal | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
     const [stats, setStats] = useState<StatisticsData | null>(null);
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [bulkApproving, setBulkApproving] = useState(false);
 
     const fetchWithdrawals = async () => {
         try {
@@ -147,6 +149,30 @@ export default function Withdrawals() {
         }
     }
 
+    const handleBulkApprove = async () => {
+        if (selectedIds.length === 0) return;
+        if (!window.confirm(`Are you sure you want to approve ${selectedIds.length} withdrawals?`)) return;
+
+        try {
+            setBulkApproving(true);
+            const response = await makeApiRequest("admin/withdrawals/bulk-approve", {
+                method: "POST",
+                data: { ids: selectedIds }
+            });
+
+            if (response.success) {
+                notify({ message: `${selectedIds.length} withdrawals approved successfully`, type: "success" });
+                setSelectedIds([]);
+                fetchWithdrawals();
+                fetchStats();
+            }
+        } catch (error) {
+            notify({ message: "Failed to bulk approve withdrawals", type: "error" });
+        } finally {
+            setBulkApproving(false);
+        }
+    }
+
     const filtered = withdrawals.filter(w =>
         `${w.provider.first_name} ${w.provider.last_name}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
         w.provider.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -157,11 +183,21 @@ export default function Withdrawals() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Job Withdrawals</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">Worker Job Payouts</h1>
                     <p className="text-muted-foreground">
                         Manage per-job payment releases and commissions
                     </p>
                 </div>
+                {selectedIds.length > 0 && (
+                    <Button
+                        onClick={handleBulkApprove}
+                        disabled={bulkApproving}
+                        className="bg-blue-600 hover:bg-blue-700"
+                    >
+                        {bulkApproving ? <Loader2 className="animate-spin mr-2" /> : <CheckCircle className="mr-2 h-4 w-4" />}
+                        Bulk Approve ({selectedIds.length})
+                    </Button>
+                )}
             </div>
 
             <div className="grid gap-4 md:grid-cols-4">
@@ -191,7 +227,7 @@ export default function Withdrawals() {
                     value={`$${stats?.completed_amount?.toFixed(2) || '0.00'}`}
                     icon={CheckCircle}
                     trend="up"
-                    change="To providers"
+                    change="To workers"
                 />
             </div>
 
@@ -225,11 +261,25 @@ export default function Withdrawals() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
+                                    <TableHead className="w-[50px]">
+                                        <input
+                                            type="checkbox"
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    const pendings = filtered.filter(w => w.status === 'pending').map(w => w.id);
+                                                    setSelectedIds(pendings);
+                                                } else {
+                                                    setSelectedIds([]);
+                                                }
+                                            }}
+                                            checked={selectedIds.length > 0 && selectedIds.length === filtered.filter(w => w.status === 'pending').length}
+                                        />
+                                    </TableHead>
                                     <TableHead>ID / Booking</TableHead>
-                                    <TableHead>Provider</TableHead>
+                                    <TableHead>Worker</TableHead>
                                     <TableHead>Gross Amount</TableHead>
                                     <TableHead>Commission</TableHead>
-                                    <TableHead>Net to Provider</TableHead>
+                                    <TableHead>Net to Worker</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
@@ -239,6 +289,21 @@ export default function Withdrawals() {
                                     <TableRow><TableCell colSpan={7} className="text-center py-10"><Loader2 className="animate-spin h-8 w-8 mx-auto" /></TableCell></TableRow>
                                 ) : filtered.map(w => (
                                     <TableRow key={w.id}>
+                                        <TableCell>
+                                            {w.status === 'pending' && (
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedIds.includes(w.id)}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            setSelectedIds([...selectedIds, w.id]);
+                                                        } else {
+                                                            setSelectedIds(selectedIds.filter(id => id !== w.id));
+                                                        }
+                                                    }}
+                                                />
+                                            )}
+                                        </TableCell>
                                         <TableCell>
                                             <div className="font-semibold text-blue-600">#{w.id}</div>
                                             <div className="text-[10px] text-muted-foreground">Booking #{w.booking_id}</div>
@@ -313,12 +378,12 @@ export default function Withdrawals() {
                                 </div>
                             </div>
                             <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-                                <div className="text-xs text-green-700">Net Release to Provider</div>
+                                <div className="text-xs text-green-700">Net Release to Worker</div>
                                 <div className="text-3xl font-black text-green-700">${selectedWithdrawal.net_amount}</div>
                             </div>
                             <Separator />
                             <div>
-                                <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Provider Bank Info</h4>
+                                <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Worker Bank Info</h4>
                                 <p className="text-sm italic text-muted-foreground">Standard Direct Deposit (Stripe Connect)</p>
                             </div>
                         </div>

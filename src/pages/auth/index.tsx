@@ -44,10 +44,10 @@ const Authlogin = () => {
         console.log("📥 Login Response:", res);
 
         // Extract token and user
-        const token = 
-          res?.token || 
-          res?.data?.token || 
-          res?.access_token || 
+        const token =
+          res?.token ||
+          res?.data?.token ||
+          res?.access_token ||
           res?.data?.access_token;
 
         const user = res?.user || res?.data?.user;
@@ -74,17 +74,17 @@ const Authlogin = () => {
         }
       } catch (error: unknown) {
         console.error("❌ Login failed:", error);
-        
+
         let errorMessage = "Login failed. Please try again.";
-        
+
         if (error && typeof error === 'object' && 'response' in error) {
           const response = error.response as { data?: { message?: string } };
           errorMessage = response.data?.message || errorMessage;
         }
-        
-        notify({ 
-          message: errorMessage, 
-          type: 'error' 
+
+        notify({
+          message: errorMessage,
+          type: 'error'
         });
       } finally {
         setSubmitting(false);
@@ -101,9 +101,9 @@ const Authlogin = () => {
             <Lock className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome Back
+            Quality Temp Service Agency
           </h1>
-          <p className="text-gray-600">Sign in to continue to your account</p>
+          <p className="text-gray-600">Admin Dashboard Login</p>
         </div>
 
         {/* Login Card */}
@@ -127,11 +127,10 @@ const Authlogin = () => {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`pl-11 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${
-                    formik.touched.email && formik.errors.email
+                  className={`pl-11 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${formik.touched.email && formik.errors.email
                       ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
-                  }`}
+                    }`}
                 />
               </div>
               {formik.touched.email && formik.errors.email && (
@@ -159,11 +158,10 @@ const Authlogin = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`pl-11 pr-11 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${
-                    formik.touched.password && formik.errors.password
+                  className={`pl-11 pr-11 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${formik.touched.password && formik.errors.password
                       ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"

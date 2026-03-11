@@ -2279,8 +2279,8 @@ export default function Users() {
                 <SelectGroup>
                   <SelectLabel>System Roles</SelectLabel>
                   <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="provider">Provider</SelectItem>
-                  <SelectItem value="client">Client</SelectItem>
+                  <SelectItem value="provider">Worker</SelectItem>
+                  <SelectItem value="client">Employer</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

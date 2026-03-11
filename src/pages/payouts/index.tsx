@@ -114,6 +114,9 @@ const Payouts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [isBulkApproveModalOpen, setIsBulkApproveModalOpen] = useState(false);
+  const [bulkApproving, setBulkApproving] = useState(false);
 
   // Modal states
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
@@ -183,14 +186,14 @@ const Payouts = () => {
           },
           {
             title: "Paid Amount",
-            value: `$${stats.paid_amount.toFixed(2)}`,
+            value: `$${Number(stats.paid_amount).toFixed(2)}`,
             change: `${stats.paid_payouts} completed`,
             icon: CheckCircle,
             trend: "up" as const,
           },
           {
             title: "Pending Amount",
-            value: `$${parseFloat(stats.total_pending_value).toFixed(2)}`,
+            value: `$${Number(stats.pending_amount).toFixed(2)}`,
             change: `${stats.pending_payouts} pending`,
             icon: Clock,
             trend: "up" as const,
@@ -279,6 +282,16 @@ const Payouts = () => {
         className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
         icon: TrendingUp,
         label: "Processing",
+      },
+      failed: {
+        className: "bg-red-200 text-red-900 hover:bg-red-200",
+        icon: AlertCircle,
+        label: "Failed",
+      },
+      cancelled: {
+        className: "bg-gray-100 text-gray-800 hover:bg-gray-100",
+        icon: XCircle,
+        label: "Cancelled",
       },
     };
     return config[status] || config.pending;
@@ -391,6 +404,40 @@ const Payouts = () => {
     }
   };
 
+  const handleBulkApprovePayout = async () => {
+    if (selectedIds.length === 0) return;
+
+    try {
+      setBulkApproving(true);
+
+      const response = await makeApiRequest("admin/payouts/bulk-approve", {
+        method: "POST",
+        data: {
+          payout_ids: selectedIds,
+        },
+      });
+
+      if (response?.success) {
+        notify({
+          message: response.message || `${selectedIds.length} payouts approved successfully`,
+          type: "success",
+        });
+        setIsBulkApproveModalOpen(false);
+        setSelectedIds([]);
+        fetchPayouts(currentPage);
+        fetchStatistics();
+      }
+    } catch (error: any) {
+      console.error("❌ Error bulk approving payouts:", error);
+      notify({
+        message: error?.response?.data?.message || "Failed to bulk approve payouts",
+        type: "error",
+      });
+    } finally {
+      setBulkApproving(false);
+    }
+  };
+
   const filteredPayouts = payouts.filter((payout) => {
     const providerName = getFullName(payout.provider).toLowerCase();
 
@@ -414,7 +461,7 @@ const Payouts = () => {
             Payouts Management
           </h1>
           <p className="text-muted-foreground">
-            Manage and process service provider payouts
+            Manage and process worker payouts
           </p>
         </div>
         <div className="flex gap-2">
@@ -422,6 +469,15 @@ const Payouts = () => {
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
+          {selectedIds.length > 0 && (
+            <Button
+              onClick={() => setIsBulkApproveModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Bulk Approve ({selectedIds.length})
+            </Button>
+          )}
           <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700">
             <DollarSign className="w-4 h-4 mr-2" />
             Process Payouts
@@ -475,6 +531,8 @@ const Payouts = () => {
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="processing">Processing</SelectItem>
                 <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -484,8 +542,27 @@ const Payouts = () => {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-[50px]">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          const pendings = filteredPayouts
+                            .filter(p => p.status === 'pending')
+                            .map(p => p.id);
+                          setSelectedIds(pendings);
+                        } else {
+                          setSelectedIds([]);
+                        }
+                      }}
+                      checked={
+                        selectedIds.length > 0 &&
+                        selectedIds.length === filteredPayouts.filter(p => p.status === 'pending').length
+                      }
+                    />
+                  </TableHead>
                   <TableHead>Payout ID</TableHead>
-                  <TableHead>Service Provider</TableHead>
+                  <TableHead>Worker</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Created Date</TableHead>
@@ -508,6 +585,21 @@ const Payouts = () => {
 
                     return (
                       <TableRow key={payout.id} className="hover:bg-gray-50">
+                        <TableCell>
+                          {payout.status === 'pending' && (
+                            <input
+                              type="checkbox"
+                              checked={selectedIds.includes(payout.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedIds([...selectedIds, payout.id]);
+                                } else {
+                                  setSelectedIds(selectedIds.filter(id => id !== payout.id));
+                                }
+                              }}
+                            />
+                          )}
+                        </TableCell>
                         <TableCell className="font-mono font-semibold text-blue-600">
                           #{payout.id}
                         </TableCell>
@@ -685,7 +777,7 @@ const Payouts = () => {
               <div>
                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                   <User className="w-5 h-5" />
-                  Service Provider Information
+                  Worker Information
                 </h3>
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                   <Avatar className="w-16 h-16">
@@ -972,6 +1064,56 @@ const Payouts = () => {
             </div>
           </div>
         )}
+      </Modal>
+      {/* Bulk Approve Confirmation Modal */}
+      <Modal
+        isOpen={isBulkApproveModalOpen}
+        onClose={() => !bulkApproving && setIsBulkApproveModalOpen(false)}
+        title="Bulk Approve Payouts"
+        width="max-w-md"
+        showFooter={false}
+      >
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <CheckCircle className="w-8 h-8 text-blue-600" />
+            <div>
+              <p className="font-semibold text-gray-900">Confirm Bulk Approval</p>
+              <p className="text-sm text-gray-600">
+                Are you sure you want to approve {selectedIds.length} pending payouts?
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded text-sm">
+            <p className="text-yellow-800">
+              This will process payments for all selected workers. This action is not reversible.
+            </p>
+          </div>
+
+          <div className="flex gap-3 pt-4 border-t">
+            <button
+              onClick={() => setIsBulkApproveModalOpen(false)}
+              disabled={bulkApproving}
+              className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleBulkApprovePayout}
+              disabled={bulkApproving}
+              className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {bulkApproving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                "Confirm Bulk Approve"
+              )}
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

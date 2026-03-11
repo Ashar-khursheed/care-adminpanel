@@ -245,9 +245,9 @@ export default function JobListing() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Care Service Provider</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Worker Listings</h1>
           <p className="text-muted-foreground">
-            Manage and overview all care service providers
+            Manage and overview all worker service listings
           </p>
         </div>
         {/* <Link to="/dashboard/create-user">
@@ -262,7 +262,7 @@ export default function JobListing() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Care Service Provider</CardTitle>
+              <CardTitle>Worker Service Listings</CardTitle>
               <CardDescription>
                 {apiData.pagination ? (
                   <span>
@@ -305,7 +305,7 @@ export default function JobListing() {
           {/* Filters */}
           <div className="flex flex-wrap gap-4 pt-4">
             <Input
-              placeholder="Search by provider/city..."
+              placeholder="Search by worker/city..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="max-w-[200px]"
@@ -360,7 +360,7 @@ export default function JobListing() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Provider / Facility</TableHead>
+                <TableHead>Worker / Business</TableHead>
                 <TableHead>Category / Type</TableHead>
                 <TableHead>Shift Date & Time</TableHead>
                 <TableHead>Urgent / Quick</TableHead>
