@@ -50,6 +50,8 @@ import Payouts from "./pages/payouts";
 import Notifications from "./pages/notifications";
 import EnquiryListing from "./pages/enquiry";
 import EnquiryDetails from "./pages/enquiry/enquiry-detail";
+import Categories from "./pages/categories";
+import Withdrawals from "./pages/withdrawals";
 import W9Form from "./pages/w9-form";
 import W9Deteail from "./pages/w9-form/detail";
 const queryClient = new QueryClient();
@@ -63,14 +65,14 @@ const App = () => (
           <Routes>
             {/* Public Route - Login */}
             {/* <Route path="/" element={<Authlogin />} /> */}
-  <Route
-          path="/"
-          element={
-            <PublicRoute>
-              <Authlogin />
-            </PublicRoute>
-          }
-        />
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <Authlogin />
+                </PublicRoute>
+              }
+            />
             {/* Protected Routes - All dashboard routes */}
             <Route
               path="/dashboard"
@@ -334,7 +336,7 @@ const App = () => (
                 path="/dashboard/get-seo"
                 element={
                   <ProtectedRoute>
-                  <SEOManager/>
+                    <SEOManager />
                   </ProtectedRoute>
                 }
               />
@@ -342,7 +344,7 @@ const App = () => (
                 path="get-all-pages"
                 element={
                   <ProtectedRoute>
-                <GetAllPagesListing/>
+                    <GetAllPagesListing />
                   </ProtectedRoute>
                 }
               />
@@ -350,7 +352,7 @@ const App = () => (
                 path="/dashboard/pages/create"
                 element={
                   <ProtectedRoute>
-                <CreateEditPage />
+                    <CreateEditPage />
                   </ProtectedRoute>
                 }
               />
@@ -358,7 +360,7 @@ const App = () => (
                 path="/dashboard/pages/edit/:id"
                 element={
                   <ProtectedRoute>
-                <CreateEditPage />
+                    <CreateEditPage />
                   </ProtectedRoute>
                 }
               />
@@ -367,6 +369,8 @@ const App = () => (
               <Route path="settings" element={<Settings />} />
               <Route path="jobs" element={<AllJobs />} />
               <Route path="payouts" element={<Payouts />} />
+              <Route path="withdrawals" element={<Withdrawals />} />
+              <Route path="categories" element={<Categories />} />
               <Route path="notifications" element={<Notifications />} />
               <Route path="enquiries" element={<EnquiryListing />} />
               <Route path="enquiries/:id" element={<EnquiryDetails />} />

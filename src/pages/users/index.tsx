@@ -1908,36 +1908,36 @@ import { CustomPagination } from "@/components/custom-pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import ToggleSwitch from "@/components/ui/toggle-switch";
 import { apiUrl } from "@/services/api-end-point";
@@ -1950,8 +1950,11 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 interface User {
   id: number;
   full_name: string;
+  business_name?: string;
   email: string;
   user_type: string;
+  desired_role?: string;
+  city?: string;
   status: string;
   is_verified: boolean;
   created_at: string;
@@ -1974,6 +1977,8 @@ export default function Users() {
   const urlUserType = searchParams.get('user_type') || 'all';
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterCity, setFilterCity] = useState("");
+  const [filterDesiredRole, setFilterDesiredRole] = useState("all");
   const [filterRole, setFilterRole] = useState(urlUserType);
   const [filterStatus, setFilterStatus] = useState("all");
   const [perPage, setPerPage] = useState(20);
@@ -1991,7 +1996,10 @@ export default function Users() {
     page: number = 1,
     itemsPerPage: number = 20,
     role: string = "",
-    status: string = ""
+    status: string = "",
+    search: string = "",
+    city: string = "",
+    desiredRole: string = ""
   ) => {
     try {
       setIsLoading(true);
@@ -2005,6 +2013,18 @@ export default function Users() {
 
       if (status && status !== "all") {
         url += `&status=${status}`;
+      }
+
+      if (search) {
+        url += `&search=${search}`;
+      }
+
+      if (city) {
+        url += `&city=${city}`;
+      }
+
+      if (desiredRole && desiredRole !== "all") {
+        url += `&desired_role=${desiredRole}`;
       }
 
       console.log("🔍 Fetching URL:", url);
@@ -2042,7 +2062,15 @@ export default function Users() {
       if (response.success === true) {
         const apiRole = filterRole === "all" ? "" : filterRole;
         const apiStatus = filterStatus === "all" ? "" : filterStatus;
-        await fetchUsers(apiData.pagination?.current_page || 1, perPage, apiRole, apiStatus);
+        await fetchUsers(
+          apiData.pagination?.current_page || 1,
+          perPage,
+          apiRole,
+          apiStatus,
+          searchTerm,
+          filterCity,
+          filterDesiredRole === "all" ? "" : filterDesiredRole
+        );
       }
 
       notify({
@@ -2102,31 +2130,53 @@ export default function Users() {
 
     const apiRole = role === "all" ? "" : role;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    await fetchUsers(1, perPage, apiRole, apiStatus);
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
   };
 
   const handleStatusFilterChange = async (status: string) => {
     setFilterStatus(status);
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = status === "all" ? "" : status;
-    await fetchUsers(1, perPage, apiRole, apiStatus);
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
   };
 
-  const handlePageChange = (page: number) => {
+  const handleCityFilterChange = async (city: string) => {
+    setFilterCity(city);
+    const apiRole = filterRole === "all" ? "" : filterRole;
+    const apiStatus = filterStatus === "all" ? "" : filterStatus;
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, city, filterDesiredRole === "all" ? "" : filterDesiredRole);
+  }
+
+  const handleDesiredRoleFilterChange = async (role: string) => {
+    setFilterDesiredRole(role);
+    const apiRole = filterRole === "all" ? "" : filterRole;
+    const apiStatus = filterStatus === "all" ? "" : filterStatus;
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, role === "all" ? "" : role);
+  }
+
+  const handleSearchChange = async (search: string) => {
+    setSearchTerm(search);
+    const apiRole = filterRole === "all" ? "" : filterRole;
+    const apiStatus = filterStatus === "all" ? "" : filterStatus;
+    // Use a debounce ideally, but for now simple trigger
+    await fetchUsers(1, perPage, apiRole, apiStatus, search, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
+  }
+
+  const handlePageChange = (page) => {
     if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
       return;
 
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(page, perPage, apiRole, apiStatus);
+    fetchUsers(page, perPage, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handlePerPageChange = (value: number) => {
+  const handlePerPageChange = (value) => {
     setPerPage(value);
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(1, value, apiRole, apiStatus);
+    fetchUsers(1, value, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
   };
 
   // ✅ Initial load - runs when URL params change
@@ -2206,21 +2256,28 @@ export default function Users() {
           </div>
 
           {/* Filters */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-wrap gap-4 pt-4">
             <Input
-              placeholder="Search users..."
+              placeholder="Search by name/email..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-sm"
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="max-w-[200px]"
+            />
+
+            <Input
+              placeholder="Filter by city..."
+              value={filterCity}
+              onChange={(e) => handleCityFilterChange(e.target.value)}
+              className="max-w-[150px]"
             />
 
             <Select value={filterRole} onValueChange={handleRoleFilterChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select Role" />
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="System Role" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Roles</SelectLabel>
+                  <SelectLabel>System Roles</SelectLabel>
                   <SelectItem value="all">All Roles</SelectItem>
                   <SelectItem value="provider">Provider</SelectItem>
                   <SelectItem value="client">Client</SelectItem>
@@ -2228,8 +2285,26 @@ export default function Users() {
               </SelectContent>
             </Select>
 
+            <Select value={filterDesiredRole} onValueChange={handleDesiredRoleFilterChange}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Desired Role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Desired Roles</SelectLabel>
+                  <SelectItem value="all">All Desired Roles</SelectItem>
+                  <SelectItem value="nurse">Nurse</SelectItem>
+                  <SelectItem value="cna">CNA</SelectItem>
+                  <SelectItem value="caregiver">Caregiver</SelectItem>
+                  <SelectItem value="lpn">LPN</SelectItem>
+                  <SelectItem value="rn">RN</SelectItem>
+                  <SelectItem value="med_tech">Med Tech</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
             <Select value={filterStatus} onValueChange={handleStatusFilterChange}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent>
@@ -2247,124 +2322,140 @@ export default function Users() {
 
         <CardContent>
           <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Verified</TableHead>
-                <TableHead>Join Date</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <div className="flex items-center space-x-3">
-                          <Skeleton className="h-8 w-8 rounded-full" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[150px]" />
-                            <Skeleton className="h-3 w-[200px]" />
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-6 w-[80px]" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-6 w-[100px]" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-6 w-[44px]" />
-                      </TableCell>
-                      <TableCell>
-                        <Skeleton className="h-4 w-[120px]" />
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex gap-2 justify-end">
-                          <Skeleton className="h-4 w-4" />
-                          <Skeleton className="h-4 w-4" />
-                          <Skeleton className="h-4 w-4" />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </>
-              ) : (
-                <>
-                  {apiData?.users?.length > 0 ? (
-                    apiData.users.map((user) => (
-                      <TableRow key={user.id} className="hover:bg-muted/50">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User / Business</TableHead>
+                  <TableHead>Role / Desired</TableHead>
+                  <TableHead>City</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Verified</TableHead>
+                  <TableHead>Join Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  <>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <TableRow key={index}>
                         <TableCell>
                           <div className="flex items-center space-x-3">
-                            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
-                              <span className="text-xs font-medium text-primary-foreground">
-                                {user?.full_name
-                                  ?.split(" ")
-                                  .map((n) => n[0])
-                                  .join("") || "U"}
-                              </span>
-                            </div>
-                            <div>
-                              <div className="font-medium">{user.full_name}</div>
-                              <div className="text-sm text-muted-foreground">
-                                {user.email}
-                              </div>
+                            <Skeleton className="h-8 w-8 rounded-full" />
+                            <div className="space-y-2">
+                              <Skeleton className="h-4 w-[150px]" />
+                              <Skeleton className="h-3 w-[200px]" />
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="capitalize">
-                            {user.user_type}
-                          </Badge>
+                          <Skeleton className="h-6 w-[80px]" />
                         </TableCell>
-                        <TableCell>{getStatusBadge(user.status)}</TableCell>
                         <TableCell>
-                          <ToggleSwitch
-                            enabled={user.is_verified || false}
-                            onChange={() =>
-                              handleVerifyToggle(user.id, user.is_verified)
-                            }
-                            disabled={loadingStates[user.id]}
-                          />
+                          <Skeleton className="h-6 w-[100px]" />
                         </TableCell>
-                        <TableCell className="text-muted-foreground whitespace-nowrap">
-                          {formatDate(user.created_at)}
+                        <TableCell>
+                          <Skeleton className="h-6 w-[44px]" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-[120px]" />
                         </TableCell>
                         <TableCell className="text-right">
-                          <div className="flex gap-2 justify-end cursor-pointer">
-                            {/* <Pencil
-                              size={15}
-                              className="hover:text-blue-600 transition-colors"
-                            /> */}
-                            <Eye
-                              size={15}
-                              className="hover:text-green-600 transition-colors"
-                              onClick={() => navigate(`/dashboard/users/${user.id}`)}
-                            />
-                            {/* <Trash2
-                              size={15}
-                              className="hover:text-red-600 transition-colors"
-                            /> */}
+                          <div className="flex gap-2 justify-end">
+                            <Skeleton className="h-4 w-4" />
+                            <Skeleton className="h-4 w-4" />
+                            <Skeleton className="h-4 w-4" />
                           </div>
                         </TableCell>
                       </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-12">
-                        <p className="text-muted-foreground">No users found</p>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </>
-              )}
-            </TableBody>
-          </Table>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {apiData?.users?.length > 0 ? (
+                      apiData.users.map((user) => (
+                        <TableRow key={user.id} className="hover:bg-muted/50">
+                          <TableCell>
+                            <div className="flex items-center space-x-3">
+                              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
+                                <span className="text-xs font-medium text-primary-foreground">
+                                  {user?.full_name
+                                    ?.split(" ")
+                                    .map((n) => n[0])
+                                    .join("") || "U"}
+                                </span>
+                              </div>
+                              <div>
+                                <div className="font-medium">{user.full_name}</div>
+                                {user.business_name && (
+                                  <div className="text-xs text-blue-600 font-semibold italic">
+                                    {user.business_name}
+                                  </div>
+                                )}
+                                <div className="text-sm text-muted-foreground">
+                                  {user.email}
+                                </div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="space-y-1">
+                              <Badge variant="outline" className="capitalize">
+                                {user.user_type}
+                              </Badge>
+                              {user.desired_role && (
+                                <div className="text-[10px] text-muted-foreground bg-slate-100 px-1 rounded inline-block ml-1">
+                                  {user.desired_role}
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-sm">
+                            {user.city || "N/A"}
+                          </TableCell>
+                          <TableCell>{getStatusBadge(user.status)}</TableCell>
+                          <TableCell>
+                            <ToggleSwitch
+                              enabled={user.is_verified || false}
+                              onChange={() =>
+                                handleVerifyToggle(user.id, user.is_verified)
+                              }
+                              disabled={loadingStates[user.id]}
+                            />
+                          </TableCell>
+                          <TableCell className="text-muted-foreground whitespace-nowrap">
+                            {formatDate(user.created_at)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex gap-2 justify-end cursor-pointer">
+                              {/* <Pencil
+                              size={15}
+                              className="hover:text-blue-600 transition-colors"
+                            /> */}
+                              <Eye
+                                size={15}
+                                className="hover:text-green-600 transition-colors"
+                                onClick={() => navigate(`/dashboard/users/${user.id}`)}
+                              />
+                              {/* <Trash2
+                              size={15}
+                              className="hover:text-red-600 transition-colors"
+                            /> */}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-12">
+                          <p className="text-muted-foreground">No users found</p>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </>
+                )}
+              </TableBody>
+            </Table>
           </div>
 
           {/* Pagination */}

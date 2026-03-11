@@ -760,9 +760,21 @@ const navigation: NavigationItem[] = [
   },
   { name: "Review Analytics", href: "/dashboard/analytics/review", icon: Star },
   {
-    name: "Care Service Provider",
-    href: "/dashboard/job-listing",
+    name: "Marketplace",
     icon: ListCheck,
+    subItems: [
+      { name: "Job Listings", href: "/dashboard/job-listing" },
+      { name: "Categories", href: "/dashboard/categories" },
+    ],
+  },
+  {
+    name: "Financials",
+    icon: Banknote,
+    subItems: [
+      { name: "Transactions", href: "/dashboard/transactions" },
+      { name: "Payouts (Balance)", href: "/dashboard/payouts" },
+      { name: "Withdrawals (Jobs)", href: "/dashboard/withdrawals" },
+    ],
   },
   {
     name: "Users",
@@ -792,20 +804,6 @@ const navigation: NavigationItem[] = [
       { name: "All Reviews", href: "/dashboard/reviews-all" },
     ],
   },
-  // {
-  //   name: "Manage Subscriptions",
-  //   icon: CreditCard,
-  //   subItems: [
-  //     {
-  //       name: "Create Subscription",
-  //       href: "/dashboard/subscription/add-plan-subscription",
-  //     },
-  //     {
-  //       name: "All Subscriptions",
-  //       href: "/dashboard/subscription/all-subscription",
-  //     },
-  //   ],
-  // },
   {
     name: "Messages",
     icon: MessageCircle,
@@ -818,8 +816,6 @@ const navigation: NavigationItem[] = [
       { name: "Get All Settings", href: "/dashboard/get-all-settings" },
       { name: "Sliders", href: "/dashboard/sliders" },
       { name: "Announcements", href: "/dashboard/get-all-announcements" },
-      // { name: "Get Header Menu", href: "/dashboard/get-header-menu" },
-      // { name: "Get Footer Menu", href: "/dashboard/get-footer-menu" },
     ],
   },
   {
@@ -832,9 +828,6 @@ const navigation: NavigationItem[] = [
     icon: Settings,
     subItems: [{ name: "Get All Pages", href: "/dashboard/get-all-pages" }],
   },
-  { name: "Transactions", href: "/dashboard/transactions", icon: Banknote },
-  { name: "Payouts", href: "/dashboard/payouts", icon: Banknote },
-  // { name: "Settings", href: "/dashboard/settings", icon: Settings },
   { name: "Job Application", href: "/dashboard/jobs", icon: ListCheck },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
   { name: "Enquiries", href: "/dashboard/enquiries", icon: MessageCircle },
@@ -915,7 +908,7 @@ export function Sidebar() {
                       "w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                       collapsed && "justify-center",
                       isSubMenuActive(item.subItems) &&
-                        "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600",
+                      "bg-gradient-to-r from-green-500/10 to-emerald-600/10 text-green-600",
                     )}
                   >
                     <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -944,7 +937,7 @@ export function Sidebar() {
                             className={cn(
                               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                               isActive &&
-                                "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+                              "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
                             )}
                           >
                             <span>{subItem.name}</span>
@@ -961,7 +954,7 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted",
                     isPathActive(item.href!) &&
-                      "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+                    "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
                     collapsed && "justify-center",
                   )}
                 >

@@ -54,14 +54,19 @@ interface JobListing {
   id: number;
   provider: {
     name: string;
+    business_name?: string;
   };
   category: {
     name: string;
-
-  }
+  };
   years_of_experience: number;
   service_location: string;
   service_radius: number;
+  shift_date?: string;
+  shift_start_time?: string;
+  shift_end_time?: string;
+  is_urgent: boolean;
+  quick_pay: boolean;
   status: string;
   created_at: string;
 }
@@ -69,7 +74,9 @@ interface JobListing {
 export default function JobListing() {
   const navigate = useNavigate();
 
-  const [filterRole, setFilterRole] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterUrgent, setFilterUrgent] = useState("all");
+  const [filterQuickPay, setFilterQuickPay] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [perPage, setPerPage] = useState(20);
   const [apiData, setApiData] = useState<{
@@ -87,13 +94,28 @@ export default function JobListing() {
   const fetchUsers = async (
     page: number = 1,
     itemsPerPage: number = 20,
-    role: string = "",
-    status: string = ""
+    status: string = "",
+    search: string = "",
+    urgent: string = "",
+    quickPay: string = ""
   ) => {
     try {
       setIsLoading(true);
 
-      const url = `${apiUrl.jobListing}?page=${page}&per_page=${itemsPerPage}`;
+      let url = `${apiUrl.jobListing}?page=${page}&per_page=${itemsPerPage}`;
+
+      if (status && status !== "all") {
+        url += `&status=${status}`;
+      }
+      if (search) {
+        url += `&search=${search}`;
+      }
+      if (urgent && urgent !== "all") {
+        url += `&is_urgent=${urgent === "yes" ? 1 : 0}`;
+      }
+      if (quickPay && quickPay !== "all") {
+        url += `&quick_pay=${quickPay === "yes" ? 1 : 0}`;
+      }
 
       const response = await makeApiRequest(url, {
         method: "GET",
@@ -123,13 +145,14 @@ export default function JobListing() {
       });
 
       if (response.success === true) {
-        const apiRole = filterRole === "all" ? "" : filterRole;
         const apiStatus = filterStatus === "all" ? "" : filterStatus;
         await fetchUsers(
           apiData.pagination?.current_page || 1,
           perPage,
-          apiRole,
-          apiStatus
+          apiStatus,
+          searchTerm,
+          filterUrgent,
+          filterQuickPay
         );
       }
 
@@ -184,18 +207,36 @@ export default function JobListing() {
     if (page < 1 || !apiData.pagination || page > apiData.pagination.last_page)
       return;
 
-    const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(page, perPage, apiRole, apiStatus);
+    fetchUsers(page, perPage, apiStatus, searchTerm, filterUrgent, filterQuickPay);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePerPageChange = (value: number) => {
     setPerPage(value);
-    const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(1, value, apiRole, apiStatus);
+    fetchUsers(1, value, apiStatus, searchTerm, filterUrgent, filterQuickPay);
   };
+
+  const handleStatusFilterChange = (status: string) => {
+    setFilterStatus(status);
+    fetchUsers(1, perPage, status === "all" ? "" : status, searchTerm, filterUrgent, filterQuickPay);
+  }
+
+  const handleUrgentFilterChange = (urgent: string) => {
+    setFilterUrgent(urgent);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, urgent, filterQuickPay);
+  }
+
+  const handleQuickPayFilterChange = (quickPay: string) => {
+    setFilterQuickPay(quickPay);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, quickPay);
+  }
+
+  const handleSearchChange = (search: string) => {
+    setSearchTerm(search);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, search, filterUrgent, filterQuickPay);
+  }
 
   useEffect(() => {
     fetchUsers(1, perPage);
@@ -225,9 +266,10 @@ export default function JobListing() {
               <CardDescription>
                 {apiData.pagination ? (
                   <span>
-                    Showing {apiData.pagination.from} to {apiData.pagination.to}{" "}
-                    of {apiData.pagination.total} users
-                    {filterRole !== "all" && ` • Role: ${filterRole}`}
+                    Showing {apiData.pagination.from} to {apiData.pagination.to} of{" "}
+                    {apiData.pagination.total} listings
+                    {filterUrgent !== "all" && ` • Urgent: ${filterUrgent}`}
+                    {filterQuickPay !== "all" && ` • Quick Pay: ${filterQuickPay}`}
                     {filterStatus !== "all" && ` • Status: ${filterStatus}`}
                   </span>
                 ) : (
@@ -261,30 +303,44 @@ export default function JobListing() {
           </div>
 
           {/* Filters */}
-          {/* <div className="flex gap-4 pt-4">
+          <div className="flex flex-wrap gap-4 pt-4">
             <Input
-              placeholder="Search users..."
+              placeholder="Search by provider/city..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-sm"
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="max-w-[200px]"
             />
 
-            <Select value={filterRole} onValueChange={handleRoleFilterChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select Role" />
+            <Select value={filterUrgent} onValueChange={handleUrgentFilterChange}>
+              <SelectTrigger className="w-[130px]">
+                <SelectValue placeholder="Is Urgent?" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Roles</SelectLabel>
-                  <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="provider">Provider</SelectItem>
-                  <SelectItem value="client">Client</SelectItem>
+                  <SelectLabel>Urgent</SelectLabel>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="yes">Urgent Only</SelectItem>
+                  <SelectItem value="no">Normal Only</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <Select value={filterQuickPay} onValueChange={handleQuickPayFilterChange}>
+              <SelectTrigger className="w-[130px]">
+                <SelectValue placeholder="Quick Pay?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Quick Pay</SelectLabel>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="yes">Quick Pay Only</SelectItem>
+                  <SelectItem value="no">Standard Only</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
 
             <Select value={filterStatus} onValueChange={handleStatusFilterChange}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent>
@@ -297,20 +353,20 @@ export default function JobListing() {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div> */}
+          </div>
         </CardHeader>
 
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Experience</TableHead>
+                <TableHead>Provider / Facility</TableHead>
+                <TableHead>Category / Type</TableHead>
+                <TableHead>Shift Date & Time</TableHead>
+                <TableHead>Urgent / Quick</TableHead>
                 <TableHead>Location</TableHead>
-                <TableHead>Radius</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Join Date</TableHead>
+                <TableHead>Created At</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -369,20 +425,41 @@ export default function JobListing() {
                               <div className="font-medium">
                                 {user?.provider?.name}
                               </div>
-                              {/* <div className="text-sm text-muted-foreground">
-                                {user?.category?.name}
-                              </div> */}
+                              {user?.provider?.business_name && (
+                                <div className="text-xs text-blue-600 font-semibold italic">
+                                  {user?.provider?.business_name}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="capitalize">
-                            {user?.category?.name}
-                          </Badge>
+                          <div className="space-y-1">
+                            <Badge variant="outline" className="capitalize">
+                              {user?.category?.name}
+                            </Badge>
+                          </div>
                         </TableCell>
-                        <TableCell>{user?.years_of_experience} Years</TableCell>
-                        <TableCell>{user?.service_location}</TableCell>
-                        <TableCell>{user?.service_radius}KM</TableCell>
+                        <TableCell>
+                          {user.shift_date ? (
+                            <div className="text-xs">
+                              <div className="font-semibold">{user.shift_date}</div>
+                              <div className="text-muted-foreground">{user.shift_start_time} - {user.shift_end_time}</div>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground text-xs italic">Flexible / Not Set</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            {user.is_urgent && (
+                              <Badge className="bg-red-500 text-[10px] h-4">URGENT</Badge>
+                            )}
+                            {user.quick_pay && (
+                              <Badge className="bg-amber-500 text-[10px] h-4">QUICK</Badge>
+                            )}
+                          </div>
+                        </TableCell>
                         {/* <TableCell>{user?.status}</TableCell> */}
                         <TableCell>{getStatusBadge(user.status)}</TableCell>
                         {/* <TableCell>

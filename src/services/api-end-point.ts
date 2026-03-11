@@ -1,5 +1,4 @@
 
-
 export const apiUrl = {
     login: "/auth/login",
     dashboardStats: "/admin/dashboard",
@@ -25,6 +24,21 @@ export const apiUrl = {
     },
 
     payments: "/admin/payments",
+    payouts: "/admin/payouts",
+    payoutStatistics: "/admin/payouts/statistics",
+    approvePayout: (id: string) => `/admin/payouts/${id}/approve`,
+    rejectPayout: (id: string) => `/admin/payouts/${id}/reject`,
+
+    withdrawals: "/admin/withdrawals",
+    withdrawalStatistics: "/admin/withdrawals/statistics",
+    withdrawalHistory: "/admin/withdrawals/history",
+    withdrawalReport: "/admin/withdrawals/commission-report",
+    approveWithdrawal: (id: string) => `/admin/withdrawals/${id}/approve`,
+    rejectWithdrawal: (id: string) => `/admin/withdrawals/${id}/reject`,
+
+    categories: "/admin/categories",
+    categoryById: (id: string) => `/admin/categories/${id}`,
+
     seoManagement: "/admin/cms/seo",
     cmsPages: "/admin/cms/pages",
 }

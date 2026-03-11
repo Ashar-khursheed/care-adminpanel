@@ -39,6 +39,10 @@ interface User {
   first_name: string;
   last_name: string;
   full_name: string;
+  business_name?: string;
+  facility_type?: string;
+  desired_role?: string;
+  profile_completion_percentage?: number;
   email: string;
   phone: string;
   user_type: string;
@@ -79,7 +83,7 @@ const ViewUser = () => {
     modalOne: false,
   });
 
-   // Formik for Suspend User
+  // Formik for Suspend User
   const suspendFormik = useFormik({
     initialValues: {
       reason: "",
@@ -165,9 +169,8 @@ const ViewUser = () => {
       );
 
       notify({
-        message: `User ${
-          !currentStatus ? "verified" : "unverified"
-        } successfully`,
+        message: `User ${!currentStatus ? "verified" : "unverified"
+          } successfully`,
         type: "success",
       });
     } catch (error) {
@@ -209,7 +212,7 @@ const ViewUser = () => {
       </Badge>
     );
   };
-    const handleModalClose = () => {
+  const handleModalClose = () => {
     setIsModalOpen({ ...isModalOpen, modalOne: false });
     suspendFormik.resetForm();
   };
@@ -297,7 +300,24 @@ const ViewUser = () => {
                   </AvatarFallback>
                 </Avatar>
                 <h2 className="text-2xl font-bold">{user.full_name}</h2>
-                <Badge variant="outline" className="mt-2 capitalize">
+                {user.business_name && (
+                  <p className="text-sm font-semibold text-blue-600 italic">{user.business_name}</p>
+                )}
+                {user.profile_completion_percentage !== undefined && (
+                  <div className="w-full mt-4 px-4">
+                    <div className="flex justify-between text-xs mb-1">
+                      <span>Profile Strength</span>
+                      <span>{user.profile_completion_percentage}%</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                      <div
+                        className="bg-green-500 h-1.5 rounded-full"
+                        style={{ width: `${user.profile_completion_percentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+                <Badge variant="outline" className="mt-4 capitalize">
                   {user.user_type}
                 </Badge>
               </div>
@@ -404,6 +424,30 @@ const ViewUser = () => {
                     </label>
                     <p className="text-sm mt-1">#{user.id}</p>
                   </div>
+                  {user.business_name && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        Business Name
+                      </label>
+                      <p className="text-sm mt-1">{user.business_name}</p>
+                    </div>
+                  )}
+                  {user.facility_type && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        Facility Type
+                      </label>
+                      <p className="text-sm mt-1 capitalize">{user.facility_type}</p>
+                    </div>
+                  )}
+                  {user.desired_role && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        Desired Role / Profession
+                      </label>
+                      <p className="text-sm mt-1 capitalize">{user.desired_role}</p>
+                    </div>
+                  )}
                 </div>
 
                 {user.bio && (
@@ -576,7 +620,7 @@ const ViewUser = () => {
         </div>
       </div>
 
-          <Modal
+      <Modal
         isOpen={isModalOpen?.modalOne}
         onClose={handleModalClose}
         title="Suspend User"
@@ -586,7 +630,7 @@ const ViewUser = () => {
         <form onSubmit={suspendFormik.handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
-              Are you sure you want to suspend <strong>{user?.full_name}</strong>? 
+              Are you sure you want to suspend <strong>{user?.full_name}</strong>?
               Suspending a user will restrict their access to the platform and they will not be able to
               log in until reactivated.
             </p>
@@ -604,11 +648,10 @@ const ViewUser = () => {
               onChange={suspendFormik.handleChange}
               onBlur={suspendFormik.handleBlur}
               rows={4}
-              className={`resize-none ${
-                suspendFormik.touched.reason && suspendFormik.errors.reason
-                  ? "border-red-500 focus:ring-red-500"
-                  : ""
-              }`}
+              className={`resize-none ${suspendFormik.touched.reason && suspendFormik.errors.reason
+                ? "border-red-500 focus:ring-red-500"
+                : ""
+                }`}
             />
             {suspendFormik.touched.reason && suspendFormik.errors.reason && (
               <p className="text-sm text-red-500 mt-1">
