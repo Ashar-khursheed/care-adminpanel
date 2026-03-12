@@ -54,6 +54,7 @@ import makeApiRequest from "@/services/axios";
 import { apiUrl } from "@/services/api-end-point";
 import { notify } from "@/utils/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CustomPagination } from "@/components/custom-pagination";
 
 interface Withdrawal {
     id: number;
@@ -75,10 +76,10 @@ interface Withdrawal {
 }
 
 interface StatisticsData {
-    total_withdrawals: number;
-    pending_withdrawals: number;
-    total_commission: number;
-    completed_amount: number;
+    total_count: number;
+    pending_withdrawal_count: number;
+    total_platform_commission: number;
+    total_paid_out: number;
 }
 
 export default function Withdrawals() {
@@ -93,14 +94,25 @@ export default function Withdrawals() {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [bulkApproving, setBulkApproving] = useState(false);
 
-    const fetchWithdrawals = async () => {
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [perPage, setPerPage] = useState(20);
+
+    const fetchWithdrawals = async (page: number = 1) => {
         try {
             setLoading(true);
-            const response = await makeApiRequest(apiUrl.withdrawals, {
+            const response = await makeApiRequest(`${apiUrl.withdrawals}?page=${page}&per_page=${perPage}`, {
                 method: "GET",
             });
-            if (response.success) {
-                setWithdrawals(response.data);
+            if (response.success && response.data) {
+                setWithdrawals(response.data.withdrawals || []);
+                if (response.data.pagination) {
+                    setCurrentPage(response.data.pagination.current_page);
+                    setTotalPages(response.data.pagination.last_page);
+                    setTotalRecords(response.data.pagination.total);
+                }
             }
         } catch (error) {
             console.error("❌ Error fetching withdrawals:", error);
@@ -141,7 +153,7 @@ export default function Withdrawals() {
             const response = await makeApiRequest(url, { method: "POST" });
             if (response.success) {
                 notify({ message: `Withdrawal ${action}d successfully`, type: "success" });
-                fetchWithdrawals();
+                fetchWithdrawals(currentPage);
                 fetchStats();
             }
         } catch (error) {
@@ -157,13 +169,13 @@ export default function Withdrawals() {
             setBulkApproving(true);
             const response = await makeApiRequest("admin/withdrawals/bulk-approve", {
                 method: "POST",
-                data: { ids: selectedIds }
+                data: { withdrawal_ids: selectedIds }
             });
 
             if (response.success) {
                 notify({ message: `${selectedIds.length} withdrawals approved successfully`, type: "success" });
                 setSelectedIds([]);
-                fetchWithdrawals();
+                fetchWithdrawals(currentPage);
                 fetchStats();
             }
         } catch (error) {
@@ -173,11 +185,17 @@ export default function Withdrawals() {
         }
     }
 
-    const filtered = withdrawals.filter(w =>
-        `${w.provider.first_name} ${w.provider.last_name}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        w.provider.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        String(w.id).includes(searchQuery)
-    );
+    const filtered = (Array.isArray(withdrawals) ? withdrawals : []).filter(w => {
+        const matchesSearch =
+            `${w.provider?.first_name} ${w.provider?.last_name}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            w.provider?.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            String(w.id).includes(searchQuery);
+
+        const matchesStatus =
+            statusFilter === "all" || w.status === statusFilter;
+
+        return matchesSearch && matchesStatus;
+    });
 
     return (
         <div className="space-y-6">
@@ -203,28 +221,28 @@ export default function Withdrawals() {
             <div className="grid gap-4 md:grid-cols-4">
                 <StatsCard
                     title="Total Requests"
-                    value={String(stats?.total_withdrawals || 0)}
+                    value={String(stats?.total_count || 0)}
                     icon={Banknote}
                     trend="up"
                     change="All time"
                 />
                 <StatsCard
                     title="Pending Approval"
-                    value={String(stats?.pending_withdrawals || 0)}
+                    value={String(stats?.pending_withdrawal_count || 0)}
                     icon={Clock}
                     trend="up"
                     change="Awaiting release"
                 />
                 <StatsCard
                     title="Total Commission"
-                    value={`$${stats?.total_commission?.toFixed(2) || '0.00'}`}
+                    value={`$${Number(stats?.total_platform_commission || 0).toFixed(2)}`}
                     icon={TrendingUp}
                     trend="up"
                     change="Platform earnings"
                 />
                 <StatsCard
                     title="Total Released"
-                    value={`$${stats?.completed_amount?.toFixed(2) || '0.00'}`}
+                    value={`$${Number(stats?.total_paid_out || 0).toFixed(2)}`}
                     icon={CheckCircle}
                     trend="up"
                     change="To workers"
@@ -354,6 +372,20 @@ export default function Withdrawals() {
                     </div>
                 </CardContent>
             </Card>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="mt-6 flex justify-center">
+                    <CustomPagination
+                        currentPage={currentPage}
+                        lastPage={totalPages}
+                        onPageChange={(page) => fetchWithdrawals(page)}
+                        total={totalRecords}
+                        from={(currentPage - 1) * perPage + 1}
+                        to={Math.min(currentPage * perPage, totalRecords)}
+                    />
+                </div>
+            )}
 
             {/* Detail Dialog */}
             <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
