@@ -450,6 +450,7 @@ export default function JobListing() {
                             <span className="text-muted-foreground text-xs italic">Flexible / Not Set</span>
                           )}
                         </TableCell>
+
                         <TableCell>
                           <div className="flex gap-1">
                             {user.is_urgent && (
@@ -460,6 +461,7 @@ export default function JobListing() {
                             )}
                           </div>
                         </TableCell>
+                        <TableCell>{user.service_location}</TableCell>
                         {/* <TableCell>{user?.status}</TableCell> */}
                         <TableCell>{getStatusBadge(user.status)}</TableCell>
                         {/* <TableCell>
