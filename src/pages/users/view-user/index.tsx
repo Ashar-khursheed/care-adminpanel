@@ -318,7 +318,7 @@ const ViewUser = () => {
                   </div>
                 )}
                 <Badge variant="outline" className="mt-4 capitalize">
-                  {user.user_type}
+                  {user.user_type === "provider" ? "Worker" : user.user_type === "client" ? "Employer" : user.user_type}
                 </Badge>
               </div>
 
@@ -416,7 +416,7 @@ const ViewUser = () => {
                     <label className="text-sm font-medium text-muted-foreground">
                       User Type
                     </label>
-                    <p className="text-sm mt-1 capitalize">{user.user_type}</p>
+                    <p className="text-sm mt-1 capitalize">{user.user_type === "provider" ? "Worker" : user.user_type === "client" ? "Employer" : user.user_type}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">

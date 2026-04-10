@@ -371,7 +371,7 @@ const ViewJobListing = () => {
             </Button>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-              Care Provider Details
+                Care Worker Details
               </h1>
               <p className="text-muted-foreground">
                 View and manage listing information
@@ -395,7 +395,7 @@ const ViewJobListing = () => {
                   <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone. This will permanently approve
-                    this listing and notify the provider.
+                    this listing and notify the worker.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -703,7 +703,7 @@ const ViewJobListing = () => {
             {/* Provider Card */}
             <Card>
               <CardHeader>
-                <CardTitle>Provider Information</CardTitle>
+                <CardTitle>Worker Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -857,7 +857,7 @@ const ViewJobListing = () => {
             <p className="text-sm text-muted-foreground">
               Are you sure you want to reject{" "}
               <strong>{listing?.provider?.name}</strong>? Rejecting a job
-              listing will remove it from the platform and notify the provider.
+              listing will remove it from the platform and notify the worker.
             </p>
           </div>
 
@@ -927,7 +927,7 @@ const ViewJobListing = () => {
             <p className="text-sm text-muted-foreground">
               Are you sure you want to feature{" "}
               <strong>{listing?.provider?.name}</strong>? Featuring a job
-              listing will highlight it on the platform and notify the provider.
+              listing will highlight it on the platform and notify the worker.
             </p>
           </div>
 

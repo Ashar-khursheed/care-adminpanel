@@ -2493,7 +2493,7 @@ const ReviewDetail = () => {
                   <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <ThumbsUp className="h-4 w-4 text-blue-600" />
-                      <h3 className="font-semibold text-blue-900">Provider Response</h3>
+                      <h3 className="font-semibold text-blue-900">Worker Response</h3>
                       {review.response_date && (
                         <span className="text-xs text-muted-foreground ml-auto">
                           {formatDateTime(review.response_date)}
@@ -2507,7 +2507,7 @@ const ReviewDetail = () => {
                 ) : (
                   <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg text-center">
                     <p className="text-sm text-muted-foreground">
-                      Provider has not responded yet
+                      Worker has not responded yet
                     </p>
                   </div>
                 )}
@@ -2670,7 +2670,7 @@ const ReviewDetail = () => {
                         </div>
                       </div>
                       <div className="pb-4">
-                        <p className="font-semibold">Provider Responded</p>
+                        <p className="font-semibold">Worker Responded</p>
                         <p className="text-sm text-muted-foreground">
                           {formatDateTime(review.response_date)}
                         </p>
@@ -2719,7 +2719,7 @@ const ReviewDetail = () => {
             {/* Provider Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Provider Information</CardTitle>
+                <CardTitle>Worker Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -2741,7 +2741,7 @@ const ReviewDetail = () => {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">Service Provider</p>
+                    <p className="text-sm text-muted-foreground">Worker</p>
                   </div>
                 </div>
 

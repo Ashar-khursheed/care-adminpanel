@@ -842,11 +842,16 @@ const W9Detail = () => {
                   </span>
                 </div>
                 <h2 className="text-xl font-bold">{form.user?.name}</h2>
-                <Badge variant="outline" className="capitalize mt-1">
-                  {typeof form.user?.user_type === "object"
-                    ? form.user?.user_type?.name
-                    : form.user?.user_type}
-                </Badge>
+                 <Badge variant="outline" className="capitalize mt-1">
+                   {(() => {
+                     const type = typeof form.user?.user_type === "object"
+                       ? form.user?.user_type?.name
+                       : form.user?.user_type;
+                     if (type?.toLowerCase() === 'provider') return 'Worker';
+                     if (type?.toLowerCase() === 'client') return 'Employer';
+                     return type;
+                   })()}
+                 </Badge>
                 <div className="mt-2">
                   {getStatusBadge(form.verification_status)}
                 </div>

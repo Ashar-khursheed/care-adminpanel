@@ -259,8 +259,8 @@ export default function DashboardBooking() {
       {/* Top Providers */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">Top Service Providers</CardTitle>
-          <CardDescription>Service Providers with most bookings</CardDescription>
+          <CardTitle className="text-xl">Top Workers</CardTitle>
+          <CardDescription>Workers with most bookings</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -295,7 +295,7 @@ export default function DashboardBooking() {
               ))
             ) : (
               <div className="text-center text-gray-500 py-8">
-                No service provider data available
+                No worker data available
               </div>
             )}
           </div>

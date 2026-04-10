@@ -215,7 +215,7 @@ const AddPlanSubscription = () => {
                     Create Subscription Plan
                   </h1>
                   <p className="text-muted-foreground">
-                    Add a new subscription plan for providers
+                    Add a new subscription plan for workers
                   </p>
                 </div>
               </div>
@@ -304,7 +304,7 @@ const AddPlanSubscription = () => {
                     <Textarea
                       id="description"
                       name="description"
-                      placeholder="Perfect for professional providers who need advanced features..."
+                      placeholder="Perfect for professional workers who need advanced features..."
                       rows={4}
                       className="focus:ring-2 focus:ring-green-500 resize-none"
                       value={formik.values.description}
@@ -665,7 +665,7 @@ const AddPlanSubscription = () => {
                         Featured Listings
                       </Label>
                       <p className="text-xs text-muted-foreground pl-8">
-                        Allow providers to feature their listings
+                        Allow workers to feature their listings
                       </p>
                     </div>
                     <Switch

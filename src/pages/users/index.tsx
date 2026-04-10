@@ -2401,7 +2401,7 @@ export default function Users() {
                           <TableCell>
                             <div className="space-y-1">
                               <Badge variant="outline" className="capitalize">
-                                {user.user_type}
+                                {user.user_type === "provider" ? "Worker" : user.user_type === "client" ? "Employer" : user.user_type}
                               </Badge>
                               {user.desired_role && (
                                 <div className="text-[10px] text-muted-foreground bg-slate-100 px-1 rounded inline-block ml-1">

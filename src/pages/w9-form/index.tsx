@@ -338,9 +338,14 @@ export default function W9FormListing() {
                         {/* User Type */}
                         <TableCell>
                           <Badge variant="outline" className="capitalize">
-                            {typeof form.user?.user_type === "object"
-                              ? form.user?.user_type?.name
-                              : form.user?.user_type}
+                            {(() => {
+                              const type = typeof form.user?.user_type === "object"
+                                ? form.user?.user_type?.name
+                                : form.user?.user_type;
+                              if (type?.toLowerCase() === 'provider') return 'Worker';
+                              if (type?.toLowerCase() === 'client') return 'Employer';
+                              return type;
+                            })()}
                           </Badge>
                         </TableCell>
 

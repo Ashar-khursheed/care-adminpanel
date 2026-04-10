@@ -224,14 +224,14 @@ export default function ProvidersAnalytics() {
     {
       title: "Total Bookings",
       value: data.overview.total_bookings.toString(),
-      change: "across all providers",
+      change: "across all workers",
       icon: Users,
       trend: "up" as const,
     },
     {
       title: "Total Earnings",
       value: `$${data.overview.total_earnings.toFixed(2)}`,
-      change: "provider revenue",
+      change: "worker revenue",
       icon: DollarSign,
       trend: "up" as const,
     },
@@ -245,14 +245,14 @@ export default function ProvidersAnalytics() {
     {
       title: "Response Rate",
       value: data.overview.response_rate,
-      change: "provider responses",
+      change: "worker responses",
       icon: MessageSquare,
       trend: "up" as const,
     },
     {
-      title: "Total Providers",
+      title: "Total Workers",
       value: data.top_providers.length.toString(),
-      change: "registered providers",
+      change: "registered workers",
       icon: UserCheck,
       trend: "up" as const,
     },
@@ -324,10 +324,10 @@ export default function ProvidersAnalytics() {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
-                    Providers Analytics
+                    Worker Analytics
                   </h1>
                   <p className="text-muted-foreground">
-                    Track and analyze provider performance
+                    Track and analyze worker performance
                   </p>
                 </div>
               </div>
@@ -464,7 +464,7 @@ export default function ProvidersAnalytics() {
                   </div>
                 </div>
                 <Badge className="bg-green-500 text-white hover:bg-green-600">
-                  {data.top_providers.length} Providers
+                  {data.top_providers.length} Workers
                 </Badge>
               </div>
             </div>
@@ -486,10 +486,10 @@ export default function ProvidersAnalytics() {
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-green-600" />
-                    Top Providers by Bookings
+                    Top Workers by Bookings
                   </CardTitle>
                   <CardDescription>
-                    Most active service providers
+                    Most active workers
                   </CardDescription>
                 </div>
                 <Badge
@@ -556,7 +556,7 @@ export default function ProvidersAnalytics() {
                 <div className="h-96 flex items-center justify-center text-gray-500">
                   <div className="text-center">
                     <Users className="h-16 w-16 mx-auto mb-4 opacity-30" />
-                    <p className="text-lg font-medium">No provider data</p>
+                    <p className="text-lg font-medium">No worker data</p>
                   </div>
                 </div>
               )}
@@ -570,10 +570,10 @@ export default function ProvidersAnalytics() {
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <UserCheck className="h-5 w-5 text-emerald-600" />
-                    Provider Status Distribution
+                    Worker Status Distribution
                   </CardTitle>
                   <CardDescription>
-                    Breakdown by provider status
+                    Breakdown by worker status
                   </CardDescription>
                 </div>
                 <Badge
@@ -618,7 +618,7 @@ export default function ProvidersAnalytics() {
                 <div className="h-80 flex items-center justify-center text-gray-500">
                   <div className="text-center">
                     <UserCheck className="h-16 w-16 mx-auto mb-4 opacity-30" />
-                    <p className="text-lg font-medium">No status data</p>
+                    <p className="text-lg font-medium">No worker data</p>
                   </div>
                 </div>
               )}
@@ -633,10 +633,10 @@ export default function ProvidersAnalytics() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Star className="h-5 w-5 text-green-600" />
-                  Provider Verification Status
+                  Worker Verification Status
                 </CardTitle>
                 <CardDescription>
-                  Verified vs unverified providers
+                  Verified vs unverified workers
                 </CardDescription>
               </div>
               <Badge variant="outline" className="border-green-500 text-green-600">

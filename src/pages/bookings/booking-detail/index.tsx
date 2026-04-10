@@ -747,7 +747,7 @@ const ViewBookingDetail = () => {
             {/* Client Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Client Information</CardTitle>
+                <CardTitle>Employer Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -764,7 +764,7 @@ const ViewBookingDetail = () => {
                   </Avatar>
                   <div className="flex-1">
                     <h3 className="font-semibold">{booking.client.name}</h3>
-                    <p className="text-sm text-muted-foreground">Client</p>
+                    <p className="text-sm text-muted-foreground">Employer</p>
                   </div>
                 </div>
 
@@ -805,7 +805,7 @@ const ViewBookingDetail = () => {
             {/* Provider Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Provider Information</CardTitle>
+                <CardTitle>Worker Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -830,7 +830,7 @@ const ViewBookingDetail = () => {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">Provider</p>
+                    <p className="text-sm text-muted-foreground">Worker</p>
                   </div>
                 </div>
 
@@ -931,7 +931,7 @@ const ViewBookingDetail = () => {
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
               Are you sure you want to reject this booking? This action will
-              notify both the client and provider.
+              notify both the employer and worker.
             </p>
           </div>
 
@@ -1008,7 +1008,7 @@ const ViewBookingDetail = () => {
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
               Are you sure you want to cancel this booking? This action will
-              notify both the client and provider.
+              notify both the employer and worker.
             </p>
           </div>
 

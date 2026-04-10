@@ -515,7 +515,7 @@ const Payouts = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search by ID, service provider name, or email..."
+                placeholder="Search by ID, worker name, or email..."
                 className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -740,7 +740,7 @@ const Payouts = () => {
                     #{selectedPayout.id}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Provider ID: {selectedPayout.provider_id}
+                    Worker ID: {selectedPayout.provider_id}
                   </p>
                 </div>
                 <div className="text-right">
@@ -798,7 +798,7 @@ const Payouts = () => {
                       <span>{selectedPayout.provider.email}</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      Provider ID: {selectedPayout.provider.id}
+                      Worker ID: {selectedPayout.provider.id}
                     </p>
                   </div>
                 </div>
@@ -937,7 +937,7 @@ const Payouts = () => {
                 </span>
               </div>
               <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-sm text-gray-600">Provider:</span>
+                <span className="text-sm text-gray-600">Worker:</span>
                 <span className="font-semibold">
                   {getFullName(selectedPayoutForAction.provider)}
                 </span>
@@ -1012,7 +1012,7 @@ const Payouts = () => {
                 </span>
               </div>
               <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-sm text-gray-600">Provider:</span>
+                <span className="text-sm text-gray-600">Worker:</span>
                 <span className="font-semibold">
                   {getFullName(selectedPayoutForAction.provider)}
                 </span>
@@ -1031,7 +1031,7 @@ const Payouts = () => {
             <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
               <p className="text-sm text-yellow-800">
                 <strong>Warning:</strong> This action cannot be undone. The
-                provider will be notified of the rejection.
+                worker will be notified of the rejection.
               </p>
             </div>
 

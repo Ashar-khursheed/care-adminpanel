@@ -270,9 +270,9 @@ const TransactionHistory = () => {
             trend: "up" as const,
           },
           {
-            title: "Service Provider Earnings",
+            title: "Worker Earnings",
             value: `$${stats.overview.total_provider_earnings.toFixed(2)}`,
-            change: "Total to service providers",
+            change: "Total to workers",
             icon: TrendingDown,
             trend: "down" as const,
           },
@@ -480,7 +480,7 @@ const TransactionHistory = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search by payment ID, client, provider, or email..."
+                placeholder="Search by payment ID, employer, worker, or email..."
                 className="pl-10 w-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -509,8 +509,8 @@ const TransactionHistory = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="hidden md:table-cell">Payment ID</TableHead>
-                  <TableHead>Client</TableHead>
-                  <TableHead className="hidden lg:table-cell">Service Provider</TableHead>
+                  <TableHead>Employer</TableHead>
+                  <TableHead className="hidden lg:table-cell">Worker</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead className="hidden xl:table-cell">Platform Fee</TableHead>
                   <TableHead>Status</TableHead>
@@ -697,7 +697,7 @@ const TransactionHistory = () => {
                   </p>
                 </div>
                 <div className="p-4 border rounded-lg">
-                  <p className="text-sm text-gray-500 mb-2">Provider Amount</p>
+                  <p className="text-sm text-gray-500 mb-2">Worker Amount</p>
                   <p className="text-lg font-semibold text-purple-600">
                     {formatCurrency(selectedPayment.provider_amount, selectedPayment.currency)}
                   </p>
@@ -724,7 +724,7 @@ const TransactionHistory = () => {
                 <div>
                   <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                     <User className="w-5 h-5" />
-                    Client Information
+                    Employer Information
                   </h3>
                   <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                     <Avatar className="w-12 h-12">
@@ -746,7 +746,7 @@ const TransactionHistory = () => {
                 <div>
                   <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                     <Building className="w-5 h-5" />
-                    Service Provider Information
+                    Worker Information
                   </h3>
                   <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                     <Avatar className="w-12 h-12">

@@ -203,7 +203,7 @@ export default function ReviewDashboard() {
           {
             title: "With Response",
             value: data.with_response.toString(),
-            change: "Service Provider replied",
+            change: "Worker replied",
             icon: MessageSquare,
             trend: "up" as const,
           },
@@ -415,9 +415,9 @@ export default function ReviewDashboard() {
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
-            Top Reviewed Service Providers
+            Top Reviewed Workers
           </CardTitle>
-          <CardDescription>Service Providers with most customer reviews</CardDescription>
+          <CardDescription>Workers with most customer reviews</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -471,7 +471,7 @@ export default function ReviewDashboard() {
               ))
             ) : (
               <div className="text-center text-gray-500 py-8">
-                No service provider data available
+                No worker data available
               </div>
             )}
           </div>
@@ -483,7 +483,7 @@ export default function ReviewDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="text-xl">Response Rate</CardTitle>
-            <CardDescription>Service Provider engagement with reviews</CardDescription>
+            <CardDescription>Worker engagement with reviews</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

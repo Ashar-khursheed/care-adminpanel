@@ -655,7 +655,7 @@ const EditPlanSubscription = () => {
                         Featured Listings
                       </Label>
                       <p className="text-xs text-muted-foreground pl-8">
-                        Allow providers to feature their listings
+                        Allow workers to feature their listings
                       </p>
                     </div>
                     <Switch

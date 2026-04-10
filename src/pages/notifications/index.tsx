@@ -783,7 +783,7 @@ const Notifications = () => {
                         variant="outline"
                         className="text-xs capitalize"
                       >
-                        {selectedNotification.user.user_type}
+                        {selectedNotification.user.user_type === "provider" ? "Worker" : selectedNotification.user.user_type === "client" ? "Employer" : selectedNotification.user.user_type}
                       </Badge>
                       <Badge
                         variant={
