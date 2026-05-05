@@ -1978,6 +1978,7 @@ export default function Users() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCity, setFilterCity] = useState("");
+  const [filterState, setFilterState] = useState("");
   const [filterDesiredRole, setFilterDesiredRole] = useState("all");
   const [filterRole, setFilterRole] = useState(urlUserType);
   const [filterStatus, setFilterStatus] = useState("all");
@@ -1999,6 +2000,7 @@ export default function Users() {
     status: string = "",
     search: string = "",
     city: string = "",
+    state: string = "",
     desiredRole: string = ""
   ) => {
     try {
@@ -2015,12 +2017,16 @@ export default function Users() {
         url += `&status=${status}`;
       }
 
-      if (search) {
-        url += `&search=${search}`;
-      }
+      // if (search) {
+      //   url += `&search=${search}`;
+      // }
 
       if (city) {
         url += `&city=${city}`;
+      }
+
+      if (state) {
+        url += `&state=${state}`;
       }
 
       if (desiredRole && desiredRole !== "all") {
@@ -2069,6 +2075,7 @@ export default function Users() {
           apiStatus,
           searchTerm,
           filterCity,
+          filterState,
           filterDesiredRole === "all" ? "" : filterDesiredRole
         );
       }
@@ -2130,28 +2137,35 @@ export default function Users() {
 
     const apiRole = role === "all" ? "" : role;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterState, filterDesiredRole === "all" ? "" : filterDesiredRole);
   };
 
   const handleStatusFilterChange = async (status: string) => {
     setFilterStatus(status);
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = status === "all" ? "" : status;
-    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterState, filterDesiredRole === "all" ? "" : filterDesiredRole);
   };
 
   const handleCityFilterChange = async (city: string) => {
     setFilterCity(city);
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, city, filterDesiredRole === "all" ? "" : filterDesiredRole);
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, city, filterState, filterDesiredRole === "all" ? "" : filterDesiredRole);
+  }
+
+  const handleStateFilterChange = async (state: string) => {
+    setFilterState(state);
+    const apiRole = filterRole === "all" ? "" : filterRole;
+    const apiStatus = filterStatus === "all" ? "" : filterStatus;
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, state, filterDesiredRole === "all" ? "" : filterDesiredRole);
   }
 
   const handleDesiredRoleFilterChange = async (role: string) => {
     setFilterDesiredRole(role);
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, role === "all" ? "" : role);
+    await fetchUsers(1, perPage, apiRole, apiStatus, searchTerm, filterCity, filterState, role === "all" ? "" : role);
   }
 
   const handleSearchChange = async (search: string) => {
@@ -2159,7 +2173,7 @@ export default function Users() {
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
     // Use a debounce ideally, but for now simple trigger
-    await fetchUsers(1, perPage, apiRole, apiStatus, search, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
+    await fetchUsers(1, perPage, apiRole, apiStatus, search, filterCity, filterState, filterDesiredRole === "all" ? "" : filterDesiredRole);
   }
 
   const handlePageChange = (page) => {
@@ -2168,7 +2182,7 @@ export default function Users() {
 
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(page, perPage, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
+    fetchUsers(page, perPage, apiRole, apiStatus, searchTerm, filterCity, filterState, filterDesiredRole === "all" ? "" : filterDesiredRole);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -2176,7 +2190,7 @@ export default function Users() {
     setPerPage(value);
     const apiRole = filterRole === "all" ? "" : filterRole;
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(1, value, apiRole, apiStatus, searchTerm, filterCity, filterDesiredRole === "all" ? "" : filterDesiredRole);
+    fetchUsers(1, value, apiRole, apiStatus, searchTerm, filterCity, filterState, filterDesiredRole === "all" ? "" : filterDesiredRole);
   };
 
   // ✅ Initial load - runs when URL params change
@@ -2257,17 +2271,24 @@ export default function Users() {
 
           {/* Filters */}
           <div className="flex flex-wrap gap-4 pt-4">
-            <Input
+            {/* <Input
               placeholder="Search by name/email..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="max-w-[200px]"
-            />
+            /> */}
 
             <Input
               placeholder="Filter by city..."
               value={filterCity}
               onChange={(e) => handleCityFilterChange(e.target.value)}
+              className="max-w-[150px]"
+            />
+
+            <Input
+              placeholder="Filter by state..."
+              value={filterState}
+              onChange={(e) => handleStateFilterChange(e.target.value)}
               className="max-w-[150px]"
             />
 

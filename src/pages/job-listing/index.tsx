@@ -86,6 +86,8 @@ export default function JobListing() {
     jobListing: [],
     pagination: null,
   });
+  const [filterCity, setFilterCity] = useState("");
+  const [filterState, setFilterState] = useState("");
   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
     {}
   );
@@ -97,7 +99,9 @@ export default function JobListing() {
     status: string = "",
     search: string = "",
     urgent: string = "",
-    quickPay: string = ""
+    quickPay: string = "",
+    city: string = "",
+    state: string = ""
   ) => {
     try {
       setIsLoading(true);
@@ -107,8 +111,14 @@ export default function JobListing() {
       if (status && status !== "all") {
         url += `&status=${status}`;
       }
-      if (search) {
-        url += `&search=${search}`;
+      // if (search) {
+      //   url += `&search=${search}`;
+      // }
+      if (city) {
+        url += `&city=${city}`;
+      }
+      if (state) {
+        url += `&state=${state}`;
       }
       if (urgent && urgent !== "all") {
         url += `&is_urgent=${urgent === "yes" ? 1 : 0}`;
@@ -152,7 +162,9 @@ export default function JobListing() {
           apiStatus,
           searchTerm,
           filterUrgent,
-          filterQuickPay
+          filterQuickPay,
+          filterCity,
+          filterState
         );
       }
 
@@ -208,34 +220,44 @@ export default function JobListing() {
       return;
 
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(page, perPage, apiStatus, searchTerm, filterUrgent, filterQuickPay);
+    fetchUsers(page, perPage, apiStatus, searchTerm, filterUrgent, filterQuickPay, filterCity, filterState);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePerPageChange = (value: number) => {
     setPerPage(value);
     const apiStatus = filterStatus === "all" ? "" : filterStatus;
-    fetchUsers(1, value, apiStatus, searchTerm, filterUrgent, filterQuickPay);
+    fetchUsers(1, value, apiStatus, searchTerm, filterUrgent, filterQuickPay, filterCity, filterState);
   };
 
   const handleStatusFilterChange = (status: string) => {
     setFilterStatus(status);
-    fetchUsers(1, perPage, status === "all" ? "" : status, searchTerm, filterUrgent, filterQuickPay);
+    fetchUsers(1, perPage, status === "all" ? "" : status, searchTerm, filterUrgent, filterQuickPay, filterCity, filterState);
   }
 
   const handleUrgentFilterChange = (urgent: string) => {
     setFilterUrgent(urgent);
-    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, urgent, filterQuickPay);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, urgent, filterQuickPay, filterCity, filterState);
   }
 
   const handleQuickPayFilterChange = (quickPay: string) => {
     setFilterQuickPay(quickPay);
-    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, quickPay);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, quickPay, filterCity, filterState);
   }
 
   const handleSearchChange = (search: string) => {
     setSearchTerm(search);
-    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, search, filterUrgent, filterQuickPay);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, search, filterUrgent, filterQuickPay, filterCity, filterState);
+  }
+
+  const handleCityChange = (city: string) => {
+    setFilterCity(city);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, filterQuickPay, city, filterState);
+  }
+
+  const handleStateChange = (state: string) => {
+    setFilterState(state);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, filterQuickPay, filterCity, state);
   }
 
   useEffect(() => {
@@ -304,11 +326,25 @@ export default function JobListing() {
 
           {/* Filters */}
           <div className="flex flex-wrap gap-4 pt-4">
-            <Input
+            {/* <Input
               placeholder="Search by worker/city..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="max-w-[200px]"
+            /> */}
+
+            <Input
+              placeholder="Filter by city..."
+              value={filterCity}
+              onChange={(e) => handleCityChange(e.target.value)}
+              className="max-w-[150px]"
+            />
+
+            <Input
+              placeholder="Filter by state..."
+              value={filterState}
+              onChange={(e) => handleStateChange(e.target.value)}
+              className="max-w-[150px]"
             />
 
             <Select value={filterUrgent} onValueChange={handleUrgentFilterChange}>
