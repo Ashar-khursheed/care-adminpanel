@@ -74,6 +74,9 @@ const createUserValidationSchema = Yup.object({
   country: Yup.string()
     .min(2, "Country must be at least 2 characters")
     .required("Country is required"),
+  zip_code: Yup.string()
+    .min(5, "Zip code must be at least 5 characters")
+    .required("Zip code is required"),
 });
 
 const CreateUser = () => {
@@ -94,6 +97,7 @@ const CreateUser = () => {
       city: "",
       state: "",
       country: "",
+      zip_code: "",
     },
     validationSchema: createUserValidationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -454,6 +458,27 @@ const CreateUser = () => {
                     <p className="text-sm text-red-500">
                       {formik.errors.country}
                     </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="zip_code">
+                    Zip Code <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="zip_code"
+                      name="zip_code"
+                      placeholder="Enter zip code"
+                      className="pl-10"
+                      value={formik.values.zip_code}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                  {formik.touched.zip_code && formik.errors.zip_code && (
+                    <p className="text-sm text-red-500">{formik.errors.zip_code}</p>
                   )}
                 </div>
               </CardContent>

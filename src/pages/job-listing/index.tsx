@@ -88,6 +88,7 @@ export default function JobListing() {
   });
   const [filterCity, setFilterCity] = useState("");
   const [filterState, setFilterState] = useState("");
+  const [filterZipCode, setFilterZipCode] = useState("");
   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
     {}
   );
@@ -101,7 +102,8 @@ export default function JobListing() {
     urgent: string = "",
     quickPay: string = "",
     city: string = "",
-    state: string = ""
+    state: string = "",
+    zipCode: string = ""
   ) => {
     try {
       setIsLoading(true);
@@ -111,14 +113,17 @@ export default function JobListing() {
       if (status && status !== "all") {
         url += `&status=${status}`;
       }
-      // if (search) {
-      //   url += `&search=${search}`;
-      // }
+      if (search) {
+        url += `&search=${encodeURIComponent(search)}`;
+      }
       if (city) {
-        url += `&city=${city}`;
+        url += `&city=${encodeURIComponent(city)}`;
       }
       if (state) {
-        url += `&state=${state}`;
+        url += `&state=${encodeURIComponent(state)}`;
+      }
+      if (zipCode) {
+        url += `&zip_code=${encodeURIComponent(zipCode)}`;
       }
       if (urgent && urgent !== "all") {
         url += `&is_urgent=${urgent === "yes" ? 1 : 0}`;
@@ -257,7 +262,12 @@ export default function JobListing() {
 
   const handleStateChange = (state: string) => {
     setFilterState(state);
-    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, filterQuickPay, filterCity, state);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, filterQuickPay, filterCity, state, filterZipCode);
+  }
+
+  const handleZipCodeChange = (zip: string) => {
+    setFilterZipCode(zip);
+    fetchUsers(1, perPage, filterStatus === "all" ? "" : filterStatus, searchTerm, filterUrgent, filterQuickPay, filterCity, filterState, zip);
   }
 
   useEffect(() => {
@@ -345,6 +355,13 @@ export default function JobListing() {
               value={filterState}
               onChange={(e) => handleStateChange(e.target.value)}
               className="max-w-[150px]"
+            />
+
+            <Input
+              placeholder="Filter by zip..."
+              value={filterZipCode}
+              onChange={(e) => handleZipCodeChange(e.target.value)}
+              className="max-w-[120px]"
             />
 
             <Select value={filterUrgent} onValueChange={handleUrgentFilterChange}>

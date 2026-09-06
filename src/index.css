@@ -163,3 +163,73 @@
 .ql-snow .ql-toolbar button.ql-active .ql-stroke {
   stroke: #10b981;
 }
+/* ==========================================================================
+   Responsive fixes (admin panel)
+   Most list pages render a wide table with no overflow wrapper, so on a phone
+   or narrow tablet the table dragged the whole page sideways.
+   ========================================================================== */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Any table scrolls inside its own box instead of widening the page. */
+table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Restore normal table layout once there is room for it. */
+@media (min-width: 1024px) {
+  table {
+    display: table;
+    overflow-x: visible;
+  }
+}
+
+@media (max-width: 1023.98px) {
+  /* Cells keep their content on one line; the container scrolls, not the page. */
+  table th,
+  table td {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* Toolbars above tables (search + filters + actions) wrap instead of
+     squeezing every control into an unusable width. */
+  .filters-row,
+  .table-toolbar {
+    flex-wrap: wrap;
+  }
+
+  /* 16px keeps iOS from zooming in when a field takes focus. */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

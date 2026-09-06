@@ -2017,16 +2017,16 @@ export default function Users() {
         url += `&status=${status}`;
       }
 
-      // if (search) {
-      //   url += `&search=${search}`;
-      // }
+      if (search) {
+        url += `&search=${encodeURIComponent(search)}`;
+      }
 
       if (city) {
-        url += `&city=${city}`;
+        url += `&city=${encodeURIComponent(city)}`;
       }
 
       if (state) {
-        url += `&state=${state}`;
+        url += `&state=${encodeURIComponent(state)}`;
       }
 
       if (desiredRole && desiredRole !== "all") {
